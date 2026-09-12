@@ -1002,7 +1002,8 @@ body.filters-open { overflow: hidden; }
 .product-options {
   margin-bottom: 4px;
 }
-.product-options h3 {
+.product-options h3,
+.product-options-title {
   font-family: var(--sans);
   font-size: 0.88rem;
   font-weight: 600;
@@ -1010,25 +1011,38 @@ body.filters-open { overflow: hidden; }
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.selected-color-name {
+  color: var(--ink);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: normal;
 }
 .color-selector {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 .color-option-large {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid transparent;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12), 0 2px 5px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  outline: none;
 }
-.color-option-large:hover,
-.color-option-large.active {
-  border-color: var(--ink);
+.color-option-large:hover {
   transform: scale(1.1);
+  box-shadow: 0 0 0 2px var(--ink), 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+.color-option-large.active {
+  box-shadow: 0 0 0 2.5px var(--ink), 0 3px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.12);
 }
 .product-actions-group {
   display: flex;

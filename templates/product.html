@@ -64,12 +64,15 @@
                     <!-- Color Selection -->
                     {% if colors %}
                     <div class="product-options">
-                        <h3>{% trans "Color" %}</h3>
+                        <h3>{% trans "Color" %}: <span class="selected-color-name" id="selectedColorName">{{ colors.0.name }}</span></h3>
                         <div class="color-selector">
                             {% for color in colors %}
                                 <span class="color-option-large {% if forloop.first %}active{% endif %}" 
-                                      style="background: {{ color.code }}; {% if color.code == '#ffffff' %}border: 2px solid #ddd;{% endif %}" 
-                                      data-color="{{ color.name|lower }}"></span>
+                                      style="background: {{ color.code }}; {% if color.is_light %}border: 2px solid #ddd;{% endif %}" 
+                                      data-color="{{ color.name|lower }}"
+                                      data-color-name="{{ color.name|escapejs }}"
+                                      title="{{ color.name }}"
+                                      tabindex="0" role="button" aria-label="{{ color.name|escapejs }}"></span>
                             {% endfor %}
                         </div>
                     </div>
@@ -239,10 +242,21 @@
 
     // Color selector
     const colorOptions = document.querySelectorAll('.color-option-large');
+    const selectedColorNameEl = document.getElementById('selectedColorName');
     colorOptions.forEach(option => {
         option.addEventListener('click', function() {
             colorOptions.forEach(o => o.classList.remove('active'));
             this.classList.add('active');
+            const name = this.getAttribute('data-color-name') || this.getAttribute('aria-label');
+            if (selectedColorNameEl && name) {
+                selectedColorNameEl.textContent = name;
+            }
+        });
+        option.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
         });
     });
 

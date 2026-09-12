@@ -249,21 +249,12 @@ def catalog(request):
     # Фильтрация по цвету
     color_filter = request.GET.get('color', None)
     if color_filter:
-        # Маппинг цветов из hex в названия
-        color_map = {
-            '#000': 'Черный',
-            '#000000': 'Черный',
-            '#fff': 'Белый',
-            '#ffffff': 'Белый',
-            '#e74c3c': 'Красный',
-            '#3498db': 'Синий',
-            '#2ecc71': 'Зеленый',
-            '#f39c12': 'Желтый',
-        }
-        color_name = color_map.get(color_filter.lower(), color_filter)
+        from .color_utils import resolve_single_color
+        resolved = resolve_single_color(color_filter)
+        color_query = resolved.get('name') or color_filter
         # Ищем товары, у которых в available_colors есть указанный цвет
         products_queryset = products_queryset.filter(
-            Q(available_colors__icontains=color_name)
+            Q(available_colors__icontains=color_query) | Q(available_colors__icontains=color_filter)
         )
     
     # Сортировка
@@ -391,20 +382,9 @@ def product_detail(request, slug=None):
     if product and hasattr(product, 'old_price') and product.old_price:
         discount = int(((product.old_price - product.price) / product.old_price) * 100)
     
-    # Парсим доступные цвета
-    colors = []
-    color_map = {
-        'Черный': '#000000',
-        'Белый': '#ffffff',
-        'Синий': '#3498db',
-        'Красный': '#e74c3c',
-        'Зеленый': '#2ecc71',
-        'Желтый': '#f1c40f',
-        'Серый': '#95a5a6',
-    }
-    if product and hasattr(product, 'available_colors'):
-        color_names = [c.strip() for c in str(product.available_colors).split(',') if c.strip()]
-        colors = [{'name': name, 'code': color_map.get(name, '#000000')} for name in color_names]
+    # Парсим доступные цвета с интеллектуальным маппингом и дедупликацией
+    from .color_utils import parse_product_colors
+    colors = parse_product_colors(getattr(product, 'available_colors', None)) if product else []
     
     # Получаем features товара из базы данных
     from .models import ProductFeatureConfig
