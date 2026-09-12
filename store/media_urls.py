@@ -157,6 +157,7 @@ def product_gallery_urls(product) -> list[str]:
         except Exception:
             pass
 
-    add(raw_url=getattr(product, "image_url", None) or "")
+    if not out:
+        add(raw_url=getattr(product, "image_url", None) or "")
     return out
 

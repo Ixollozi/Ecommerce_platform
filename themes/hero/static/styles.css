@@ -1203,6 +1203,12 @@ h1,h2,h3,p { margin: 0; }
 .qty-input {
   width: 3.2rem; text-align: center; border: 1px solid var(--line);
   border-radius: .55rem; padding: .45rem; font: inherit;
+  -moz-appearance: textfield;
+}
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .product-features {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: .65rem; margin-top: 1.25rem;
@@ -1212,8 +1218,18 @@ h1,h2,h3,p { margin: 0; }
 }
 .product-tabs { margin-top: 1.75rem; }
 .tab-buttons {
-  display: flex; gap: .35rem; border-bottom: 1px solid var(--line);
-  margin-bottom: 1.1rem; overflow-x: auto;
+  display: flex;
+  gap: .35rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1.1rem;
+  overflow: visible;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.tab-buttons::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 .tab-btn {
   padding: .55rem .9rem; font-size: .82rem; color: var(--muted);

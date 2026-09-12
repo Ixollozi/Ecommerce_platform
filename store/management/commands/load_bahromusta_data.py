@@ -178,7 +178,7 @@ class Command(BaseCommand):
                 'rating': 4.9,
                 'reviews_count': 7,
                 'is_active': True,
-                'image_url': 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80',
+                'image_url': 'https://images.unsplash.com/photo-1543083477-4f785aeafaa9?auto=format&fit=crop&w=800&q=80',
             },
             {
                 'name': 'Сундук деревянный с кованой оковкой «Хунарманд»',
@@ -231,5 +231,69 @@ class Command(BaseCommand):
                 defaults=p_data
             )
             self.stdout.write(f'  [OK] Товар: {prod.slug}')
+
+        # 9. Загрузка нескольких реальных фотографий для галереи товаров
+        from store.platform.context import get_current_site
+        import urllib.request
+
+        current_site = get_current_site()
+        media_products_dir = (current_site.media_dir / 'products') if current_site else (Path(settings.BASE_DIR) / 'media' / 'products')
+        media_products_dir.mkdir(parents=True, exist_ok=True)
+
+        gallery_downloads = {
+            'nozh_1_main.jpg': 'https://images.unsplash.com/photo-1593618998160-e34014e67546?auto=format&fit=crop&w=900&q=80',
+            'nozh_2_blade.jpg': 'https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?auto=format&fit=crop&w=900&q=80',
+            'nozh_3_handle.jpg': 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=900&q=80',
+            'nozh_4_sheath.jpg': 'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=900&q=80',
+            'mangal_1_main.jpg': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=80',
+            'mangal_2_fire.jpg': 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=900&q=80',
+            'mangal_3_detail.jpg': 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80',
+            'drovnitsa_1_main.jpg': 'https://images.unsplash.com/photo-1543083477-4f785aeafaa9?auto=format&fit=crop&w=900&q=80',
+            'drovnitsa_2_coals.jpg': 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=900&q=80',
+        }
+
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        for fname, url in gallery_downloads.items():
+            dest = media_products_dir / fname
+            if not dest.exists() or dest.stat().st_size == 0:
+                try:
+                    req = urllib.request.Request(url, headers=headers)
+                    with urllib.request.urlopen(req, timeout=10) as resp, open(dest, 'wb') as f:
+                        f.write(resp.read())
+                    self.stdout.write(f'  [IMG] Загружен: {fname}')
+                except Exception as e:
+                    self.stdout.write(f'  [WARN] Ошибка загрузки {fname}: {e}')
+
+        # Привязываем галерею к ножу «Шерабад» (4 уникальных ракурса)
+        knife_prod = Product.objects.filter(slug='nozh-sherabad-ruchnoj-kovki').first()
+        if knife_prod:
+            knife_prod.image = 'products/nozh_1_main.jpg'
+            knife_prod.save(update_fields=['image'])
+            knife_prod.images.all().delete()
+            for extra_img in ['products/nozh_2_blade.jpg', 'products/nozh_3_handle.jpg', 'products/nozh_4_sheath.jpg']:
+                if (media_products_dir / Path(extra_img).name).exists():
+                    ProductImage.objects.create(product=knife_prod, image=extra_img)
+            self.stdout.write(f'  [GALLERY] Нож «Шерабад»: установлено 4 уникальных фото')
+
+        # Привязываем галерею к мангалу «Сурхан» (3 уникальных ракурса)
+        mangal_prod = Product.objects.filter(slug='mangal-kovanyj-surhan').first()
+        if mangal_prod:
+            mangal_prod.image = 'products/mangal_1_main.jpg'
+            mangal_prod.save(update_fields=['image'])
+            mangal_prod.images.all().delete()
+            for extra_img in ['products/mangal_2_fire.jpg', 'products/mangal_3_detail.jpg']:
+                if (media_products_dir / Path(extra_img).name).exists():
+                    ProductImage.objects.create(product=mangal_prod, image=extra_img)
+            self.stdout.write(f'  [GALLERY] Мангал «Сурхан»: установлено 3 уникальных фото')
+
+        # Привязываем галерею к дровнице «Очаг» (2 уникальных фото)
+        drovnitsa_prod = Product.objects.filter(slug='kovanaya-drovnitsa-ochag').first()
+        if drovnitsa_prod:
+            drovnitsa_prod.image = 'products/drovnitsa_1_main.jpg'
+            drovnitsa_prod.save(update_fields=['image'])
+            drovnitsa_prod.images.all().delete()
+            if (media_products_dir / 'drovnitsa_2_coals.jpg').exists():
+                ProductImage.objects.create(product=drovnitsa_prod, image='products/drovnitsa_2_coals.jpg')
+            self.stdout.write(f'  [GALLERY] Дровница «Очаг»: установлено 2 уникальных фото')
 
         self.stdout.write(self.style.SUCCESS('Тестовые данные для Bahromusta успешно загружены!'))
