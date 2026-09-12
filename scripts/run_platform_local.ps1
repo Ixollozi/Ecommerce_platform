@@ -30,6 +30,9 @@ if (-not (Test-Path 'sites\registry.json')) {
 
 Write-Host ''
 Write-Host '=== themes / domains ==='
+Write-Host '  http://127.0.0.1:8000/                 theme=hero (Bahromusta — металл, ножи, ковка)'
+Write-Host '  http://localhost:8000/                 theme=hero (Bahromusta — металл, ножи, ковка)'
+Write-Host '  http://bahromusta.localhost:8000/      theme=hero (Bahromusta — металл, ножи, ковка)'
 Write-Host '  http://demo-main.localhost:8000/       theme=main'
 Write-Host '  http://demo-front2.localhost:8000/     theme=front2'
 Write-Host '  http://demo-eshop.localhost:8000/       theme=eshop (Apex Goods / ESHOP)'
