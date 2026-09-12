@@ -1583,18 +1583,21 @@ button.price-btn:focus {
 .thumbnail-images {
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
 }
 
 .thumbnail {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     border: 2px solid transparent;
-    transition: all 0.3s;
+    transition: all 0.25s ease;
     background: var(--light-bg);
     display: block;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
 .thumbnail[src=""],
@@ -1605,9 +1608,15 @@ button.price-btn:focus {
     justify-content: center;
 }
 
-.thumbnail:hover,
+.thumbnail:hover {
+    transform: translateY(-2px);
+    border-color: #bbb;
+}
+
 .thumbnail.active {
     border-color: var(--secondary-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: scale(1.03);
 }
 
 .product-info-detail h1 {

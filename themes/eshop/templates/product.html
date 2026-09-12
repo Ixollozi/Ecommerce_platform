@@ -8,15 +8,19 @@
 {% block title %}{% if product %}{{ product.name }}{% else %}{% trans "Product" %}{% endif %} - {{ store_name }}{% endblock %}
 
 {% block content %}
-    <!-- Page Header -->
-    <section class="page-header">
+    <!-- Page Header (Breadcrumbs) -->
+    <section class="page-header product-page-header">
         <div class="container">
-            <h1>{% if product %}{{ product.name }}{% else %}{% trans "Product" %}{% endif %}</h1>
-            <nav class="breadcrumbs">
-                <a href="{% url 'index' %}">{% trans "Home" %}</a> / 
-                <a href="{% url 'catalog' %}">{% trans "Catalog" %}</a> / 
-                {% if product.category %}<a href="{% url 'catalog' %}?category={{ product.category.slug }}">{{ product.category.name }}</a> / {% endif %}
-                <span>{% if product %}{{ product.name }}{% else %}{% trans "Product" %}{% endif %}</span>
+            <nav class="breadcrumbs" aria-label="{% trans 'Breadcrumbs' %}">
+                <a href="{% url 'index' %}">{% trans "Home" %}</a>
+                <span class="breadcrumbs-sep">/</span>
+                <a href="{% url 'catalog' %}">{% trans "Catalog" %}</a>
+                {% if product.category %}
+                <span class="breadcrumbs-sep">/</span>
+                <a href="{% url 'catalog' %}?category={{ product.category.slug }}">{{ product.category.name }}</a>
+                {% endif %}
+                <span class="breadcrumbs-sep">/</span>
+                <span class="breadcrumbs-current">{% if product %}{{ product.name }}{% else %}{% trans "Product" %}{% endif %}</span>
             </nav>
         </div>
     </section>
@@ -75,28 +79,54 @@
                     </div>
                     {% endif %}
 
-                    <!-- Quantity -->
-                    <div class="product-options">
-                        <h3>{% trans "Quantity" %}</h3>
-                        <div class="quantity-selector">
-                            <button class="qty-btn" id="decreaseQty">-</button>
+                    <!-- Quantity & Add to Cart -->
+                    <div class="product-actions-group">
+                        <div class="quantity-selector" aria-label="{% trans 'Quantity' %}">
+                            <button class="qty-btn" id="decreaseQty" type="button" aria-label="{% trans 'Decrease' %}">−</button>
                             <input type="number" step="1" value="1" min="1" max="{% if product.stock %}{{ product.stock }}{% else %}10{% endif %}" id="quantity" class="qty-input" aria-label="{% trans 'Quantity' %}">
-                            <button class="qty-btn" id="increaseQty">+</button>
+                            <button class="qty-btn" id="increaseQty" type="button" aria-label="{% trans 'Increase' %}">+</button>
                         </div>
-                        {% if product.stock %}
-                            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
-                                {% trans "In stock" %}: {{ product.stock }} {% trans "pcs" %}.
-                            </p>
+                        {% if product.id %}
+                        <button class="btn btn-primary btn-large btn-add-cart" data-product-id="{{ product.id }}" data-product-name="{{ product.name|escapejs }}" data-use-product-form="true">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>{% trans "Add to Cart" %}</span>
+                        </button>
+                        {% else %}
+                        <button class="btn btn-primary btn-large" disabled>
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>{% trans "Add to Cart" %}</span>
+                        </button>
                         {% endif %}
                     </div>
 
-                    <!-- Action Buttons -->
-                    <div class="product-actions">
-                        {% if product.id %}
-                        <button class="btn btn-primary btn-large" data-product-id="{{ product.id }}" data-product-name="{{ product.name|escapejs }}" data-use-product-form="true">{% trans "Add to Cart" %}</button>
-                        {% else %}
-                        <button class="btn btn-primary btn-large" disabled>{% trans "Add to Cart" %}</button>
-                        {% endif %}
+                    {% if product.stock %}
+                        <div class="stock-status in-stock">
+                            <span class="stock-dot"></span>
+                            <span>{% trans "In stock" %}: {{ product.stock }} {% trans "pcs" %}.</span>
+                        </div>
+                    {% else %}
+                        <div class="stock-status out-of-stock">
+                            <span class="stock-dot out"></span>
+                            <span>{% trans "Out of stock" %}</span>
+                        </div>
+                    {% endif %}
+
+                    <!-- Trust Perks -->
+                    <div class="product-perks">
+                        <div class="perk-card">
+                            <i class="fas fa-truck-fast"></i>
+                            <div class="perk-text">
+                                <strong>{% trans "Fast Delivery" %}</strong>
+                                <span>{% trans "Across Uzbekistan" %}</span>
+                            </div>
+                        </div>
+                        <div class="perk-card">
+                            <i class="fas fa-shield-halved"></i>
+                            <div class="perk-text">
+                                <strong>{% trans "Quality Guarantee" %}</strong>
+                                <span>{% trans "Original products only" %}</span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Product Features -->

@@ -2,22 +2,36 @@
 <script>
 (function () {
     const mainImage = document.getElementById('mainImage');
-    const thumbnails = document.querySelectorAll('.thumbnail[data-gallery-src], .thumbnail');
+    const thumbnails = Array.from(document.querySelectorAll('.thumbnail[data-gallery-src], .thumbnail'));
     if (!mainImage || !thumbnails.length) return;
 
     function activate(thumb) {
         const src = thumb.getAttribute('data-gallery-src') || thumb.getAttribute('src') || thumb.src;
         if (!src) return;
         thumbnails.forEach(function (t) {
-            t.classList.remove('active');
+            t.classList.remove('active', 'is-active');
             t.setAttribute('aria-selected', 'false');
         });
-        thumb.classList.add('active');
+        thumb.classList.add('active', 'is-active');
         thumb.setAttribute('aria-selected', 'true');
-        mainImage.src = src;
+
+        if (mainImage.src !== src) {
+            mainImage.style.opacity = '0.5';
+            mainImage.style.transition = 'opacity 0.2s ease';
+            const tempImg = new Image();
+            tempImg.onload = function () {
+                mainImage.src = src;
+                mainImage.style.opacity = '1';
+            };
+            tempImg.onerror = function () {
+                mainImage.src = src;
+                mainImage.style.opacity = '1';
+            };
+            tempImg.src = src;
+        }
     }
 
-    thumbnails.forEach(function (thumb) {
+    thumbnails.forEach(function (thumb, index) {
         thumb.style.cursor = 'pointer';
         thumb.addEventListener('click', function (e) {
             e.preventDefault();
@@ -27,6 +41,14 @@
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 activate(thumb);
+            } else if (e.key === 'ArrowRight' && thumbnails[index + 1]) {
+                e.preventDefault();
+                thumbnails[index + 1].focus();
+                activate(thumbnails[index + 1]);
+            } else if (e.key === 'ArrowLeft' && thumbnails[index - 1]) {
+                e.preventDefault();
+                thumbnails[index - 1].focus();
+                activate(thumbnails[index - 1]);
             }
         });
     });
