@@ -22,7 +22,7 @@
       <a href="{% url 'admin_unified_config' %}" class="btn btn-primary btn-config">
         Конфигурация сайта
       </a>
-      <a href="{% url 'admin:store_order_changelist' %}?status__exact=pending" class="btn btn-ghost">
+      <a href="{% url 'admin:catalog_order_changelist' %}?status__exact=pending" class="btn btn-ghost">
         Новые заказы{% if pending_orders %} · {{ pending_orders }}{% endif %}
       </a>
     </div>
@@ -31,13 +31,13 @@
   {% if pending_orders or unread_messages %}
   <section class="dash-alerts" aria-label="Требует внимания">
     {% if pending_orders %}
-    <a class="alert-chip alert-warn" href="{% url 'admin:store_order_changelist' %}?status__exact=pending">
+    <a class="alert-chip alert-warn" href="{% url 'admin:catalog_order_changelist' %}?status__exact=pending">
       <span class="alert-chip-label">Ожидают</span>
       <strong>{{ pending_orders }}</strong>
     </a>
     {% endif %}
     {% if unread_messages %}
-    <a class="alert-chip alert-info" href="{% url 'admin:store_contactmessage_changelist' %}?is_read__exact=0">
+    <a class="alert-chip alert-info" href="{% url 'admin:catalog_contactmessage_changelist' %}?is_read__exact=0">
       <span class="alert-chip-label">Сообщения</span>
       <strong>{{ unread_messages }}</strong>
     </a>
@@ -55,23 +55,23 @@
         <span class="action-tile-kicker">Сайт</span>
         <span class="action-tile-title">Конфигурация</span>
       </a>
-      <a class="action-tile" href="{% url 'admin:store_product_add' %}">
+      <a class="action-tile" href="{% url 'admin:catalog_product_add' %}">
         <span class="action-tile-kicker">Каталог</span>
         <span class="action-tile-title">Добавить товар</span>
       </a>
-      <a class="action-tile" href="{% url 'admin:store_category_add' %}">
+      <a class="action-tile" href="{% url 'admin:catalog_category_add' %}">
         <span class="action-tile-kicker">Каталог</span>
         <span class="action-tile-title">Новая категория</span>
       </a>
-      <a class="action-tile" href="{% url 'admin:store_order_changelist' %}">
+      <a class="action-tile" href="{% url 'admin:catalog_order_changelist' %}">
         <span class="action-tile-kicker">Продажи</span>
         <span class="action-tile-title">Все заказы</span>
       </a>
-      <a class="action-tile" href="{% url 'admin:store_telegramnotificationsettings_changelist' %}">
+      <a class="action-tile" href="{% url 'admin:catalog_telegramnotificationsettings_changelist' %}">
         <span class="action-tile-kicker">Уведомления</span>
         <span class="action-tile-title">Telegram</span>
       </a>
-      <a class="action-tile" href="{% url 'admin:store_faq_changelist' %}">
+      <a class="action-tile" href="{% url 'admin:catalog_faq_changelist' %}">
         <span class="action-tile-kicker">Контент</span>
         <span class="action-tile-title">FAQ</span>
       </a>
@@ -84,22 +84,22 @@
       <p>Ключевые цифры</p>
     </div>
     <div class="kpi-grid">
-      <a class="kpi-card" href="{% url 'admin:store_order_changelist' %}">
+      <a class="kpi-card" href="{% url 'admin:catalog_order_changelist' %}">
         <span class="kpi-label">Заказы</span>
         <span class="kpi-value">{{ total_orders|default:0 }}</span>
         <span class="kpi-meta">в обработке · {{ processing_orders|default:0 }}</span>
       </a>
-      <a class="kpi-card" href="{% url 'admin:store_product_changelist' %}">
+      <a class="kpi-card" href="{% url 'admin:catalog_product_changelist' %}">
         <span class="kpi-label">Товары</span>
         <span class="kpi-value">{{ total_products|default:0 }}</span>
         <span class="kpi-meta">категорий · {{ total_categories|default:0 }}</span>
       </a>
-      <a class="kpi-card kpi-accent" href="{% url 'admin:store_order_changelist' %}">
+      <a class="kpi-card kpi-accent" href="{% url 'admin:catalog_order_changelist' %}">
         <span class="kpi-label">Выручка</span>
         <span class="kpi-value kpi-value-sm">{{ total_revenue|default:0|format_price }} <small>{{ currency }}</small></span>
         <span class="kpi-meta">доставлено / в пути / в работе</span>
       </a>
-      <a class="kpi-card" href="{% url 'admin:store_partner_changelist' %}">
+      <a class="kpi-card" href="{% url 'admin:catalog_partner_changelist' %}">
         <span class="kpi-label">Партнёры</span>
         <span class="kpi-value">{{ total_partners|default:0 }}</span>
         <span class="kpi-meta">активных · {{ active_partners|default:0 }}</span>
@@ -111,12 +111,12 @@
     <div class="panel">
       <div class="panel-head">
         <h2>Последние заказы</h2>
-        <a href="{% url 'admin:store_order_changelist' %}">Все</a>
+        <a href="{% url 'admin:catalog_order_changelist' %}">Все</a>
       </div>
       <ul class="panel-list">
         {% for order in latest_orders %}
         <li>
-          <a href="{% url 'admin:store_order_change' order.id %}">
+          <a href="{% url 'admin:catalog_order_change' order.id %}">
             <span class="panel-list-main">#{{ order.id }} · {{ order.first_name }} {{ order.last_name }}</span>
             <span class="panel-list-side">
               <span class="status-pill status-{{ order.status }}">{{ order.get_status_display }}</span>
@@ -163,12 +163,12 @@
     <div class="panel">
       <div class="panel-head">
         <h2>Недавние товары</h2>
-        <a href="{% url 'admin:store_product_changelist' %}">Каталог</a>
+        <a href="{% url 'admin:catalog_product_changelist' %}">Каталог</a>
       </div>
       <ul class="panel-list panel-list-dense">
         {% for product in latest_products %}
         <li>
-          <a href="{% url 'admin:store_product_change' product.id %}">
+          <a href="{% url 'admin:catalog_product_change' product.id %}">
             <span class="panel-list-main">{{ product.name }}</span>
             <span class="panel-list-meta">{{ product.price|format_price }} {{ currency }}</span>
           </a>

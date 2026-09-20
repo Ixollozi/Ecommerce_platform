@@ -170,11 +170,11 @@ API будет доступно по адресу: `http://127.0.0.1:8000/api/`
 
 ```
 backend/
-├── fashionstore/          # Основной проект Django
+├── ecommerce_platform/          # Основной проект Django
 │   ├── settings.py        # Настройки
 │   ├── urls.py            # Главные URL
 │   └── wsgi.py            # WSGI конфигурация
-├── store/                 # Приложение магазина
+├── catalog/                 # Приложение магазина
 │   ├── models.py          # Модели данных
 │   ├── serializers.py     # Сериализаторы DRF
 │   ├── views.py            # API представления

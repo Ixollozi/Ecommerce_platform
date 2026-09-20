@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 os.chdir(ROOT)
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fashionstore.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce_platform.settings')
 
 import django
 
@@ -14,9 +14,9 @@ django.setup()
 from django.conf import settings
 from django.test import Client
 
-from store.platform.context import site_context
-from store.platform.finders import SiteThemeStaticFinder
-from store.platform.registry import get_site, load_registry
+from catalog.platform.context import site_context
+from catalog.platform.finders import SiteThemeStaticFinder
+from catalog.platform.registry import get_site, load_registry
 
 assert settings.PLATFORM_MODE
 themes, sites = load_registry()

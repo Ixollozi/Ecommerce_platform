@@ -3,7 +3,7 @@
 
 {% comment %}
   Кастомный дашборд: colM = полная ширина, без «Недавних действий» справа.
-  Контекст подмешивается через store.admin.py / _admin_index_with_dashboard.
+  Контекст подмешивается через catalog.admin.py / _admin_index_with_dashboard.
 {% endcomment %}
 {% block coltype %}colM{% endblock %}
 {% block sidebar %}{% endblock %}
@@ -17,10 +17,10 @@
   <section class="fs-section">
     <p class="fs-section-title">Быстрые действия</p>
     <div class="fs-quick-btns">
-      <a href="{% url 'admin:store_product_add' %}"   class="fs-quick-btn">+ Товар</a>
-      <a href="{% url 'admin:store_category_add' %}"  class="fs-quick-btn">+ Категория</a>
-      <a href="{% url 'admin:store_partner_add' %}"   class="fs-quick-btn">+ Партнёр</a>
-      <a href="{% url 'admin:store_order_changelist' %}" class="fs-quick-btn fs-quick-btn--alt">Все заказы</a>
+      <a href="{% url 'admin:catalog_product_add' %}"   class="fs-quick-btn">+ Товар</a>
+      <a href="{% url 'admin:catalog_category_add' %}"  class="fs-quick-btn">+ Категория</a>
+      <a href="{% url 'admin:catalog_partner_add' %}"   class="fs-quick-btn">+ Партнёр</a>
+      <a href="{% url 'admin:catalog_order_changelist' %}" class="fs-quick-btn fs-quick-btn--alt">Все заказы</a>
       <a href="{% url 'admin_unified_config' %}"      class="fs-quick-btn fs-quick-btn--alt">⚙ Конфигурация</a>
     </div>
   </section>
@@ -30,31 +30,31 @@
     <p class="fs-section-title">Статистика</p>
     <div class="fs-stats-grid">
 
-      <a class="fs-stat" href="{% url 'admin:store_product_changelist' %}">
+      <a class="fs-stat" href="{% url 'admin:catalog_product_changelist' %}">
         <div class="fs-stat-value">{{ total_products|default:0 }}</div>
         <div class="fs-stat-label">Товары</div>
         <span class="fs-stat-cta">Открыть →</span>
       </a>
 
-      <a class="fs-stat" href="{% url 'admin:store_order_changelist' %}">
+      <a class="fs-stat" href="{% url 'admin:catalog_order_changelist' %}">
         <div class="fs-stat-value">{{ total_orders|default:0 }}</div>
         <div class="fs-stat-label">Заказы</div>
         <span class="fs-stat-cta">Открыть →</span>
       </a>
 
-      <a class="fs-stat" href="{% url 'admin:store_category_changelist' %}">
+      <a class="fs-stat" href="{% url 'admin:catalog_category_changelist' %}">
         <div class="fs-stat-value">{{ total_categories|default:0 }}</div>
         <div class="fs-stat-label">Категории</div>
         <span class="fs-stat-cta">Открыть →</span>
       </a>
 
-      <a class="fs-stat" href="{% url 'admin:store_cart_changelist' %}">
+      <a class="fs-stat" href="{% url 'admin:catalog_cart_changelist' %}">
         <div class="fs-stat-value">{{ total_carts|default:0 }}</div>
         <div class="fs-stat-label">Корзины</div>
         <span class="fs-stat-cta">Открыть →</span>
       </a>
 
-      <a class="fs-stat" href="{% url 'admin:store_partner_changelist' %}">
+      <a class="fs-stat" href="{% url 'admin:catalog_partner_changelist' %}">
         <div class="fs-stat-value">{{ total_partners|default:0 }}</div>
         <div class="fs-stat-label">Партнёры</div>
         <div class="fs-stat-sub">активных: {{ active_partners|default:0 }}</div>
@@ -72,13 +72,13 @@
       <div class="fs-recent-card">
         <div class="fs-recent-head">
           <span class="fs-recent-head-title">Заказы</span>
-          <a class="fs-recent-head-link" href="{% url 'admin:store_order_changelist' %}">Все →</a>
+          <a class="fs-recent-head-link" href="{% url 'admin:catalog_order_changelist' %}">Все →</a>
         </div>
         <div class="fs-recent-body">
           <ul class="fs-recent-list">
             {% for order in latest_orders %}
             <li class="fs-recent-item">
-              <a href="{% url 'admin:store_order_change' order.id %}">
+              <a href="{% url 'admin:catalog_order_change' order.id %}">
                 <span class="fs-recent-item-meta">{{ order.get_status_display }}</span>
                 №{{ order.id }} — {{ order.first_name }} {{ order.last_name }}
               </a>
@@ -93,13 +93,13 @@
       <div class="fs-recent-card">
         <div class="fs-recent-head">
           <span class="fs-recent-head-title">Товары</span>
-          <a class="fs-recent-head-link" href="{% url 'admin:store_product_changelist' %}">Все →</a>
+          <a class="fs-recent-head-link" href="{% url 'admin:catalog_product_changelist' %}">Все →</a>
         </div>
         <div class="fs-recent-body">
           <ul class="fs-recent-list">
             {% for product in latest_products %}
             <li class="fs-recent-item">
-              <a href="{% url 'admin:store_product_change' product.id %}">
+              <a href="{% url 'admin:catalog_product_change' product.id %}">
                 <span class="fs-recent-item-meta">{{ product.price|format_price }} {{ currency }}</span>
                 {{ product.name }}
               </a>
@@ -114,13 +114,13 @@
       <div class="fs-recent-card">
         <div class="fs-recent-head">
           <span class="fs-recent-head-title">Партнёры</span>
-          <a class="fs-recent-head-link" href="{% url 'admin:store_partner_changelist' %}">Все →</a>
+          <a class="fs-recent-head-link" href="{% url 'admin:catalog_partner_changelist' %}">Все →</a>
         </div>
         <div class="fs-recent-body">
           <ul class="fs-recent-list">
             {% for partner in latest_partners %}
             <li class="fs-recent-item">
-              <a href="{% url 'admin:store_partner_change' partner.id %}">
+              <a href="{% url 'admin:catalog_partner_change' partner.id %}">
                 {% if partner.is_active %}
                   <span class="fs-badge fs-badge--on">активен</span>
                 {% else %}

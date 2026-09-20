@@ -31,8 +31,8 @@
   </a>
   {% if user.is_authenticated %}
   <nav class="brand-quick" aria-label="Быстрые ссылки">
-    <a href="{% url 'admin:store_order_changelist' %}">Заказы</a>
-    <a href="{% url 'admin:store_product_changelist' %}">Товары</a>
+    <a href="{% url 'admin:catalog_order_changelist' %}">Заказы</a>
+    <a href="{% url 'admin:catalog_product_changelist' %}">Товары</a>
     <a class="brand-quick-accent" href="{% url 'admin_unified_config' %}">Конфигурация</a>
   </nav>
   {% endif %}

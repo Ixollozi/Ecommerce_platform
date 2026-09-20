@@ -26,7 +26,7 @@ TRANS_PATTERNS = [
 
 SCAN_DIRS = [
     ROOT / "themes",
-    ROOT / "store",
+    ROOT / "catalog",
     ROOT / "templates",
 ]
 SKIP_PARTS = {"venv", "node_modules", ".git", "static", "migrations", "__pycache__", "frontend"}

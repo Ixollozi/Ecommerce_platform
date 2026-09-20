@@ -49,7 +49,7 @@ def check_ignore_rules() -> None:
     must_keep = [
         'sites.example/registry.json',
         'sites.example/demo-main/config.json',
-        'store/platform/bootstrap.py',
+        'catalog/platform/bootstrap.py',
         'themes/main/theme.json',
         'scripts/run_platform_local.ps1',
         '.env.example',
@@ -114,14 +114,14 @@ def check_sites_layout() -> None:
 
 def check_platform() -> None:
     print('\n=== platform + admin ===')
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fashionstore.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce_platform.settings')
     import django
 
     django.setup()
     from django.conf import settings
     from django.test import Client
 
-    from store.platform.registry import load_registry
+    from catalog.platform.registry import load_registry
 
     if not settings.PLATFORM_MODE:
         fail('PLATFORM_MODE is off')

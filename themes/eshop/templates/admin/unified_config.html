@@ -415,28 +415,28 @@
                             <label>Название магазина</label>
                             <div class="value">{{ store_config.name }}</div>
                         </div>
-                        <a href="{% url 'admin:store_storeconfig_change' store_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_storeconfig_change' store_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Заголовок</label>
                             <div class="value">{{ store_config.title }}</div>
                         </div>
-                        <a href="{% url 'admin:store_storeconfig_change' store_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_storeconfig_change' store_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Описание</label>
                             <div class="value">{{ store_config.description|truncatewords:30 }}</div>
                         </div>
-                        <a href="{% url 'admin:store_storeconfig_change' store_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_storeconfig_change' store_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Валюта</label>
                             <div class="value">{{ store_config.currency }}</div>
                         </div>
-                        <a href="{% url 'admin:store_storeconfig_change' store_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_storeconfig_change' store_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
@@ -451,7 +451,7 @@
                         </div>
                     </div>
                     <div class="config-divider">
-                        <a href="{% url 'admin:store_storeconfig_change' store_config.id %}" class="config-edit-all-btn">📝 Редактировать все настройки магазина</a>
+                        <a href="{% url 'admin:catalog_storeconfig_change' store_config.id %}" class="config-edit-all-btn">📝 Редактировать все настройки магазина</a>
                     </div>
                 </div>
             </div>
@@ -460,7 +460,7 @@
                 <div class="config-card-body">
                     <div class="config-empty">
                         <p>Конфигурация магазина не найдена.</p>
-                        <a href="{% url 'admin:store_storeconfig_add' %}">Создать конфигурацию</a>
+                        <a href="{% url 'admin:catalog_storeconfig_add' %}">Создать конфигурацию</a>
                     </div>
                 </div>
             </div>
@@ -480,38 +480,38 @@
                             <label>Телефон</label>
                             <div class="value">{{ contact_config.phone }}</div>
                         </div>
-                        <a href="{% url 'admin:store_contactconfig_change' contact_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_contactconfig_change' contact_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Email</label>
                             <div class="value">{{ contact_config.email }}</div>
                         </div>
-                        <a href="{% url 'admin:store_contactconfig_change' contact_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_contactconfig_change' contact_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Адрес</label>
                             <div class="value">{{ contact_config.address_full }}</div>
                         </div>
-                        <a href="{% url 'admin:store_contactconfig_change' contact_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_contactconfig_change' contact_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Рабочие часы (будни)</label>
                             <div class="value">{{ contact_config.working_hours_weekdays }}</div>
                         </div>
-                        <a href="{% url 'admin:store_contactconfig_change' contact_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_contactconfig_change' contact_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Рабочие часы (выходные)</label>
                             <div class="value">{{ contact_config.working_hours_weekend }}</div>
                         </div>
-                        <a href="{% url 'admin:store_contactconfig_change' contact_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_contactconfig_change' contact_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-divider">
-                        <a href="{% url 'admin:store_contactconfig_change' contact_config.id %}" class="config-edit-all-btn">📝 Редактировать все контакты</a>
+                        <a href="{% url 'admin:catalog_contactconfig_change' contact_config.id %}" class="config-edit-all-btn">📝 Редактировать все контакты</a>
                     </div>
                 </div>
             </div>
@@ -520,7 +520,7 @@
                 <div class="config-card-body">
                     <div class="config-empty">
                         <p>Конфигурация контактов не найдена.</p>
-                        <a href="{% url 'admin:store_contactconfig_add' %}">Создать конфигурацию</a>
+                        <a href="{% url 'admin:catalog_contactconfig_add' %}">Создать конфигурацию</a>
                     </div>
                 </div>
             </div>
@@ -540,24 +540,24 @@
                             <label>Instagram</label>
                             <div class="value"><a href="{{ social_config.instagram }}" target="_blank">{{ social_config.instagram }}</a></div>
                         </div>
-                        <a href="{% url 'admin:store_socialconfig_change' social_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_socialconfig_change' social_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Facebook</label>
                             <div class="value"><a href="{{ social_config.facebook }}" target="_blank">{{ social_config.facebook }}</a></div>
                         </div>
-                        <a href="{% url 'admin:store_socialconfig_change' social_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_socialconfig_change' social_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Telegram</label>
                             <div class="value"><a href="{{ social_config.telegram }}" target="_blank">{{ social_config.telegram }}</a></div>
                         </div>
-                        <a href="{% url 'admin:store_socialconfig_change' social_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_socialconfig_change' social_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-divider">
-                        <a href="{% url 'admin:store_socialconfig_change' social_config.id %}" class="config-edit-all-btn">📝 Редактировать все соц. сети</a>
+                        <a href="{% url 'admin:catalog_socialconfig_change' social_config.id %}" class="config-edit-all-btn">📝 Редактировать все соц. сети</a>
                     </div>
                 </div>
             </div>
@@ -566,7 +566,7 @@
                 <div class="config-card-body">
                     <div class="config-empty">
                         <p>Конфигурация социальных сетей не найдена.</p>
-                        <a href="{% url 'admin:store_socialconfig_add' %}">Создать конфигурацию</a>
+                        <a href="{% url 'admin:catalog_socialconfig_add' %}">Создать конфигурацию</a>
                     </div>
                 </div>
             </div>
@@ -586,24 +586,24 @@
                             <label>Заголовок</label>
                             <div class="value">{{ hero_config.title }}</div>
                         </div>
-                        <a href="{% url 'admin:store_heroconfig_change' hero_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_heroconfig_change' hero_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Подзаголовок</label>
                             <div class="value">{{ hero_config.subtitle }}</div>
                         </div>
-                        <a href="{% url 'admin:store_heroconfig_change' hero_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_heroconfig_change' hero_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Текст кнопки</label>
                             <div class="value">{{ hero_config.button_text }}</div>
                         </div>
-                        <a href="{% url 'admin:store_heroconfig_change' hero_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_heroconfig_change' hero_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-divider">
-                        <a href="{% url 'admin:store_heroconfig_change' hero_config.id %}" class="config-edit-all-btn">📝 Редактировать главный баннер</a>
+                        <a href="{% url 'admin:catalog_heroconfig_change' hero_config.id %}" class="config-edit-all-btn">📝 Редактировать главный баннер</a>
                     </div>
                 </div>
             </div>
@@ -612,7 +612,7 @@
                 <div class="config-card-body">
                     <div class="config-empty">
                         <p>Конфигурация главного баннера не найдена.</p>
-                        <a href="{% url 'admin:store_heroconfig_add' %}">Создать конфигурацию</a>
+                        <a href="{% url 'admin:catalog_heroconfig_add' %}">Создать конфигурацию</a>
                     </div>
                 </div>
             </div>
@@ -634,17 +634,17 @@
                                 <strong>{{ feature.title }}</strong>
                                 <div class="feature-desc">{{ feature.description|truncatewords:15 }}</div>
                             </div>
-                            <a href="{% url 'admin:store_feature_change' feature.id %}" class="config-edit-btn">Редактировать</a>
+                            <a href="{% url 'admin:catalog_feature_change' feature.id %}" class="config-edit-btn">Редактировать</a>
                         </li>
                         {% endfor %}
                     </ul>
                     <div class="config-divider">
-                        <a href="{% url 'admin:store_feature_add' %}" class="config-edit-all-btn">➕ Добавить новую особенность</a>
+                        <a href="{% url 'admin:catalog_feature_add' %}" class="config-edit-all-btn">➕ Добавить новую особенность</a>
                     </div>
                     {% else %}
                     <div class="config-empty">
                         <p>Особенности не добавлены.</p>
-                        <a href="{% url 'admin:store_feature_add' %}">Добавить первую особенность</a>
+                        <a href="{% url 'admin:catalog_feature_add' %}">Добавить первую особенность</a>
                     </div>
                     {% endif %}
                 </div>
@@ -664,31 +664,31 @@
                             <label>Заголовок</label>
                             <div class="value">{{ about_config.title }}</div>
                         </div>
-                        <a href="{% url 'admin:store_aboutconfig_change' about_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_aboutconfig_change' about_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Описание</label>
                             <div class="value">{{ about_config.description|truncatewords:30 }}</div>
                         </div>
-                        <a href="{% url 'admin:store_aboutconfig_change' about_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_aboutconfig_change' about_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Миссия</label>
                             <div class="value">{{ about_config.mission|truncatewords:20 }}</div>
                         </div>
-                        <a href="{% url 'admin:store_aboutconfig_change' about_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_aboutconfig_change' about_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Видение</label>
                             <div class="value">{{ about_config.vision|truncatewords:20 }}</div>
                         </div>
-                        <a href="{% url 'admin:store_aboutconfig_change' about_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_aboutconfig_change' about_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-divider">
-                        <a href="{% url 'admin:store_aboutconfig_change' about_config.id %}" class="config-edit-all-btn">📝 Редактировать все настройки "О нас"</a>
+                        <a href="{% url 'admin:catalog_aboutconfig_change' about_config.id %}" class="config-edit-all-btn">📝 Редактировать все настройки "О нас"</a>
                     </div>
                 </div>
             </div>
@@ -697,7 +697,7 @@
                 <div class="config-card-body">
                     <div class="config-empty">
                         <p>Конфигурация "О нас" не найдена.</p>
-                        <a href="{% url 'admin:store_aboutconfig_add' %}">Создать конфигурацию</a>
+                        <a href="{% url 'admin:catalog_aboutconfig_add' %}">Создать конфигурацию</a>
                     </div>
                 </div>
             </div>
@@ -717,24 +717,24 @@
                             <label>Meta заголовок</label>
                             <div class="value">{{ seo_config.meta_title }}</div>
                         </div>
-                        <a href="{% url 'admin:store_seoconfig_change' seo_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_seoconfig_change' seo_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Meta описание</label>
                             <div class="value">{{ seo_config.meta_description|truncatewords:30 }}</div>
                         </div>
-                        <a href="{% url 'admin:store_seoconfig_change' seo_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_seoconfig_change' seo_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
                             <label>Meta ключевые слова</label>
                             <div class="value">{{ seo_config.meta_keywords }}</div>
                         </div>
-                        <a href="{% url 'admin:store_seoconfig_change' seo_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_seoconfig_change' seo_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-divider">
-                        <a href="{% url 'admin:store_seoconfig_change' seo_config.id %}" class="config-edit-all-btn">📝 Редактировать все SEO настройки</a>
+                        <a href="{% url 'admin:catalog_seoconfig_change' seo_config.id %}" class="config-edit-all-btn">📝 Редактировать все SEO настройки</a>
                     </div>
                 </div>
             </div>
@@ -743,7 +743,7 @@
                 <div class="config-card-body">
                     <div class="config-empty">
                         <p>SEO конфигурация не найдена.</p>
-                        <a href="{% url 'admin:store_seoconfig_add' %}">Создать конфигурацию</a>
+                        <a href="{% url 'admin:catalog_seoconfig_add' %}">Создать конфигурацию</a>
                     </div>
                 </div>
             </div>
@@ -766,7 +766,7 @@
                                 {{ theme_config.primary_color }}
                             </div>
                         </div>
-                        <a href="{% url 'admin:store_themeconfig_change' theme_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_themeconfig_change' theme_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
@@ -776,7 +776,7 @@
                                 {{ theme_config.secondary_color }}
                             </div>
                         </div>
-                        <a href="{% url 'admin:store_themeconfig_change' theme_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_themeconfig_change' theme_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
@@ -786,7 +786,7 @@
                                 {{ theme_config.text_color }}
                             </div>
                         </div>
-                        <a href="{% url 'admin:store_themeconfig_change' theme_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_themeconfig_change' theme_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-item">
                         <div class="config-item-content">
@@ -796,10 +796,10 @@
                                 {{ theme_config.background_color }}
                             </div>
                         </div>
-                        <a href="{% url 'admin:store_themeconfig_change' theme_config.id %}" class="config-edit-btn">Редактировать</a>
+                        <a href="{% url 'admin:catalog_themeconfig_change' theme_config.id %}" class="config-edit-btn">Редактировать</a>
                     </div>
                     <div class="config-divider">
-                        <a href="{% url 'admin:store_themeconfig_change' theme_config.id %}" class="config-edit-all-btn">📝 Редактировать все цвета темы</a>
+                        <a href="{% url 'admin:catalog_themeconfig_change' theme_config.id %}" class="config-edit-all-btn">📝 Редактировать все цвета темы</a>
                     </div>
                 </div>
             </div>
@@ -808,7 +808,7 @@
                 <div class="config-card-body">
                     <div class="config-empty">
                         <p>Конфигурация темы не найдена.</p>
-                        <a href="{% url 'admin:store_themeconfig_add' %}">Создать конфигурацию</a>
+                        <a href="{% url 'admin:catalog_themeconfig_add' %}">Создать конфигурацию</a>
                     </div>
                 </div>
             </div>
