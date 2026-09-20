@@ -1,6 +1,8 @@
-# Fashion Store Backend API
+# Ecommerce Platform
 
-Backend API для интернет-магазина одежды на Django REST Framework.
+Мультисайт-платформа интернет-магазинов на Django (host-based routing, темы, per-site SQLite).
+
+Repo: https://github.com/Ixollozi/Ecommerce_platform
 
 ## Установка
 
