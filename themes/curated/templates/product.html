@@ -1,0 +1,376 @@
+﻿{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load humanize %}
+{% load translation_tags %}
+{% load product_media %}
+
+{% block title %}{% if product %}{{ product.name }}{% else %}{% trans "Product" %}{% endif %} - {{ store_name }}{% endblock %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>{% if product %}{{ product.name }}{% else %}{% trans "Product" %}{% endif %}</h1>
+            <nav class="breadcrumbs">
+                <a href="{% url 'index' %}">{% trans "Home" %}</a> / 
+                <a href="{% url 'catalog' %}">{% trans "Catalog" %}</a> / 
+                {% if product.category %}<a href="{% url 'catalog' %}">{{ product.category.name }}</a> / {% endif %}
+                <span>{% if product %}{{ product.name }}{% else %}{% trans "Product" %}{% endif %}</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Product Details -->
+    <section class="product-details">
+        <div class="container">
+            {% if product %}
+            <div class="product-detail-layout">
+                <!-- Product Images -->
+                {% include "partials/product_gallery.html" %}
+
+                <!-- Product Info -->
+                <div class="product-info-detail">
+                    <h1>{{ product.name }}</h1>
+                    <div class="product-rating">
+                        <div class="stars">
+                            {% with rating=product.rating|floatformat:0 %}
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= rating|add:"0" %}
+                                        <i class="fas fa-star"></i>
+                                    {% else %}
+                                        <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </div>
+                        <span class="rating-text">({{ product.rating }}) {{ product.reviews_count }} {% trans "reviews" %}</span>
+                    </div>
+                    
+                    <div class="product-price-large">
+                        <span class="current-price">{{ product.price|format_price }} {{ currency }}</span>
+                        {% if product.old_price %}
+                            <span class="old-price">{{ product.old_price|format_price }} {{ currency }}</span>
+                            {% if discount %}
+                                <span class="discount">-{{ discount }}%</span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    <div class="product-description">
+                        <p>{{ product.description|linebreaks }}</p>
+                    </div>
+
+                    <!-- Color Selection -->
+                    {% if colors %}
+                    <div class="product-options">
+                        <h3>{% trans "Color" %}: <span class="selected-color-name" id="selectedColorName">{{ colors.0.name }}</span></h3>
+                        <div class="color-selector">
+                            {% for color in colors %}
+                                <span class="color-option-large {% if forloop.first %}active{% endif %}" 
+                                      style="background: {{ color.code }}; {% if color.is_light %}border: 2px solid #ddd;{% endif %}" 
+                                      data-color="{{ color.name|lower }}"
+                                      data-color-name="{{ color.name|escapejs }}"
+                                      title="{{ color.name }}"
+                                      tabindex="0" role="button" aria-label="{{ color.name|escapejs }}"></span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Quantity -->
+                    <div class="product-options">
+                        <h3>{% trans "Quantity" %}</h3>
+                        <div class="quantity-selector">
+                            <button class="qty-btn" id="decreaseQty">-</button>
+                            <input type="number" value="1" min="1" max="{% if product.stock %}{{ product.stock }}{% else %}10{% endif %}" id="quantity" class="qty-input">
+                            <button class="qty-btn" id="increaseQty">+</button>
+                        </div>
+                        {% if product.stock %}
+                            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+                                {% trans "In stock" %}: {{ product.stock }} {% trans "pcs" %}.
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="product-actions">
+                        {% if product.id %}
+                        <button class="btn btn-primary btn-large" data-product-id="{{ product.id }}" data-product-name="{{ product.name|escapejs }}" data-use-product-form="true">{% trans "Add to Cart" %}</button>
+                        {% else %}
+                        <button class="btn btn-primary btn-large" disabled>{% trans "Add to Cart" %}</button>
+                        {% endif %}
+                    </div>
+
+                    <!-- Product Features -->
+                    {% if product_features %}
+                    <div class="product-features">
+                        {% for feature in product_features %}
+                        <div class="feature-item-small">
+                            <i class="{{ feature.icon }}"></i>
+                            <span>{{ feature.text }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Product Tabs -->
+            <div class="product-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="description">{% trans "Description" %}</button>
+                    <button class="tab-btn" data-tab="specifications">{% trans "Specifications" %}</button>
+                    <button class="tab-btn" data-tab="reviews">{% trans "Reviews" %} ({{ product.reviews_count }})</button>
+                </div>
+
+                <div class="tab-content active" id="description">
+                    <h3>{% trans "Product Description" %}</h3>
+                    <p>{{ product.description|linebreaks }}</p>
+                </div>
+
+                <div class="tab-content" id="specifications">
+                    <h3>{% trans "Specifications" %}</h3>
+                    <table class="specs-table">
+                        {% if product.category %}
+                        <tr>
+                            <td>{% trans "Category" %}</td>
+                            <td>{{ product.category.name }}</td>
+                        </tr>
+                        {% endif %}
+                        {% if product.available_colors %}
+                        <tr>
+                            <td>{% trans "Available Colors" %}</td>
+                            <td>{{ product.available_colors }}</td>
+                        </tr>
+                        {% endif %}
+                        {% if product.stock %}
+                        <tr>
+                            <td>{% trans "Stock" %}</td>
+                            <td>{{ product.stock }} {% trans "pcs" %}.</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+
+                <div class="tab-content" id="reviews">
+                    <h3>{% trans "Customer Reviews" %}</h3>
+                    {% if product.reviews_count > 0 %}
+                        <p>{% trans "Average rating" %}: {{ product.rating }} / 5.0 ({{ product.reviews_count }} {% trans "reviews" %})</p>
+                        <!-- Здесь можно добавить реальные отзывы, когда будет модель Review -->
+                    {% else %}
+                        <p>{% trans "No reviews yet. Be the first to review this product!" %}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+                <div class="container" style="text-align: center; padding: 3rem 0;">
+                    <h2>{% trans "Product not found" %}</h2>
+                    <p>{% trans "The product you are looking for does not exist or has been removed." %}</p>
+                    <a href="{% url 'catalog' %}" class="btn btn-primary">{% trans "Back to Catalog" %}</a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    {% if related_products %}
+    <section class="related-products">
+        <div class="container">
+            <h2 class="section-title">{% trans "Similar Products" %}</h2>
+            <div class="products-grid">
+                {% for related_product in related_products %}
+                <div class="product-card">
+                    <div class="product-image">
+                        <a href="{% url 'product' related_product.slug %}">
+                            {% if related_product|display_image %}
+<img src="{{ related_product|display_image }}" alt="{{ related_product.name }}">
+{% else %}
+                                <div class="product-image-placeholder" aria-hidden="true"></div>
+                            {% endif %}
+                        </a>
+                        <div class="product-overlay">
+                            <a href="{% url 'product' related_product.slug %}" class="btn btn-small">{% trans "Quick View" %}</a>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <a href="{% url 'product' related_product.slug %}" style="text-decoration: none; color: inherit;">
+                            <h3 class="product-name">{{ related_product.name }}</h3>
+                        </a>
+                        <p class="product-price">
+                            {{ related_product.price|format_price }} {{ currency }}
+                            {% if related_product.old_price %}
+                                <span style="text-decoration: line-through; color: #999; font-size: 0.9em; margin-left: 0.5rem;">{{ related_product.old_price|format_price }} {{ currency }}</span>
+                            {% endif %}
+                        </p>
+                        {% if related_product.id %}
+                        <button class="btn btn-add-cart" data-product-id="{{ related_product.id }}" data-product-name="{{ related_product.name|escapejs }}">{% trans "Add to Cart" %}</button>
+                        {% else %}
+                        <button class="btn btn-add-cart" disabled>{% trans "Add to Cart" %}</button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% include "partials/product_gallery_js.html" %}
+<script>
+    // Quantity selector
+    const decreaseBtn = document.getElementById('decreaseQty');
+    const increaseBtn = document.getElementById('increaseQty');
+    const quantityInput = document.getElementById('quantity');
+
+    if (decreaseBtn && increaseBtn && quantityInput) {
+        decreaseBtn.addEventListener('click', () => {
+            if (quantityInput.value > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+            }
+        });
+
+        increaseBtn.addEventListener('click', () => {
+            const max = parseInt(quantityInput.getAttribute('max'));
+            if (quantityInput.value < max) {
+                quantityInput.value = parseInt(quantityInput.value) + 1;
+            }
+        });
+    }
+
+    // Color selector
+    const colorOptions = document.querySelectorAll('.color-option-large');
+    const selectedColorNameEl = document.getElementById('selectedColorName');
+    colorOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            colorOptions.forEach(o => o.classList.remove('active'));
+            this.classList.add('active');
+            const name = this.getAttribute('data-color-name') || this.getAttribute('aria-label');
+            if (selectedColorNameEl && name) {
+                selectedColorNameEl.textContent = name;
+            }
+        });
+        option.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
+        });
+    });
+
+    // Tabs
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tabId = this.getAttribute('data-tab');
+            
+            tabButtons.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            this.classList.add('active');
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+        });
+    });
+
+    // Add to Cart functionality
+    window.addToCartFromProduct = async function(event, productId, productName) {
+        console.log('addToCartFromProduct called with:', { productId, productName, event });
+        
+        if (!productId || productId === 'None' || productId === '') {
+            console.error('Product ID is missing or invalid:', productId);
+            alert('{% trans "Error: Product ID is not specified. This product cannot be added to cart." %}');
+            return;
+        }
+        
+        if (!event || !event.target) {
+            console.error('Event is missing or invalid');
+            alert('{% trans "Error: event not found" %}');
+            return;
+        }
+        
+        const button = event.target;
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.textContent = '{% trans "Adding..." %}';
+
+        const selectedColor = document.querySelector('.color-option-large.active')?.getAttribute('data-color') || '';
+        const quantity = parseInt(document.getElementById('quantity')?.value || 1);
+
+        try {
+            const csrftoken = getCsrfToken();
+            console.log('CSRF Token:', csrftoken ? 'Found' : 'Not found');
+            
+            if (!csrftoken) {
+                throw new Error('{% trans "CSRF token not found. Please refresh the page." %}');
+            }
+
+            const requestData = {
+                product_id: parseInt(productId),
+                quantity: quantity,
+                size: '',
+                color: selectedColor
+            };
+            
+            console.log('Sending request to /api/cart/add_item/', requestData);
+
+            const response = await fetch('/api/cart/add_item/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(requestData)
+            });
+
+            console.log('Response status:', response.status, response.statusText);
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Item added successfully:', data);
+                button.textContent = '{% trans "Added!" %}';
+                button.style.backgroundColor = '#2ecc71';
+                
+                // Обновляем иконку корзины
+                updateCartIcon();
+                
+                // Возвращаем исходный текст через 2 секунды
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.backgroundColor = '';
+                    button.disabled = false;
+                }, 2000);
+            } else {
+                const errorData = await response.json().catch(() => ({}));
+                console.error('Failed to add to cart:', response.status, errorData);
+                let errorMessage = '{% trans "Error" %} ' + response.status + ': ';
+                if (errorData.detail) {
+                    errorMessage += errorData.detail;
+                } else if (errorData.error) {
+                    errorMessage += errorData.error;
+                } else {
+                    errorMessage += '{% trans "Failed to add product to cart" %}';
+                }
+                throw new Error(errorMessage);
+            }
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+            button.textContent = '{% trans "Error" %}';
+            button.style.backgroundColor = '#e74c3c';
+            alert(error.message || '{% trans "Failed to add product to cart. Please refresh the page and try again." %}');
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.backgroundColor = '';
+                button.disabled = false;
+            }, 2000);
+        }
+    }
+</script>
+{% endblock %}

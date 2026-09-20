@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Curated — калибровка (ты только рисуешь)</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin: 0; font-family: system-ui, sans-serif; background: #111; color: #eee; }
+    header { padding: 16px 20px; border-bottom: 1px solid #333; }
+    h1 { margin: 0 0 6px; font-size: 18px; }
+    p { margin: 0; color: #aaa; font-size: 14px; max-width: 820px; line-height: 1.45; }
+    ol { margin: 12px 0 0; padding-left: 20px; color: #ccc; font-size: 14px; line-height: 1.55; max-width: 820px; }
+    code, .path { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: #8ec8ff; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; }
+    figure { margin: 0; background: #1a1a1a; border-radius: 10px; overflow: hidden; }
+    figcaption { padding: 8px 12px; font-size: 12px; color: #888; }
+    img { width: 100%; display: block; background: #222; }
+    .box { margin: 0 16px 20px; padding: 14px 16px; background: #1a1a1a; border-radius: 10px; border: 1px solid #333; }
+    .box strong { color: #fff; }
+    a { color: #6ea8fe; }
+  </style>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+  <header>
+    <h1>Ты только рисуешь в Figma. Остальное — на агенте.</h1>
+    <p>Готовый pack уже собран. Не создавай frame вручную и не копируй path по одному.</p>
+    <ol>
+      <li>Открой файл: <span class="path">themes/curated/shapes/figma-pack.svg</span>
+        (двойной клик / drag в Figma → Place).</li>
+      <li>Внутри уже есть референс + 8 path с id
+        (<code>F-photo-left</code>, <code>H-photo-right</code>, …).
+        Двойной клик по красному/голубому контуру → правь точки.</li>
+      <li>Export / Save as SVG → положи как
+        <span class="path">themes/curated/shapes/inbox/calibrated.svg</span></li>
+      <li>Напиши в чат: <strong>«готово»</strong> — я импортирую path и прогоню QA в Playwright.</li>
+    </ol>
+  </header>
+
+  <div class="box">
+    <strong>Важно:</strong> не удаляй <code>id</code> у path. Не трогай зелёные UI (их нет в pack).
+    Красные = фото-маски, голубые = фон.
+  </div>
+
+  <div class="grid">
+    <figure>
+      <img src="qa-overlay.png" alt="current overlay">
+      <figcaption>Сейчас (до твоей калибровки)</figcaption>
+    </figure>
+    <figure>
+      <img src="04-overlay-qa.svg" alt="svg overlay">
+      <figcaption>SVG overlay — то же в векторе</figcaption>
+    </figure>
+  </div>
+</body>
+</html>

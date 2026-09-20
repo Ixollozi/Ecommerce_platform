@@ -1,0 +1,548 @@
+﻿{% extends "base.html" %}
+{% load i18n %}
+{% load humanize %}
+{% load translation_tags %}
+{% load product_media %}
+
+{% block title %}{% trans "Shopping Cart" %} - {{ store_name }}{% endblock %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>{% trans "Shopping Cart" %}</h1>
+            <nav class="breadcrumbs">
+                <a href="{% url 'index' %}">{% trans "Home" %}</a> / <span>{% trans "Shopping Cart" %}</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Cart Content -->
+    <section class="cart-section">
+        <div class="container">
+            <div class="cart-layout">
+                <!-- Cart Items -->
+                <div class="cart-items">
+                    {% if cart_items %}
+                        {% for item in cart_items %}
+                        <div class="cart-item" data-item-id="{{ item.id }}">
+                            <div class="cart-item-image">
+                                {% if item.product|display_image %}
+<img src="{{ item.product|display_image }}" alt="{{ item.product.name }}">
+{% else %}
+                                    <div class="product-image-placeholder" aria-hidden="true"></div>
+                                {% endif %}
+                            </div>
+                            <div class="cart-item-info">
+                                <h3>{{ item.product.name }}</h3>
+                                <p class="cart-item-details">
+                                    {% if item.color %}{% trans "Color" %}: {{ item.color }}{% endif %}
+                                </p>
+                                <p class="cart-item-price" data-price="{{ item.product.price }}">{{ item.product.price|format_price }} {{ currency }}</p>
+                            </div>
+                            <div class="cart-item-quantity">
+                                <button class="qty-btn" onclick="updateQuantity(this, -1, {{ item.id }})">-</button>
+                                <input type="number" value="{{ item.quantity }}" min="1" class="qty-input" data-item-id="{{ item.id }}" onchange="updateQuantityInput(this, {{ item.id }})">
+                                <button class="qty-btn" onclick="updateQuantity(this, 1, {{ item.id }})">+</button>
+                            </div>
+                            <div class="cart-item-total">
+                                <span class="item-total-price" data-item-id="{{ item.id }}">{{ item.total|format_price }} {{ currency }}</span>
+                            </div>
+                            <button class="cart-item-remove" onclick="removeItem({{ item.id }})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-cart">
+                            <p>{% trans "Your cart is empty" %}</p>
+                            <a href="{% url 'catalog' %}" class="btn btn-primary">{% trans "Continue Shopping" %}</a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Cart Summary -->
+                <div class="cart-summary">
+                    <h2>{% trans "Total" %}</h2>
+                    <div class="summary-row">
+                        <span>{% trans "Products" %} (<span id="items-count">{{ cart.items_count|default:0 }}</span> {% trans "pcs" %}.)</span>
+                        <span id="subtotal">{{ cart.total|default:0|format_price }} {{ currency }}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>{% trans "Delivery" %}</span>
+                        <span id="delivery">{% trans "Free" %}</span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span>{% trans "To pay" %}</span>
+                        <span id="total">{{ cart.total|default:0|format_price }} {{ currency }}</span>
+                    </div>
+                    {% if cart_items %}
+                    <button class="btn btn-primary btn-large" style="width: 100%; margin-top: 1rem;" onclick="showOrderForm()">
+                        {% trans "Place Order" %}
+                    </button>
+                    {% endif %}
+                    <a href="{% url 'catalog' %}" class="continue-shopping">
+                        <i class="fas fa-arrow-left"></i> {% trans "Continue Shopping" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 600px; margin: 50px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <span class="close" onclick="closeOrderModal()" style="float: right; font-size: 28px; font-weight: bold; cursor: pointer; color: #999;">&times;</span>
+            <h2 style="margin-top: 0;">{% trans "Place Order" %}</h2>
+            <form id="orderForm" onsubmit="placeOrder(event)">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="first_name">{% trans "First Name" %} *</label>
+                    <input type="text" id="first_name" name="first_name" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="last_name">{% trans "Last Name" %} *</label>
+                    <input type="text" id="last_name" name="last_name" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="phone">{% trans "Phone" %} *</label>
+                    <input type="tel" id="phone" name="phone" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="city">{% trans "City" %} *</label>
+                    <input type="text" id="city" name="city" value="{% trans 'Tashkent' %}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="address">{% trans "Delivery Address" %} *</label>
+                    <textarea id="address" name="address" rows="3" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="notes">{% trans "Notes" %}</label>
+                    <textarea id="notes" name="notes" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary btn-large" style="flex: 1;">
+                        {% trans "Place Order" %}
+                    </button>
+                    <button type="button" onclick="closeOrderModal()" class="btn" style="flex: 1; background: #f5f5f5; border: 1px solid #ddd; color: #000;">
+                        {% trans "Cancel" %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            animation: modalFadeIn 0.3s;
+        }
+        @keyframes modalFadeIn {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+    </style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const API_BASE_URL = '/api/cart/';
+    const CSRF_TOKEN = '{{ csrf_token }}';
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function getCsrfToken() {
+        return getCookie('csrftoken') || CSRF_TOKEN;
+    }
+
+    async function updateQuantity(btn, change, itemId) {
+        const qtyInput = btn.parentElement.querySelector('.qty-input');
+        const currentValue = parseInt(qtyInput.value);
+        const newValue = Math.max(1, currentValue + change);
+        
+        if (newValue === currentValue && change < 0) return;
+        
+        qtyInput.value = newValue;
+        await updateItemQuantity(itemId, newValue);
+    }
+
+    async function updateQuantityInput(input, itemId) {
+        const newValue = Math.max(1, parseInt(input.value) || 1);
+        input.value = newValue;
+        await updateItemQuantity(itemId, newValue);
+    }
+
+    async function updateItemQuantity(itemId, quantity) {
+        try {
+            const response = await fetch(API_BASE_URL + 'update_item/', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                },
+                body: JSON.stringify({
+                    item_id: itemId,
+                    quantity: quantity
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                updateItemTotal(itemId, data.total);
+                await updateCartSummary();
+                updateCartIcon();
+                // Показываем уведомление об успешном обновлении
+                showNotification('{% trans "Quantity updated" %}', 'success', '', 2000);
+            } else {
+                const errorData = await response.json().catch(() => ({}));
+                showNotification('{% trans "Error updating quantity" %}: ' + (errorData.error || errorData.detail || '{% trans "Unknown error" %}'), 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showNotification('{% trans "Error updating quantity" %}', 'error');
+        }
+    }
+
+    function formatPrice(price) {
+        // Форматируем число с пробелами для разделения тысяч
+        return Math.round(parseFloat(price)).toLocaleString('ru-RU').replace(/,/g, ' ');
+    }
+
+    function updateItemTotal(itemId, total) {
+        const itemElement = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
+        if (itemElement) {
+            const totalElement = itemElement.querySelector('.item-total-price[data-item-id="' + itemId + '"]');
+            if (totalElement) {
+                totalElement.textContent = formatPrice(total) + ' ' + '{{ currency|escapejs }}';
+            }
+        }
+    }
+
+    async function removeItem(itemId) {
+        // Используем confirm для подтверждения удаления
+        const confirmed = confirm('{% trans "Remove item from cart?" %}');
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const response = await fetch(API_BASE_URL + 'remove_item/?item_id=' + itemId, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': getCsrfToken()
+                }
+            });
+
+            if (response.ok || response.status === 204) {
+                const itemElement = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
+                if (itemElement) {
+                    itemElement.remove();
+                }
+                await updateCartSummary();
+                updateCartIcon();
+                
+                // Показываем уведомление об успешном удалении
+                showNotification('{% trans "Item removed from cart" %}', 'success', '{% trans "Removed" %}', 3000);
+                
+                // Если корзина пуста, перезагружаем страницу
+                const remainingItems = document.querySelectorAll('.cart-item');
+                if (remainingItems.length === 0) {
+                    setTimeout(() => location.reload(), 1000);
+                }
+            } else {
+                showNotification('{% trans "Error removing item" %}', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showNotification('{% trans "Error removing item" %}', 'error');
+        }
+    }
+
+    async function updateCartSummary() {
+        try {
+            const response = await fetch(API_BASE_URL + 'current/', {
+                method: 'GET',
+                headers: {
+                    'X-CSRFToken': getCsrfToken()
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const totalFormatted = formatPrice(data.total);
+                document.getElementById('subtotal').textContent = totalFormatted + ' ' + '{{ currency|escapejs }}';
+                document.getElementById('total').textContent = totalFormatted + ' ' + '{{ currency|escapejs }}';
+                document.getElementById('items-count').textContent = data.items_count || 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    function updateCartIcon() {
+        // Обновим иконку корзины в header
+        fetch(API_BASE_URL + 'current/')
+            .then(response => response.json())
+            .then(data => {
+                const cartIcon = document.getElementById('cart-icon-count');
+                if (cartIcon) {
+                    cartIcon.textContent = data.items_count || 0;
+                    if (data.items_count > 0) {
+                        cartIcon.style.display = 'flex';
+                    } else {
+                        cartIcon.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => console.error('Error updating cart icon:', error));
+    }
+
+    function showOrderForm() {
+        const modal = document.getElementById('orderModal');
+        if (modal) {
+            modal.style.display = 'block';
+        }
+    }
+
+    function closeOrderModal() {
+        const modal = document.getElementById('orderModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    // Закрытие модального окна при клике вне его
+    window.onclick = function(event) {
+        const modal = document.getElementById('orderModal');
+        if (event.target == modal) {
+            closeOrderModal();
+        }
+    }
+
+    async function placeOrder(event) {
+        event.preventDefault();
+        
+        const form = event.target;
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+        
+        // Отключаем кнопку
+        submitButton.disabled = true;
+        submitButton.textContent = '{% trans "Processing..." %}';
+        
+        try {
+            // Получаем текущую корзину
+            const cartResponse = await fetch(API_BASE_URL + 'current/', {
+                method: 'GET',
+                headers: {
+                    'X-CSRFToken': getCsrfToken()
+                },
+                credentials: 'same-origin'
+            });
+            
+            if (!cartResponse.ok) {
+                const errorText = await cartResponse.text();
+                console.error('Cart response error:', cartResponse.status, errorText);
+                throw new Error('{% trans "Failed to get cart" %}: ' + cartResponse.status + ' ' + cartResponse.statusText);
+            }
+            
+            const cartData = await cartResponse.json();
+            console.log('Cart data:', cartData);
+            
+            if (!cartData) {
+                throw new Error('{% trans "Empty cart data received" %}');
+            }
+            
+            if (!cartData || !cartData.items || cartData.items.length === 0) {
+                showNotification('{% trans "Your cart is empty" %}', 'warning');
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+                return;
+            }
+            
+            // Проверяем и формируем данные заказа
+            const items = [];
+            for (let i = 0; i < cartData.items.length; i++) {
+                const item = cartData.items[i];
+                if (!item || !item.product || !item.product.id) {
+                    console.error('Invalid cart item:', item);
+                    throw new Error('{% trans "Invalid cart item data" %}');
+                }
+                items.push({
+                    product_id: item.product.id,
+                    quantity: item.quantity || 1,
+                    size: item.size || '',
+                    color: item.color || ''
+                });
+            }
+            
+            if (items.length === 0) {
+                showNotification('{% trans "Your cart is empty" %}', 'warning');
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+                return;
+            }
+            
+            // Получаем элементы формы с проверкой на существование
+            const getFormElement = (id, required = true) => {
+                const element = document.getElementById(id);
+                if (!element) {
+                    if (required) {
+                        console.error(`Required element with id '${id}' not found`);
+                        throw new Error(`Form element '${id}' not found`);
+                    }
+                    return null;
+                }
+                return element;
+            };
+            
+            // Получаем значения из формы
+            const first_name = getFormElement('first_name').value.trim();
+            const last_name = getFormElement('last_name').value.trim();
+            const phone = getFormElement('phone').value.trim();
+            const city = getFormElement('city').value.trim();
+            const address = getFormElement('address').value.trim();
+            const notesEl = getFormElement('notes', false);
+            const notes = notesEl ? notesEl.value.trim() : '';
+            
+            // Валидация обязательных полей
+            if (!first_name || !last_name || !phone || !city || !address) {
+                showNotification('{% trans "Please fill in all required fields" %}', 'warning');
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+                return;
+            }
+            
+            // Формируем данные заказа
+            const orderData = {
+                first_name: first_name,
+                last_name: last_name,
+                email: '',  // Email не требуется, отправляем пустую строку
+                phone: phone,
+                city: city,
+                address: address,
+                postal_code: '',  // Почтовый индекс не требуется
+                payment_method: 'cash',  // По умолчанию наличные
+                notes: notes || '',
+                items: items
+            };
+            
+            console.log('Order data:', orderData);
+            
+            // Отправляем заказ
+            const orderResponse = await fetch('/api/orders/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(orderData)
+            });
+            
+            if (!orderResponse.ok) {
+                let errorMessage = '{% trans "Failed to place order" %}';
+                try {
+                    const errorData = await orderResponse.json();
+                    console.error('Order error response:', errorData);
+                    
+                    // Обрабатываем различные форматы ошибок
+                    if (errorData.detail) {
+                        errorMessage = errorData.detail;
+                    } else if (errorData.error) {
+                        errorMessage = errorData.error;
+                    } else if (typeof errorData === 'string') {
+                        errorMessage = errorData;
+                    } else if (errorData.non_field_errors) {
+                        errorMessage = errorData.non_field_errors.join(', ');
+                    } else {
+                        // Собираем все ошибки валидации
+                        const errors = [];
+                        for (const key in errorData) {
+                            if (Array.isArray(errorData[key])) {
+                                errors.push(`${key}: ${errorData[key].join(', ')}`);
+                            } else {
+                                errors.push(`${key}: ${errorData[key]}`);
+                            }
+                        }
+                        if (errors.length > 0) {
+                            errorMessage = errors.join('; ');
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error parsing error response:', e);
+                    errorMessage = `HTTP ${orderResponse.status}: ${orderResponse.statusText}`;
+                }
+                throw new Error(errorMessage);
+            }
+            
+            const orderResult = await orderResponse.json();
+            console.log('Order result:', orderResult);
+            
+            if (!orderResult || !orderResult.id) {
+                throw new Error('{% trans "Invalid order response from server" %}');
+            }
+            
+            // Закрываем модальное окно
+            closeOrderModal();
+            
+            // Очищаем форму
+            form.reset();
+            
+            // Показываем красивое уведомление об успехе
+            showNotification(
+                '{% trans "Your order has been placed successfully! Order number:" %} #' + orderResult.id + '<br><small style="opacity: 0.8;">{% trans "Your cart has been cleared." %}</small>',
+                'success',
+                '{% trans "Order Placed!" %}',
+                6000
+            );
+            
+            // Обновляем корзину
+            updateCartIcon();
+            
+            // Небольшая задержка перед перезагрузкой для лучшего UX
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Error placing order:', error);
+            showNotification(
+                error.message || '{% trans "An error occurred while placing the order. Please try again." %}',
+                'error',
+                '{% trans "Order Error" %}',
+                6000
+            );
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
+        }
+    }
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCartIcon();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{# Nav in CSS artboard % — circles stay round under full-bleed stretch #}
+{% load i18n %}
+<nav class="cu-orbits" aria-label="{% trans 'Primary' %}">
+  <a class="cu-orbit" href="{% url 'index' %}" aria-current="page" title="{% trans 'Home' %}">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+  </a>
+  <a class="cu-orbit" href="{% url 'catalog' %}" title="{% trans 'Catalog' %}">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7.2" stroke="currentColor" stroke-width="1.5"/><path d="M9.2 12.8c1.1-2.4 4.5-2.4 5.6 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </a>
+  <a class="cu-orbit" href="{% url 'catalog' %}" title="{% trans 'Catalog' %}">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9.5h10M8.2 9.5l.8 9.5h6l.8-9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 9.5a2.5 2.5 0 0 1 5 0" stroke="currentColor" stroke-width="1.5"/></svg>
+  </a>
+  <a class="cu-orbit" href="{% url 'about' %}" title="{% trans 'About' %}">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="12" cy="12" rx="7" ry="4.2" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/></svg>
+  </a>
+  <a class="cu-orbit" href="{% url 'catalog' %}" title="{% trans 'Catalog' %}">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6.5c0-1.5 1.2-2.5 3-2.5s3 1 3 2.5c0 2.2-3 3.2-3 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 19.5h4M9.5 9.5h5l-.6 10h-3.8l-.6-10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+  </a>
+  <a class="cu-orbit" href="{% url 'contact' %}" title="{% trans 'Contacts' %}">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M4.5 12h15M12 4.5c2.2 2.4 3.3 4.8 3.3 7.5S14.2 17.1 12 19.5C9.8 17.1 8.7 14.7 8.7 12S9.8 6.9 12 4.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+  </a>
+  <div class="cu-orbit cu-orbit--lang language-switcher">
+    <button class="language-btn" id="languageBtn" type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="{% trans 'Language' %}">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12h12M12 7v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="8.5" r="1.2" fill="currentColor"/></svg>
+    </button>
+    <div class="language-dropdown" id="languageDropdown" role="listbox">
+      <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+        <input type="hidden" name="language" value="ru">
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button type="submit" class="lang-option {% if CURRENT_LANGUAGE == 'ru' %}active{% endif %}">Русский</button>
+      </form>
+      <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+        <input type="hidden" name="language" value="en">
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button type="submit" class="lang-option {% if CURRENT_LANGUAGE == 'en' %}active{% endif %}">English</button>
+      </form>
+      <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+        <input type="hidden" name="language" value="uz">
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button type="submit" class="lang-option {% if CURRENT_LANGUAGE == 'uz' %}active{% endif %}">O'zbek</button>
+      </form>
+    </div>
+  </div>
+</nav>

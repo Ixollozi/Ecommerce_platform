@@ -1,0 +1,194 @@
+﻿{% load static %}
+{% load i18n %}
+{% get_current_language as CURRENT_LANGUAGE %}
+<!DOCTYPE html>
+<html lang="{{ CURRENT_LANGUAGE }}">
+<!-- theme:curated -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>{% block title %}{{ store_title }}{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=curated-hero37">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="cu {% block body_class %}{% endblock %}">
+    <a class="cu-skip" href="#main">{% trans "Skip to content" %}</a>
+
+    {% if request.resolver_match.url_name != 'index' %}
+    <header class="cu-header" id="cuHeader">
+        <a class="cu-logo" href="{% url 'index' %}">{{ store_name }}</a>
+        <nav class="cu-nav" id="navMenu" aria-label="Primary">
+            <a href="{% url 'index' %}">{% trans "Home" %}</a>
+            <a href="{% url 'catalog' %}" {% if request.resolver_match.url_name == 'catalog' %}aria-current="page"{% endif %}>{% trans "Catalog" %}</a>
+            <a href="{% url 'about' %}" {% if request.resolver_match.url_name == 'about' %}aria-current="page"{% endif %}>{% trans "About" %}</a>
+            <a href="{% url 'contact' %}" {% if request.resolver_match.url_name == 'contact' %}aria-current="page"{% endif %}>{% trans "Contacts" %}</a>
+        </nav>
+        <div class="cu-actions">
+            <div class="language-switcher">
+                <button class="language-btn" id="languageBtn" type="button" aria-expanded="false" aria-haspopup="listbox">{{ CURRENT_LANGUAGE|upper }}</button>
+                <div class="language-dropdown" id="languageDropdown" role="listbox">
+                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input type="hidden" name="language" value="ru">
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <button type="submit" class="lang-option {% if CURRENT_LANGUAGE == 'ru' %}active{% endif %}">Русский</button>
+                    </form>
+                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input type="hidden" name="language" value="en">
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <button type="submit" class="lang-option {% if CURRENT_LANGUAGE == 'en' %}active{% endif %}">English</button>
+                    </form>
+                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input type="hidden" name="language" value="uz">
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <button type="submit" class="lang-option {% if CURRENT_LANGUAGE == 'uz' %}active{% endif %}">O'zbek</button>
+                    </form>
+                </div>
+            </div>
+            <a class="cu-bag" href="{% url 'cart' %}" aria-label="{% trans 'Bag' %}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8z" stroke="currentColor" stroke-width="1.6"/><path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                <span class="cu-bag-text">{% trans "Bag" %}</span>
+                <span id="cart-icon-count" class="cart-count" style="display:none">0</span>
+            </a>
+            <button class="cu-burger" id="mobileMenuToggle" aria-label="Menu" aria-expanded="false" aria-controls="navMenu" type="button">
+                <span></span><span></span>
+            </button>
+        </div>
+    </header>
+    {% endif %}
+
+    <main id="main">{% block content %}{% endblock %}</main>
+
+    <div id="notification-container" class="notification-container"></div>
+
+    <footer class="cu-footer">
+        <div class="cu-footer-grid">
+            <div>
+                <p class="cu-footer-brand">{{ store_name }}</p>
+                <p class="cu-footer-desc">{{ store_description }}</p>
+            </div>
+            <div>
+                <h4>{% trans "For Customers" %}</h4>
+                <a href="{% url 'delivery' %}">{% trans "Delivery and Payment" %}</a>
+                <a href="{% url 'faq' %}">{% trans "FAQ" %}</a>
+                <a href="{% url 'contact' %}">{% trans "Contacts" %}</a>
+            </div>
+            <div>
+                <h4>{% trans "About Company" %}</h4>
+                <a href="{% url 'about' %}">{% trans "About Us" %}</a>
+                <a href="{% url 'catalog' %}">{% trans "Catalog" %}</a>
+            </div>
+            <div>
+                <h4>{% trans "Contacts" %}</h4>
+                {% if contact_info.phone %}<p>{{ contact_info.phone }}</p>{% endif %}
+                {% if contact_info.email %}<p>{{ contact_info.email }}</p>{% endif %}
+                {% if contact_info.address.full %}<p>{{ contact_info.address.full }}</p>{% endif %}
+                <div class="social-links">
+                    {% if social_links.instagram %}<a href="{{ social_links.instagram }}" aria-label="Instagram"><i class="fab fa-instagram"></i></a>{% endif %}
+                    {% if social_links.telegram %}<a href="{{ social_links.telegram }}" aria-label="Telegram"><i class="fab fa-telegram"></i></a>{% endif %}
+                    {% if social_links.facebook %}<a href="{{ social_links.facebook }}" aria-label="Facebook"><i class="fab fa-facebook"></i></a>{% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="cu-footer-bottom">
+            <span>© {{ store_name }}</span>
+            <span>CURATED</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="{% static 'script.js' %}?v=curated-hero19"></script>
+    <script>
+        function getCookie(name) {
+            let v = null;
+            if (document.cookie) {
+                document.cookie.split(';').forEach(c => {
+                    c = c.trim();
+                    if (c.indexOf(name + '=') === 0) v = decodeURIComponent(c.substring(name.length + 1));
+                });
+            }
+            return v;
+        }
+        function getCsrfToken() {
+            return getCookie('csrftoken') || document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        }
+        function updateCartIcon() {
+            fetch('/api/cart/current/').then(r => r.json()).then(data => {
+                document.querySelectorAll('#cart-icon-count, .cu-orbit-count').forEach(el => {
+                    const n = data.items_count || 0;
+                    el.textContent = n;
+                    el.style.display = n > 0 ? 'inline-flex' : 'none';
+                });
+            }).catch(() => {});
+        }
+        window.addToCart = async function(event, productId, productName) {
+            if (!productId || productId === 'None') {
+                showNotification?.('{% trans "Error: Product ID is not specified. This product cannot be added to cart." %}', 'error');
+                return;
+            }
+            const button = event?.target?.closest('button') || event?.target;
+            if (!button) return;
+            const original = button.textContent;
+            button.disabled = true;
+            button.textContent = '…';
+            try {
+                const token = getCsrfToken();
+                if (!token) throw new Error('{% trans "CSRF token not found. Please refresh the page." %}');
+                const res = await fetch('/api/cart/add_item/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': token },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({ product_id: parseInt(productId), quantity: 1, size: '', color: '' })
+                });
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    throw new Error(err.detail || err.error || '{% trans "Error" %}');
+                }
+                button.textContent = '✓';
+                updateCartIcon();
+                showNotification?.(productName || '{% trans "Added to cart" %}', 'success');
+                setTimeout(() => { button.textContent = original; button.disabled = false; }, 1400);
+            } catch (e) {
+                button.textContent = '!';
+                showNotification?.(e.message || '{% trans "Failed to add product to cart. Please refresh the page and try again." %}', 'error');
+                setTimeout(() => { button.textContent = original; button.disabled = false; }, 1800);
+            }
+        };
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartIcon();
+            document.querySelectorAll('.btn-add-cart, .btn-primary.btn-large').forEach(btn => {
+                if (btn.disabled) return;
+                const id = btn.getAttribute('data-product-id');
+                const name = btn.getAttribute('data-product-name');
+                const useForm = btn.getAttribute('data-use-product-form') === 'true';
+                if (!id || id === 'None') return;
+                btn.removeAttribute('onclick');
+                btn.addEventListener('click', e => {
+                    e.preventDefault();
+                    if (useForm && window.addToCartFromProduct) window.addToCartFromProduct(e, id, name || '');
+                    else window.addToCart(e, id, name || '');
+                });
+            });
+        });
+        function showNotification(message, type = 'success', title = null, duration = 4500) {
+            const box = document.getElementById('notification-container');
+            if (!box) return;
+            const n = document.createElement('div');
+            n.className = 'notification ' + type;
+            const titles = { success: '{% trans "Success" %}', error: '{% trans "Error" %}', warning: '{% trans "Warning" %}', info: '{% trans "Information" %}' };
+            n.innerHTML = `<div class="notification-content"><div class="notification-title">${title || titles[type]}</div><div class="notification-message">${message}</div></div><button class="notification-close" type="button">&times;</button>`;
+            n.querySelector('.notification-close').onclick = () => { n.classList.add('hiding'); setTimeout(() => n.remove(), 280); };
+            box.appendChild(n);
+            if (duration > 0) setTimeout(() => n.querySelector('.notification-close')?.click(), duration);
+        }
+        window.showNotification = showNotification;
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

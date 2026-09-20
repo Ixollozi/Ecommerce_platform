@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load product_media %}
+{% load i18n static humanize translation_tags %}
+
+{% block title %}{{ store_name }} — {% trans "Curated for the discerning" %}{% endblock %}
+{% block body_class %}is-home{% endblock %}
+
+{% block content %}
+{% static 'img/look1.jpg' as look1 %}
+{% static 'img/look2.jpg' as look2 %}
+{% static 'img/look3.jpg' as look3 %}
+{% static 'img/look4.jpg' as look4 %}
+
+<section class="cu-hero" aria-label="{{ store_name }}">
+  <div class="cu-hero__board">
+    {% include "partials/hero_board.html" %}
+    {% include "partials/hero_nav.html" %}
+
+    <div class="cu-hero__copy">
+      <h1 class="cu-hero__title">CURATED FOR<br>THE DISCERNING</h1>
+      <a class="cu-hero__cta" href="{% url 'catalog' %}">EXPLORE THE COLLECTION</a>
+    </div>
+  </div>
+</section>
+
+{% if categories %}
+<section class="cu-cats">
+  <div class="cu-section-head">
+    <h2>{% trans "Categories" %}</h2>
+    <a class="cu-link" href="{% url 'catalog' %}">{% trans "View Catalog" %}</a>
+  </div>
+  <div class="cu-cats-grid">
+    {% for category in categories %}
+    <a class="cu-cat reveal" href="{% url 'catalog' %}{% if category.slug %}?category={{ category.slug }}{% endif %}">
+      <div class="cu-cat-img">
+        {% if category|display_image %}
+          <img src="{{ category|display_image }}" alt="{{ category.name }}" loading="lazy">
+        {% elif forloop.counter0|divisibleby:4 %}
+          <img src="{{ look1 }}" alt="{{ category.name }}" loading="lazy">
+        {% elif forloop.counter0|add:1|divisibleby:4 %}
+          <img src="{{ look2 }}" alt="{{ category.name }}" loading="lazy">
+        {% elif forloop.counter0|add:2|divisibleby:4 %}
+          <img src="{{ look3 }}" alt="{{ category.name }}" loading="lazy">
+        {% else %}
+          <img src="{{ look4 }}" alt="{{ category.name }}" loading="lazy">
+        {% endif %}
+      </div>
+      <div class="cu-cat-meta">
+        <span>{{ forloop.counter|stringformat:"02d" }}</span>
+        <h3>{{ category.name }}</h3>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if products %}
+<section class="cu-shop" id="products">
+  <div class="cu-section-head">
+    <h2>{% trans "Popular Products" %}</h2>
+    <p class="cu-section-note">{% trans "Shop" %}</p>
+  </div>
+  <div class="cu-products">
+    {% for product in products %}
+    <article class="product-card reveal">
+      <div class="product-media">
+        <a class="product-image" href="{% if product.slug %}{% url 'product' product.slug %}{% else %}{% url 'catalog' %}{% endif %}">
+          {% if product|display_image %}
+            <img src="{{ product|display_image }}" alt="{{ product.name }}" loading="lazy">
+          {% else %}
+            <div class="product-image-placeholder" aria-hidden="true"></div>
+          {% endif %}
+        </a>
+        {% if product.id %}
+        <button class="btn btn-add-cart product-quick-add" type="button" data-product-id="{{ product.id }}" data-product-name="{{ product.name|escapejs }}">{% trans "Add to Cart" %}</button>
+        {% endif %}
+      </div>
+      <div class="product-info">
+        <div class="product-info-top">
+          <h3 class="product-name">
+            <a href="{% if product.slug %}{% url 'product' product.slug %}{% else %}{% url 'catalog' %}{% endif %}">{{ product.name }}</a>
+          </h3>
+          <p class="product-price">
+            {{ product.price|format_price }} {{ currency }}
+            {% if product.old_price and product.old_price > product.price %}
+              <span class="old-price">{{ product.old_price|format_price }} {{ currency }}</span>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

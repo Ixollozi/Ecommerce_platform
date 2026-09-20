@@ -1,0 +1,135 @@
+﻿{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Delivery and Payment" %} - {{ store_name }}{% endblock %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>{% trans "Delivery and Payment" %}</h1>
+            <nav class="breadcrumbs">
+                <a href="{% url 'index' %}">{% trans "Home" %}</a> / <span>{% trans "Delivery and Payment" %}</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Delivery Content -->
+    <section class="delivery-section">
+        <div class="container">
+            <div class="delivery-content">
+                <h2>{% trans "Delivery Methods" %}</h2>
+                
+                <div class="delivery-method">
+                    <div class="delivery-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="delivery-info">
+                        <h3>{% trans "Courier delivery in Tashkent" %}</h3>
+                        <p><strong>{% trans "Cost" %}:</strong> 30 000 {{ currency }} ({% trans "free for orders over" %} 300 000 {{ currency }})</p>
+                        <p><strong>{% trans "Delivery time" %}:</strong> {% trans "1-2 business days" %}</p>
+                        <p><strong>{% trans "Delivery hours" %}:</strong> {% trans "from 10:00 to 22:00" %}</p>
+                        <p>{% trans "Delivery is carried out by courier to the specified address. You can choose a convenient delivery time when placing an order." %}</p>
+                    </div>
+                </div>
+
+                <div class="delivery-method">
+                    <div class="delivery-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="delivery-info">
+                        <h3>{% trans "Delivery throughout Uzbekistan" %}</h3>
+                        <p><strong>{% trans "Cost" %}:</strong> {% trans "from" %} 40 000 {{ currency }} ({% trans "free for orders over" %} 500 000 {{ currency }})</p>
+                        <p><strong>{% trans "Delivery time" %}:</strong> {% trans "3-7 business days" %}</p>
+                        <p><strong>{% trans "Delivery services" %}:</strong> {% trans "CDEK, Uzbekistan Post, Boxberry" %}</p>
+                        <p>{% trans "Delivery is carried out to pick-up points or post offices. You will receive a tracking number to track your package." %}</p>
+                    </div>
+                </div>
+
+                <div class="delivery-method">
+                    <div class="delivery-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div class="delivery-info">
+                        <h3>{% trans "Pickup" %}</h3>
+                        <p><strong>{% trans "Cost" %}:</strong> {% trans "Free" %}</p>
+                        <p><strong>{% trans "Ready time" %}:</strong> {% trans "1-2 business days" %}</p>
+                        <p><strong>{% trans "Address" %}:</strong> {% if contact_info.address.full %}{{ contact_info.address.full }}{% else %}{% trans "Tashkent, Example Street, 1" %}{% endif %}</p>
+                        <p>{% trans "You can pick up your order yourself from our office. When receiving, you must present an identity document." %}</p>
+                    </div>
+                </div>
+
+                <h2 style="margin-top: 3rem;">{% trans "Payment Methods" %}</h2>
+
+                <div class="payment-methods">
+                    <div class="payment-method">
+                        <div class="payment-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h3>{% trans "Online bank card" %}</h3>
+                        <p>{% trans "Payment by Visa, MasterCard, MIR cards through a secure payment gateway. Secure one-click payment." %}</p>
+                    </div>
+
+                    <div class="payment-method">
+                        <div class="payment-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h3>{% trans "Cash on delivery" %}</h3>
+                        <p>{% blocktrans with currency=currency %}Cash payment to the courier upon delivery or at the pickup point. Available for orders up to 5 000 000 {{ currency }}.{% endblocktrans %}</p>
+                    </div>
+
+                    <div class="payment-method">
+                        <div class="payment-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>{% trans "Electronic wallets" %}</h3>
+                        <p>{% trans "Payment through payment systems: YooMoney, WebMoney, QIWI and other electronic payment systems." %}</p>
+                    </div>
+
+                    <div class="payment-method">
+                        <div class="payment-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3>{% trans "Bank transfer" %}</h3>
+                        <p>{% trans "Payment by details for legal entities. Invoice is issued after order confirmation." %}</p>
+                    </div>
+                </div>
+
+                <h2 style="margin-top: 3rem;">{% trans "Delivery Terms" %}</h2>
+                <div class="delivery-terms">
+                    <div class="term-item">
+                        <i class="fas fa-check"></i>
+                        <p>{% blocktrans with currency=currency %}Minimum order amount — 50 000 {{ currency }}{% endblocktrans %}</p>
+                    </div>
+                    <div class="term-item">
+                        <i class="fas fa-check"></i>
+                        <p>{% blocktrans with currency=currency %}Free delivery for orders over 300 000 {{ currency }} (in Tashkent) and over 500 000 {{ currency }} (throughout Uzbekistan){% endblocktrans %}</p>
+                    </div>
+                    <div class="term-item">
+                        <i class="fas fa-check"></i>
+                        <p>{% trans "Possibility of checking the product before payment (with courier delivery)" %}</p>
+                    </div>
+                    <div class="term-item">
+                        <i class="fas fa-check"></i>
+                        <p>{% trans "Order status tracking in personal account" %}</p>
+                    </div>
+                    <div class="term-item">
+                        <i class="fas fa-check"></i>
+                        <p>{% trans "Order status notifications via SMS and email" %}</p>
+                    </div>
+                </div>
+
+                <h2 style="margin-top: 3rem;">{% trans "Product Return" %}</h2>
+                <div class="return-info">
+                    <p>{% trans "You can return the product within 14 days from the date of receipt, if:" %}</p>
+                    <ul>
+                        <li>{% trans "The product has not been used" %}</li>
+                        <li>{% trans "The product appearance, consumer properties, seals, factory labels are preserved" %}</li>
+                        <li>{% trans "There are documents confirming the purchase" %}</li>
+                    </ul>
+                    <p>{% trans "Return of goods of proper quality is possible only if its product appearance, consumer properties, as well as a document confirming the fact and conditions of purchase of the specified product are preserved." %}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

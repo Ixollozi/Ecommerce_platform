@@ -1,0 +1,1 @@
+Save from Figma as calibrated.svg into this folder, then tell agent: готово
