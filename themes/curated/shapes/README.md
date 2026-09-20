@@ -1,22 +1,26 @@
 # shapes/ — organic hero pipeline (curated)
 
-Clean layout for Figma-calibrated paths → Django hero.
-
 ```
 shapes/
-  paths/                 # source of truth (dense SVG paths)
-  organic_layouts.json   # layout meta + path copies (built)
-  figma-pack.svg         # pack for user calibration in Figma
-  calibrate.html         # short instructions
-  inbox/                 # drop calibrated.svg here (gitignored)
+  paths/                      # source of truth (dense SVG paths)
+  organic_layouts.json        # layout meta (built)
+  figma-pack.svg              # pack for Figma calibration
+  calibrate.html              # Figma instructions
+  inbox/                      # local drops only (gitignored)
   approved/
-    figma-ref-raw.png    # design reference
-    calibrated.svg       # last imported snapshot
+    calibrated.svg            # last imported desktop snapshot
+    figma-ref-raw.png         # design reference
+    mobile_slots.json         # current mobile slot layout (v2)
+    versions/                 # mobile_slots_v1.json, v2, …
   _build_figma_pack.py
   _import_calibrated.py
-  _build_hero.py         # writes templates/partials/hero_board.html
+  _build_hero.py              # → templates/partials/hero_board.html
+  _build_mobile_pack.py       # → hero_board_mobile.html from approved slots
+  _serve_mobile_calibrate.py  # local UI: http://127.0.0.1:8767/
 ```
 
-**Do not commit:** `inbox/calibrated.svg`, `approved/qa-*`, debug `_*.py`, masks, WIP `01-*.svg`.
+**Do not commit:** `inbox/*`, `qa-*`, generated `mobile-preview.html` / `mobile-calibrate.html` / `mobile-pack.svg`.
 
-**Rebuild hero:** `python themes/curated/shapes/_build_hero.py`
+**Rebuild desktop hero:** `python themes/curated/shapes/_build_hero.py`  
+**Rebuild mobile from slots:** `python themes/curated/shapes/_build_mobile_pack.py`  
+**Calibrate mobile:** `python themes/curated/shapes/_serve_mobile_calibrate.py` → Save → copy/update `approved/mobile_slots.json` → rebuild.

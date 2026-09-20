@@ -11,7 +11,7 @@
     "calibrated_from": "approved/calibrated.svg",
     "figma_file": "kol1lXyqGi5aQ0o8L2DC6f",
     "figma_node": "1:2",
-    "note": "full-bleed none shapes; CSS circular nav; photos slice-in-clip; scroll bleed viewBox H=828 (artboard 625)",
+    "note": "full-bleed none shapes; HTML photos cover+mask; scroll bleed viewBox H=828 (artboard 625)",
     "board": [
       1024.0,
       828.0
@@ -112,7 +112,7 @@
           302.08,
           573.95
         ],
-        "object_position": "52% 32%"
+        "object_position": "50% 28%"
       }
     },
     "G-photo-top": {
@@ -136,7 +136,7 @@
           296.36,
           207.74
         ],
-        "object_position": "48% 45%"
+        "object_position": "50% 48%"
       }
     },
     "H-photo-right": {
@@ -160,7 +160,7 @@
           292.05,
           376.63
         ],
-        "object_position": "46% 38%"
+        "object_position": "48% 40%"
       }
     },
     "I-photo-bl": {
@@ -268,7 +268,7 @@
           258.86,
           299.27
         ],
-        "object_position": "50% 42%"
+        "object_position": "50% 45%"
       }
     },
     "C-dark-upper": {

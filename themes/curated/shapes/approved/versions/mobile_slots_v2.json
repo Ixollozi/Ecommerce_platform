@@ -1,0 +1,84 @@
+{
+  "mode": "frame",
+  "phone": [
+    390,
+    844
+  ],
+  "copy_safe": [
+    52,
+    300,
+    286,
+    210
+  ],
+  "order": [
+    "C-dark-upper",
+    "C-dark-bottom",
+    "F-photo-left",
+    "G-photo-top",
+    "H-photo-right",
+    "A-header-lower",
+    "A-dark-top-left",
+    "G-photo-bottom"
+  ],
+  "slots": {
+    "C-dark-upper": [
+      -41.36,
+      630.84,
+      449.09,
+      213.81
+    ],
+    "C-dark-bottom": [
+      -50.91,
+      679.55,
+      470,
+      174.4
+    ],
+    "F-photo-left": [
+      -23.63,
+      273.66,
+      221.35,
+      428.81
+    ],
+    "G-photo-top": [
+      -25.64,
+      78.97,
+      249.09,
+      171.46
+    ],
+    "H-photo-right": [
+      146.18,
+      61.19,
+      265.91,
+      346.22
+    ],
+    "A-header-lower": [
+      -14.09,
+      2.04,
+      446.36,
+      166.79
+    ],
+    "A-dark-top-left": [
+      -0.73,
+      -3.42,
+      400,
+      129.86
+    ],
+    "G-photo-bottom": [
+      155.76,
+      430.5,
+      233.85,
+      272.13
+    ]
+  },
+  "labels": {
+    "A-dark-top-left": "A dark top",
+    "A-header-lower": "A tan rim",
+    "G-photo-top": "G photo top",
+    "F-photo-left": "F photo L",
+    "H-photo-right": "H photo R",
+    "G-photo-bottom": "Q photo BL",
+    "C-dark-upper": "C sm",
+    "C-dark-bottom": "B dark bottom"
+  },
+  "saved_at": "2026-09-20T19:28:13.444Z"
+}

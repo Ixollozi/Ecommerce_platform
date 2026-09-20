@@ -114,10 +114,12 @@ test-results/
 .cursor/*.log
 
 # ----- Theme shapes pipeline (organic / curated-like) -----
-# Tracked: paths/, _build_hero.py, _build_figma_pack.py, _import_calibrated.py,
-#          organic_layouts.json, figma-pack.svg, calibrate.html, approved/ref.
-# Local only: inbox drop, QA shots, debug scripts, masks, static/shapes WIP.
-themes/*/shapes/inbox/calibrated.svg
+# Tracked: paths/, build scripts, organic_layouts.json, figma-pack.svg,
+#          calibrate.html, approved/ (slots + calibrated snapshot),
+#          templates partials from _build_*.
+# Local only: inbox drops, QA shots, generated previews, static/shapes WIP.
+themes/*/shapes/inbox/**
+!themes/*/shapes/inbox/*.txt
 themes/*/shapes/approved/qa-*
 themes/*/shapes/approved/qa-*/
 themes/*/shapes/mask-*.png
@@ -126,10 +128,15 @@ themes/*/shapes/qa-*.html
 themes/*/shapes/[0-9][0-9]-*.svg
 themes/*/shapes/hero-shapes.svg
 themes/*/shapes/index.html
+themes/*/shapes/mobile-calibrate.html
+themes/*/shapes/mobile-preview.html
+themes/*/shapes/mobile-pack.svg
 themes/*/shapes/_*.py
 !themes/*/shapes/_build_hero.py
 !themes/*/shapes/_build_figma_pack.py
 !themes/*/shapes/_import_calibrated.py
+!themes/*/shapes/_build_mobile_pack.py
+!themes/*/shapes/_serve_mobile_calibrate.py
 themes/*/static/shapes/**
 !themes/*/static/shapes/organic_layouts.json
 themes/*/static/img/_ref-*

@@ -269,11 +269,10 @@ body.is-home #main {
 }
 
 /* ===== HERO — full-bleed, round nav, photo-safe =====
-   Artboard fold: 1024×625 → first viewport.
-   Scroll bleed: Figma bottom lobes extend past y=625; viewBox + shapes
-   height include that continuation so lobes are not hard-cut on scroll.
-   Nav: CSS % of artboard board (not bleed height) + height-based circles.
-   Photos: <image preserveAspectRatio=xMidYMid slice> inside clipPath.
+   Artboard fold: 1024×625 → first viewport (desktop full-bleed stretch).
+   Scroll bleed: Figma bottom lobes past y=625.
+   Photos: HTML cover + SVG mask (real Figma paths).
+   ≤1023px: same board, height 100svh, width = AR lock, centered crop.
 */
 .cu-hero {
   --cu-art-w: 1024;
@@ -281,11 +280,13 @@ body.is-home #main {
   --cu-vb-h: 828; /* keep in sync with organic_layouts _meta.viewBox[3] */
   --cu-ar: calc(var(--cu-art-w) / var(--cu-art-h));
   --cu-cream: #f3efe7;
-  /* M-nav artboard box → % of artboard board (tracks stretched shapes) */
-  --cu-nav-x: 3.2227%;   /* 33/1024 */
-  --cu-nav-y: 4.32%;     /* 27/625 */
-  --cu-nav-w: 26.367%;   /* 270/1024 */
-  --cu-nav-h: 4.8%;      /* 30/625 */
+  /* Artboard-fold height used as % reference for nav/copy (desktop) */
+  --cu-fold-h: calc(100svh);
+  /* M-nav artboard box — ratios of fold (1024×625) */
+  --cu-nav-x: 3.2227%;
+  --cu-nav-y-ratio: 0.0432;   /* 27/625 */
+  --cu-nav-w: 26.367%;
+  --cu-nav-h-ratio: 0.048;    /* 30/625 */
   position: relative;
   width: 100%;
   /* First paint = artboard; section taller so bleed is scrollable */
@@ -301,12 +302,13 @@ body.is-home .cu-hero {
 }
 
 .cu-hero__board {
-  /* Artboard fold only — nav/copy % stay correct */
+  /* Artboard fold — shapes/photos extend below into bleed */
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100% * var(--cu-art-h) / var(--cu-vb-h)); /* = 100svh */
+  height: var(--cu-fold-h); /* = 100svh on desktop */
+  overflow: visible;
 }
 
 .cu-hero__shapes {
@@ -322,14 +324,49 @@ body.is-home .cu-hero {
   overflow: visible;
 }
 
-/* Nav — artboard %; diameter = strip height → always a circle */
+/* Photos — HTML cover crop, masked to organic paths (never SVG-stretched) */
+.cu-hero__photos {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% * var(--cu-vb-h) / var(--cu-art-h));
+  z-index: 2;
+  pointer-events: none;
+}
+
+.cu-photo {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.cu-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--cu-pos, 50% 50%);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Nav — artboard % of fold; diameter = strip height → always a circle */
 .cu-orbits {
   position: absolute;
   z-index: 60;
   left: var(--cu-nav-x);
-  top: var(--cu-nav-y);
+  top: calc(var(--cu-fold-h) * var(--cu-nav-y-ratio));
   width: var(--cu-nav-w);
-  height: var(--cu-nav-h);
+  height: calc(var(--cu-fold-h) * var(--cu-nav-h-ratio));
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
@@ -365,8 +402,12 @@ body.is-home .cu-hero {
 }
 
 .cu-hero__copy {
+  /* Cover artboard fold only (not scroll bleed) */
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--cu-fold-h);
   z-index: 6;
   display: flex;
   flex-direction: column;
@@ -375,7 +416,9 @@ body.is-home .cu-hero {
   text-align: center;
   pointer-events: none;
   padding: 0 1rem;
+  box-sizing: border-box;
 }
+
 
 .cu-hero__title {
   margin: 0 0 1.35rem;
@@ -386,6 +429,10 @@ body.is-home .cu-hero {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #1e1f1e;
+}
+.cu-hero__title-line {
+  display: block;
+  white-space: nowrap;
 }
 
 .cu-hero__cta {
@@ -539,13 +586,209 @@ body.is-home .cu-hero {
   .cu-cats-grid { grid-template-columns: 1fr 1fr; }
 }
 
-@media (max-width: 720px) {
-  .cu-hero__thumbs { display: none; }
-  .cu-hero__title {
-    font-size: clamp(1.55rem, 7vw, 2.2rem);
-    letter-spacing: 0.08em;
+/* —— Responsive breakpoints ——
+   Portrait phone/tablet: calibrated mobile frame (cover, top-anchored).
+   Landscape short AR: desktop art cover, top-anchored.
+   Wide landscape / desktop: full-bleed none stretch.
+*/
+.cu-hero__board--mob { display: none; }
+
+.cu-hero__stage--desk {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Landscape tablets / short wide viewports — desktop composition, cover */
+@media (min-width: 768px) and (orientation: landscape) and (max-aspect-ratio: 8 / 5) {
+  .cu-hero {
+    --cu-fold-h: calc(var(--cu-art-h) * 1px);
+    height: 100svh;
+    min-height: 100svh;
+    overflow: hidden;
+    background: var(--cu-cream);
   }
+
+  .cu-hero__board--desk {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .cu-hero__stage--desk {
+    inset: auto;
+    left: 50%;
+    top: 0;
+    width: calc(var(--cu-art-w) * 1px);
+    height: calc(var(--cu-art-h) * 1px);
+    --cu-desk-scale: max(
+      100vw / (var(--cu-art-w) * 1px),
+      100svh / (var(--cu-art-h) * 1px)
+    );
+    transform: translateX(-50%) scale(var(--cu-desk-scale));
+    transform-origin: top center;
+  }
+
+  .cu-hero__board--desk .cu-hero__shapes,
+  .cu-hero__board--desk .cu-hero__photos {
+    height: calc(100% * var(--cu-vb-h) / var(--cu-art-h));
+  }
+
+  .cu-hero__board--desk .cu-orbits {
+    top: calc(var(--cu-fold-h) * var(--cu-nav-y-ratio));
+    height: calc(var(--cu-fold-h) * var(--cu-nav-h-ratio));
+  }
+
+  .cu-hero__board--desk .cu-hero__copy {
+    height: var(--cu-fold-h);
+  }
+
+  .cu-hero__board--desk .cu-hero__title {
+    font-size: clamp(1.75rem, 3.8vw, 2.85rem);
+  }
+}
+
+/* Portrait phones + iPads — mobile frame pack (width-fit; short height → scroll) */
+@media (max-width: 767px), ((max-width: 1024px) and (orientation: portrait)) {
+  body.is-home {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .cu-hero {
+    --cu-fold-h: 100%;
+    --cu-mob-w: 390;
+    --cu-mob-h: 844;
+    /* Width-fit: short viewports scroll instead of cropping the bottom */
+    --cu-mob-scale: calc(100vw / (var(--cu-mob-w) * 1px));
+    --cu-mob-stage-h: calc(var(--cu-mob-h) * 1px * var(--cu-mob-scale));
+    height: max(100svh, var(--cu-mob-stage-h));
+    min-height: 100svh;
+    overflow: visible;
+    background: var(--cu-cream);
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .cu-hero__board--desk { display: none !important; }
+
+  .cu-hero__board--mob {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--cu-mob-stage-h);
+    overflow: hidden;
+    background: var(--cu-cream);
+  }
+
+  .cu-hero__stage--mob {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: calc(var(--cu-mob-w) * 1px);
+    height: calc(var(--cu-mob-h) * 1px);
+    transform: translateX(-50%) scale(var(--cu-mob-scale));
+    transform-origin: top center;
+  }
+
+  .cu-hero__layers {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .cu-hero__cream {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--cu-cream);
+  }
+
+  .cu-layer--solid {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .cu-hero__board--mob .cu-photo {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .cu-hero__board--mob .cu-orbits {
+    left: 5.5%;
+    top: 3.6%;
+    width: 46%;
+    height: 2.85%;
+    min-height: 1.55rem;
+    transform: none;
+    gap: 0.28rem;
+    z-index: 40;
+  }
+  .cu-hero__board--mob .cu-orbit {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+  }
+
+  .cu-hero__board--mob .cu-hero__copy {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0 11%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    pointer-events: none;
+    z-index: 30;
+    box-sizing: border-box;
+  }
+  .cu-hero__board--mob .cu-hero__title {
+    margin: 0 0 0.9rem;
+    font-size: 1.55rem;
+    letter-spacing: 0.1em;
+    line-height: 1.08;
+  }
+  .cu-hero__board--mob .cu-hero__cta {
+    pointer-events: auto;
+    min-height: 2.5rem;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    white-space: nowrap;
+  }
+
+  .cu-hero__thumbs { display: none; }
   .cu-cats-grid { grid-template-columns: 1fr; }
+}
+
+/* Larger portrait tablets — slightly tighter type (stage already scales up) */
+@media (min-width: 700px) and (max-width: 1024px) and (orientation: portrait) {
+  .cu-hero__board--mob .cu-hero__title {
+    font-size: 1.35rem;
+  }
+  .cu-hero__board--mob .cu-hero__cta {
+    min-height: 2.25rem;
+    font-size: 0.55rem;
+  }
+  .cu-hero__board--mob .cu-orbits {
+    min-height: 1.35rem;
+  }
 }
 
 /* Buttons */

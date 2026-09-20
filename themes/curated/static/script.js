@@ -78,11 +78,11 @@
     const cta = hero.querySelector('.cu-hero__cta');
     const shapes = hero.querySelector('.cu-hero__board .cu-hero__shapes')
       || hero.querySelector('.cu-hero__shapes');
+    const photos = hero.querySelector('.cu-hero__photos');
     const orbits = document.querySelectorAll('.cu-orbit');
 
     if (reduceMotion) return;
 
-    // Scale from artboard center (within taller bleed viewBox), not SVG midpoint
     const artH = parseFloat(getComputedStyle(hero).getPropertyValue('--cu-art-h')) || 625;
     const vbH = parseFloat(getComputedStyle(hero).getPropertyValue('--cu-vb-h')) || artH;
     const originY = `${((artH * 0.5) / vbH) * 100}%`;
@@ -94,12 +94,20 @@
         transformOrigin: `50% ${originY}`,
       });
     }
+    if (photos) {
+      gsap.set(photos, {
+        autoAlpha: 0,
+        scale: 1.04,
+        transformOrigin: `50% ${originY}`,
+      });
+    }
     gsap.set(title, { autoAlpha: 0, filter: 'blur(10px)', y: 16 });
     gsap.set(cta, { autoAlpha: 0, y: 10, scale: 0.92 });
     gsap.set(orbits, { autoAlpha: 0, y: -8 });
 
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
     if (shapes) tl.to(shapes, { autoAlpha: 1, scale: 1, duration: 1.35 }, 0);
+    if (photos) tl.to(photos, { autoAlpha: 1, scale: 1, duration: 1.35 }, 0);
     tl.to(orbits, { autoAlpha: 1, y: 0, duration: 0.65, stagger: 0.04 }, 0.15)
       .to(title, { autoAlpha: 1, filter: 'blur(0px)', y: 0, duration: 1.05 }, 0.35)
       .to(cta, { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: 'back.out(1.5)' }, 0.65);

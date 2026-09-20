@@ -3,6 +3,10 @@
 Artboard fold stays 1024×625 (nav/copy %). Paths that extend past y=625
 (Figma bottom lobes) keep their geometry; SVG viewBox + CSS board height
 include that bleed so shapes do not look cropped on scroll.
+
+Photos live in an HTML layer (object-fit: cover + object-position) masked
+to the organic paths. They must NOT sit inside the preserveAspectRatio=none
+shapes SVG — that non-uniform scale stretches bitmaps.
 """
 from __future__ import annotations
 
@@ -10,6 +14,7 @@ import json
 import math
 import re
 from pathlib import Path
+from urllib.parse import quote
 
 OUT = Path(r"d:\Cursor\clothing_shop\themes\curated\shapes")
 TPL = Path(r"d:\Cursor\clothing_shop\themes\curated\templates")
@@ -29,12 +34,23 @@ FILLS = {
 }
 
 # Image boxes from approved/hero-preview.svg (artboard space, slight pad)
+# object_position: center subject in the mask without stretch (cover crop).
 PHOTO_BOX = {
-    "F-photo-left": ("img/hero-left.jpg", -7.33, 143.55, 302.08, 573.95),
-    "G-photo-top": ("img/hero-top.jpg", 545.64, -6.74, 296.36, 207.74),
-    "H-photo-right": ("img/hero-right.jpg", 738.0, -6.0, 292.05, 376.63),
-    "G-photo-bottom": ("img/hero-bl.jpg", 179.4, 415.95, 258.86, 299.27),
+    "F-photo-left": ("img/hero-left.jpg", -7.33, 143.55, 302.08, 573.95, "50% 28%"),
+    "G-photo-top": ("img/hero-top.jpg", 545.64, -6.74, 296.36, 207.74, "50% 48%"),
+    "H-photo-right": ("img/hero-right.jpg", 738.0, -6.0, 292.05, 376.63, "48% 40%"),
+    "G-photo-bottom": ("img/hero-bl.jpg", 179.4, 415.95, 258.86, 299.27, "50% 45%"),
 }
+
+
+def photo_mask_data_uri(path_d: str, x: float, y: float, w: float, h: float) -> str:
+    """SVG mask that stretches with the photo box (matches shapes none-scale)."""
+    svg = (
+        f'<svg xmlns="http://www.w3.org/2000/svg" '
+        f'viewBox="{x:g} {y:g} {w:g} {h:g}" preserveAspectRatio="none">'
+        f'<path fill="#fff" d="{path_d}"/></svg>'
+    )
+    return "data:image/svg+xml," + quote(svg, safe="")
 
 # Paths that participate in the live hero (bleed ymax is taken from these)
 HERO_PATH_IDS = (
@@ -169,22 +185,31 @@ def main() -> None:
         hero[sid].pop("stripe_lift", None)
         hero[sid].pop("stripe_drop", None)
 
+    for sid, (src, x, y, w, h, pos) in PHOTO_BOX.items():
+        if sid not in hero:
+            hero[sid] = {}
+        hero[sid]["photo"] = {
+            "src": src,
+            "box": [x, y, w, h],
+            "object_position": pos,
+        }
+
     layouts["hero"] = hero
     layouts["_meta"]["version"] = 18
     layouts["_meta"]["artboard"] = [0, 0, ART_W, ART_H]
     layouts["_meta"]["board"] = [ART_W, float(vb_h)]
     layouts["_meta"]["viewBox"] = [0, 0, ART_W, float(vb_h)]
     layouts["_meta"]["note"] = (
-        "full-bleed none shapes; CSS circular nav; photos slice-in-clip; "
+        "full-bleed none shapes; HTML photos cover+mask; "
         f"scroll bleed viewBox H={vb_h:g} (artboard {ART_H:g})"
     )
 
-    cache = "v=37"
+    cache = "v=38"
     # Hide flat artboard closure of upper (path ends with H at y≈624.6).
     # Stripe = natural peek of C-dark-upper under C-dark-bottom (thick right → thin left).
     upper_clip_h = 612
     lines = [
-        "{# v18 — full-bleed shapes + scroll bleed past artboard #}",
+        "{# v18 — full-bleed shapes + HTML photo masks (no SVG image stretch) #}",
         "{% load static %}",
         f'<svg class="cu-hero__shapes" viewBox="0 0 {ART_W:g} {vb_h:g}" '
         f'preserveAspectRatio="none" aria-hidden="true">',
@@ -192,13 +217,6 @@ def main() -> None:
         f'    <clipPath id="clip-C-dark-upper">'
         f'<rect x="-40" y="-40" width="{ART_W + 80:g}" height="{upper_clip_h + 40}"/>'
         f"</clipPath>",
-    ]
-    for sid in PHOTO_BOX:
-        lines.append(
-            f'    <clipPath id="clip-{sid}">'
-            f'<path d="{paths[sid]}"/></clipPath>'
-        )
-    lines += [
         "  </defs>",
         '  <g id="bg-cream">',
         f'    <path id="D-cream-center" fill="{FILLS["D-cream-center"]}" '
@@ -217,16 +235,29 @@ def main() -> None:
         f'    <path id="C-dark-bottom" fill="{FILLS["C-dark-bottom"]}" '
         f'd="{paths["C-dark-bottom"]}"/>',
         "  </g>",
-        '  <g id="photos">',
+        "</svg>",
+        "",
+        '<div class="cu-hero__photos" aria-hidden="true">',
     ]
-    for sid, (src, x, y, w, h) in PHOTO_BOX.items():
-        lines.append(
-            f'    <image id="{sid}" href="{{% static \'{src}\' %}}?{cache}" '
-            f'x="{x}" y="{y}" width="{w}" height="{h}" '
-            f'preserveAspectRatio="xMidYMid slice" '
-            f'clip-path="url(#clip-{sid})"/>'
-        )
-    lines += ["  </g>", "</svg>"]
+    for sid, (src, x, y, w, h, pos) in PHOTO_BOX.items():
+        mask = photo_mask_data_uri(paths[sid], x, y, w, h)
+        left = x / ART_W * 100.0
+        top = y / vb_h * 100.0
+        width = w / ART_W * 100.0
+        height = h / vb_h * 100.0
+        short = sid.replace("photo-", "").replace("-", "")
+        lines += [
+            f'  <figure class="cu-photo cu-photo--{short}" '
+            f'style="left:{left:.4f}%;top:{top:.4f}%;'
+            f"width:{width:.4f}%;height:{height:.4f}%;"
+            f"--cu-pos:{pos};"
+            f"-webkit-mask-image:url('{mask}');"
+            f"mask-image:url('{mask}');\">",
+            f'    <img src="{{% static \'{src}\' %}}?{cache}" alt="" '
+            f'draggable="false" decoding="async">',
+            "  </figure>",
+        ]
+    lines += ["</div>"]
     (TPL / "partials" / "hero_board.html").write_text(
         "\n".join(lines) + "\n", encoding="utf-8"
     )

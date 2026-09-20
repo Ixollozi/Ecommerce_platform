@@ -12,13 +12,30 @@
 {% static 'img/look4.jpg' as look4 %}
 
 <section class="cu-hero" aria-label="{{ store_name }}">
-  <div class="cu-hero__board">
-    {% include "partials/hero_board.html" %}
-    {% include "partials/hero_nav.html" %}
-
-    <div class="cu-hero__copy">
-      <h1 class="cu-hero__title">CURATED FOR<br>THE DISCERNING</h1>
-      <a class="cu-hero__cta" href="{% url 'catalog' %}">EXPLORE THE COLLECTION</a>
+  <div class="cu-hero__board cu-hero__board--desk">
+    <div class="cu-hero__stage cu-hero__stage--desk">
+      {% include "partials/hero_board.html" %}
+      <div class="cu-hero__copy">
+        <h1 class="cu-hero__title">
+          <span class="cu-hero__title-line">CURATED FOR</span>
+          <span class="cu-hero__title-line">THE DISCERNING</span>
+        </h1>
+        <a class="cu-hero__cta" href="{% url 'catalog' %}">EXPLORE THE COLLECTION</a>
+      </div>
+      {% include "partials/hero_nav.html" %}
+    </div>
+  </div>
+  <div class="cu-hero__board cu-hero__board--mob">
+    <div class="cu-hero__stage cu-hero__stage--mob">
+      {% include "partials/hero_board_mobile.html" %}
+      <div class="cu-hero__copy">
+        <h1 class="cu-hero__title">
+          <span class="cu-hero__title-line">CURATED FOR</span>
+          <span class="cu-hero__title-line">THE DISCERNING</span>
+        </h1>
+        <a class="cu-hero__cta" href="{% url 'catalog' %}">EXPLORE THE COLLECTION</a>
+      </div>
+      {% include "partials/hero_nav.html" %}
     </div>
   </div>
 </section>
