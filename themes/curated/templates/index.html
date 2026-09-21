@@ -6,11 +6,6 @@
 {% block body_class %}is-home{% endblock %}
 
 {% block content %}
-{% static 'img/look1.jpg' as look1 %}
-{% static 'img/look2.jpg' as look2 %}
-{% static 'img/look3.jpg' as look3 %}
-{% static 'img/look4.jpg' as look4 %}
-
 <section class="cu-hero" aria-label="{{ store_name }}">
   <div class="cu-hero__board cu-hero__board--desk">
     <div class="cu-hero__stage cu-hero__stage--desk">
@@ -42,42 +37,7 @@
   </div>
 </section>
 
-<section class="cu-bridge">
-  <p class="cu-bridge__kicker reveal">{% trans "A quieter wardrobe" %}</p>
-  <h2 class="cu-bridge__line reveal">
-    {% trans "Pieces chosen slowly — fabric, form, and the space between." %}
-  </h2>
+<section class="cu-below" aria-label="{% trans 'About and new arrivals' %}">
+  {% include "partials/below_board.html" %}
 </section>
-
-{% if categories %}
-<section class="cu-depts">
-  <div class="cu-section-head">
-    <h2>{% trans "Departments" %}</h2>
-    <a class="cu-link" href="{% url 'catalog' %}">{% trans "View Catalog" %}</a>
-  </div>
-  <ul class="cu-depts-list">
-    {% for category in categories %}
-    <li class="reveal">
-      <a class="cu-dept" href="{% url 'catalog' %}{% if category.slug %}?category={{ category.slug }}{% endif %}">
-        <span class="cu-dept__num">{{ forloop.counter|stringformat:"02d" }}</span>
-        <span class="cu-dept__thumb" aria-hidden="true">
-          {% if category|display_image %}
-            <img src="{{ category|display_image }}" alt="" loading="lazy">
-          {% elif forloop.counter0|divisibleby:4 %}
-            <img src="{{ look1 }}" alt="" loading="lazy">
-          {% elif forloop.counter0|add:1|divisibleby:4 %}
-            <img src="{{ look2 }}" alt="" loading="lazy">
-          {% elif forloop.counter0|add:2|divisibleby:4 %}
-            <img src="{{ look3 }}" alt="" loading="lazy">
-          {% else %}
-            <img src="{{ look4 }}" alt="" loading="lazy">
-          {% endif %}
-        </span>
-        <span class="cu-dept__name">{{ category.name }}</span>
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
-</section>
-{% endif %}
 {% endblock %}

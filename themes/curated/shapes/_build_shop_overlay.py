@@ -75,10 +75,10 @@ def tile_block(n: int, style: str) -> str:
     return (
         f"  {{% if forloop.counter == {n} %}}\n"
         f'  <a class="cu-hero-shop__tile" style="{style}"\n'
-        f"     href=\"{{% if product.slug %}}{{% url 'product' product.slug %}}"
-        f"{{% else %}}{{% url 'catalog' %}}{{% endif %}}\">\n"
-        f"    {{% if product|display_image %}}\n"
-        f'      <img src="{{{{ product|display_image }}}}" alt="{{{{ product.name }}}}" '
+        f"     href=\"{{% url 'catalog' %}}"
+        f"{{% if category.slug %}}?category={{{{ category.slug }}}}{{% endif %}}\">\n"
+        f"    {{% if category|display_image %}}\n"
+        f'      <img src="{{{{ category|display_image }}}}" alt="{{{{ category.name }}}}" '
         f'loading="lazy" decoding="async">\n'
         f"    {{% else %}}\n"
         f'      <span class="cu-hero-shop__ph" aria-hidden="true"></span>\n'
@@ -94,14 +94,16 @@ def mode_block(mode: str, art: list[float], slots: dict) -> str:
     s3 = pct_style(slots["product-3"], art)
     sc = pct_style(slots["catalog-cta"], art)
     parts = [
-        f'<div class="cu-hero-shop cu-hero-shop--{mode}" aria-label="Selected products">',
-        "  {% for product in products %}",
+        f'<div class="cu-hero-shop cu-hero-shop--{mode}" aria-label="Categories">',
+        "  {% with tiles=home_tiles|default:categories %}",
+        "  {% for category in tiles %}",
         "  {% if forloop.counter <= 3 %}",
         tile_block(1, s1),
         tile_block(2, s2),
         tile_block(3, s3),
         "  {% endif %}",
         "  {% endfor %}",
+        "  {% endwith %}",
         f'  <a class="cu-hero-shop__cta" style="{sc}" href="{{% url \'catalog\' %}}">'
         "{% trans \"View Catalog\" %}</a>",
         "</div>",

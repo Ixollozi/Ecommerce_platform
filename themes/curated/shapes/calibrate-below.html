@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Curated — калибровка низа (About + New Arrivals)</title>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #111; color: #eee; }
+    header { padding: 1.1rem 1.25rem; border-bottom: 1px solid #333; max-width: 52rem; }
+    h1 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+    p, li { font-size: 0.88rem; line-height: 1.5; color: #b8b8b8; }
+    code { color: #c5b39d; }
+    ol { margin: 0.75rem 0 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; }
+    .box { margin: 1rem 1.25rem; padding: 0.9rem 1rem; background: #1a1a1a;
+           border: 1px solid #333; border-radius: 10px; max-width: 52rem; }
+    .pack { margin: 1rem 1.25rem; max-width: min(96vw, 1200px);
+            border: 1px solid #333; background: #1a1a1a; }
+    .pack object, .pack img { display: block; width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Новый низ: только фигуры (solid) + ref</h1>
+    <p>Hero не трогаем. Frontend с фото — только после «готово».</p>
+    <ol>
+      <li>Place в Figma: <code>themes/curated/shapes/figma-pack-below.svg</code></li>
+      <li>Красные = photo-mask · Голубые = back/shadow · один цвет, без фото</li>
+      <li>Подгони к краям контейнеров на рефе (не к силуэту модели)</li>
+      <li>Сохрани id: <code>about-back</code>, <code>about-mask</code>,
+          <code>na-1-back</code>…<code>na-4-mask</code></li>
+      <li>Export SVG → <code>themes/curated/shapes/inbox/calibrated-below.svg</code></li>
+      <li>В чат: <strong>готово</strong></li>
+    </ol>
+  </header>
+  <div class="box">
+    Превью пака ниже. Если контур плохой — правь в Figma по рефу.
+  </div>
+  <div class="pack">
+    <object type="image/svg+xml" data="figma-pack-below.svg">figma-pack-below.svg</object>
+  </div>
+</body>
+</html>

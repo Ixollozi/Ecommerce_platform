@@ -114,17 +114,20 @@ test-results/
 .cursor/*.log
 
 # ----- Theme shapes pipeline (organic / curated-like) -----
-# Tracked: paths/, build scripts, organic_layouts.json, figma-pack.svg,
-#          calibrate.html, approved/ (slots + calibrated snapshot),
-#          templates partials from _build_*.
-# Local only: inbox drops, QA shots, generated previews, static/shapes WIP.
+# Tracked: paths/, whitelisted _build/_import/_serve/_trace/_watch scripts,
+#          organic_layouts.json, figma-pack*.svg, calibrate*.html,
+#          approved/ refs + slots + lock snapshots (not QA).
+# Local only: inbox drops, QA/debug shots, generated previews, one-off helpers.
 themes/*/shapes/inbox/**
 !themes/*/shapes/inbox/*.txt
 themes/*/shapes/approved/qa-*
 themes/*/shapes/approved/qa-*/
+themes/*/shapes/approved/*-debug*
+themes/*/shapes/approved/*-trace-qa*
 themes/*/shapes/mask-*.png
 themes/*/shapes/qa-*.png
 themes/*/shapes/qa-*.html
+themes/*/shapes/figma-shapes-*-solid.svg
 themes/*/shapes/[0-9][0-9]-*.svg
 themes/*/shapes/hero-shapes.svg
 themes/*/shapes/index.html
@@ -140,10 +143,16 @@ themes/*/shapes/_*.py
 !themes/*/shapes/_serve_mobile_calibrate.py
 !themes/*/shapes/_serve_shop_calibrate.py
 !themes/*/shapes/_build_shop_overlay.py
+!themes/*/shapes/_build_below_pack.py
+!themes/*/shapes/_trace_below_figures.py
+!themes/*/shapes/_build_below.py
+!themes/*/shapes/_import_calibrated_below.py
+!themes/*/shapes/_watch_below_calibrate.py
 themes/*/static/shapes/**
 !themes/*/static/shapes/organic_layouts.json
 themes/*/static/img/_ref-*
 themes/*/static/img/blob-*
+themes/*/static/img/below-ref.png
 
 # ----- Misc temp -----
 *.tmp

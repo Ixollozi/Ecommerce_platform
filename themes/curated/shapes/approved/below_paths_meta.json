@@ -1,0 +1,23 @@
+{
+  "artboard": [
+    1200.0,
+    1100.0
+  ],
+  "ids": [
+    "about-back",
+    "about-mask",
+    "na-1-fringe",
+    "na-1-body",
+    "na-1-waist",
+    "na-2-fringe",
+    "na-2-body",
+    "na-2-waist",
+    "na-3-fringe",
+    "na-3-body",
+    "na-3-waist",
+    "na-4-fringe",
+    "na-4-body",
+    "na-4-waist"
+  ],
+  "source": "inbox/calibrated-below.svg"
+}

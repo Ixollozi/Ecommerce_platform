@@ -1,33 +1,39 @@
-# shapes/ — organic hero pipeline (curated)
+# shapes/ — organic hero + below pipeline (curated)
 
 ```
 shapes/
-  paths/                      # source of truth (dense SVG paths)
-  organic_layouts.json        # layout meta (built)
-  figma-pack.svg              # pack for Figma calibration
-  calibrate.html              # Figma instructions
-  inbox/                      # local drops only (gitignored)
+  paths/                      # locked dense SVG paths (source of truth)
+  paths/below/                # About + New Arrivals figures
+  organic_layouts.json        # hero layout meta (built)
+  figma-pack.svg              # hero pack for Figma
+  figma-pack-below.svg        # below pack for Figma
+  calibrate.html
+  calibrate-below.html
+  inbox/                      # local drops only (gitignored except *.txt)
   approved/
-    calibrated.svg            # last imported desktop snapshot
-    figma-ref-raw.png         # design reference
-    mobile_slots.json         # current mobile frame slots
-    shop_slots.json           # desk+mob product tiles + catalog CTA
-    versions/                 # archived mobile layouts
-  _build_figma_pack.py
-  _import_calibrated.py
-  _build_hero.py              # → templates/partials/hero_board.html
-  _build_mobile_pack.py       # → hero_board_mobile.html from approved slots
-  _serve_mobile_calibrate.py  # http://127.0.0.1:8767/
-  _serve_shop_calibrate.py    # http://127.0.0.1:8768/
-  _build_shop_overlay.py      # → templates/partials/hero_shop.html
+    calibrated.svg            # last hero import snapshot
+    figma-ref-raw.png         # hero design ref
+    below-ref.png             # below design ref
+    below-shapes-locked.svg   # below lock snapshot
+    below_paths_meta.json
+    mobile_slots.json
+    shop_slots.json
+    versions/
+  _build_*.py / _import_*.py / _serve_*.py / _trace_*.py / _watch_*.py
 ```
 
-**Do not commit:** `inbox/*` (except `*.txt`), `qa-*`, generated
-`mobile-preview.html` / `mobile-calibrate.html` / `mobile-pack.svg` /
-`shop-calibrate.html`.
+**Do not commit:** `inbox/*` (except `*.txt`), `qa-*`, `*-debug*`, `*-trace-qa*`,
+generated `mobile-preview.html` / `mobile-calibrate.html` / `mobile-pack.svg` /
+`shop-calibrate.html`, one-off helpers.
 
-**Rebuild desktop hero:** `python themes/curated/shapes/_build_hero.py`  
-**Rebuild mobile from slots:** `python themes/curated/shapes/_build_mobile_pack.py`  
-**Calibrate mobile:** `python themes/curated/shapes/_serve_mobile_calibrate.py` → Save → rebuild.  
-**Shop overlay:** `python themes/curated/shapes/_serve_shop_calibrate.py` → Save →
-`python themes/curated/shapes/_build_shop_overlay.py` (or say «готово»).
+**Hero**
+- Desktop: `python themes/curated/shapes/_build_hero.py`
+- Mobile slots: `python themes/curated/shapes/_serve_mobile_calibrate.py` → Save → `_build_mobile_pack.py`
+- Shop overlay: `_serve_shop_calibrate.py` → `_build_shop_overlay.py`
+
+**Below-fold (About + New Arrivals)**
+1. Draft/pack: `python themes/curated/shapes/_build_below_pack.py`
+2. Open `figma-pack-below.svg` / `calibrate-below.html` → light Figma fix
+3. Export → `inbox/calibrated-below.svg` → «готово»
+4. Import + build: `_import_calibrated_below.py` then `_build_below.py`
+5. Optional watch: `_watch_below_calibrate.py`
