@@ -37,7 +37,7 @@ FILLS = {
 # object_position: center subject in the mask without stretch (cover crop).
 PHOTO_BOX = {
     "F-photo-left": ("img/hero-left.jpg", -7.33, 143.55, 302.08, 573.95, "50% 28%"),
-    "G-photo-top": ("img/hero-top.jpg", 545.64, -6.74, 296.36, 207.74, "50% 48%"),
+    "G-photo-top": ("img/hero-top.jpg", 523.11, -6.74, 296.36, 207.74, "50% 48%"),
     "H-photo-right": ("img/hero-right.jpg", 738.0, -6.0, 292.05, 376.63, "48% 40%"),
     "G-photo-bottom": ("img/hero-bl.jpg", 179.4, 415.95, 258.86, 299.27, "50% 45%"),
 }

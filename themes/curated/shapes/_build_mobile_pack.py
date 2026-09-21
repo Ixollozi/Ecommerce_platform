@@ -128,6 +128,19 @@ def path_d(name: str) -> str:
     return " ".join(m.group(1).split())
 
 
+def path_y_extent(name: str) -> tuple[float, float]:
+    """Min/max Y from absolute path numbers (good enough for bleed)."""
+    nums = [float(x) for x in re.findall(r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?", path_d(name))]
+    ys = nums[1::2] if len(nums) >= 2 else [0.0]
+    return min(ys), max(ys)
+
+
+# Paths that intentionally bleed past desktop artboard fold (y>625)
+PATH_BLEED_YMAX = {
+    "C-dark-bottom": 826.0,
+}
+
+
 def fit_slot(bbox: tuple[float, float, float, float], slot: tuple[float, float, float, float]):
     """Map desktop bbox into phone slot with uniform scale (contain) + center."""
     bx, by, bw, bh = bbox
@@ -285,6 +298,8 @@ def main() -> None:
         "H-photo-right": "cu-photo--Hright",
         "G-photo-bottom": "cu-photo--Gbottom",
     }
+    # C-dark-bottom path bleeds past artboard fold (ymax≈826) → past phone 844 after transform
+    bleed_u = 0.0
     layer_chunks: list[str] = [
         f'  <div class="cu-hero__cream" aria-hidden="true"></div>',
     ]
@@ -310,9 +325,22 @@ def main() -> None:
         else:
             t = transforms[sid]
             d = path_d(sid)
+            vb_h = MH
+            extra_style = ""
+            ymax = PATH_BLEED_YMAX.get(sid)
+            if ymax is not None:
+                y_phone = t["ty"] + ymax * t["scale"]
+                if y_phone > MH + 1:
+                    vb_h = y_phone + 12.0
+                    bleed_u = max(bleed_u, vb_h - MH)
+                    # Keep width 100% of stage; grow height so rounded lobe isn't viewBox-clipped
+                    extra_style = (
+                        f"height:calc(100% * {vb_h:.3f} / {MH:g});"
+                        f"overflow:visible;"
+                    )
             layer_chunks.append(
-                f'  <svg class="cu-layer cu-layer--solid" style="z-index:{zi}" '
-                f'viewBox="0 0 {MW:g} {MH:g}" preserveAspectRatio="xMidYMid meet" '
+                f'  <svg class="cu-layer cu-layer--solid" style="z-index:{zi};{extra_style}" '
+                f'viewBox="0 0 {MW:g} {vb_h:.3f}" preserveAspectRatio="xMidYMin meet" '
                 f'aria-hidden="true">\n'
                 f'    <g transform="translate({t["tx"]:.3f} {t["ty"]:.3f}) '
                 f'scale({t["scale"]:.6f})">\n'
@@ -323,7 +351,7 @@ def main() -> None:
 
     board = f"""{{# mobile portrait frame — interleaved layers by calibrate order #}}
 {{% load static %}}
-<div class="cu-hero__layers" aria-hidden="true">
+<div class="cu-hero__layers" style="--cu-mob-bleed-u:{bleed_u:.1f}" aria-hidden="true">
 {chr(10).join(layer_chunks)}
 </div>
 """

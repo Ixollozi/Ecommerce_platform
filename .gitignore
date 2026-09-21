@@ -131,12 +131,15 @@ themes/*/shapes/index.html
 themes/*/shapes/mobile-calibrate.html
 themes/*/shapes/mobile-preview.html
 themes/*/shapes/mobile-pack.svg
+themes/*/shapes/shop-calibrate.html
 themes/*/shapes/_*.py
 !themes/*/shapes/_build_hero.py
 !themes/*/shapes/_build_figma_pack.py
 !themes/*/shapes/_import_calibrated.py
 !themes/*/shapes/_build_mobile_pack.py
 !themes/*/shapes/_serve_mobile_calibrate.py
+!themes/*/shapes/_serve_shop_calibrate.py
+!themes/*/shapes/_build_shop_overlay.py
 themes/*/static/shapes/**
 !themes/*/static/shapes/organic_layouts.json
 themes/*/static/img/_ref-*

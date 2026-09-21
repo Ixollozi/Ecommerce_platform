@@ -15,6 +15,7 @@
   <div class="cu-hero__board cu-hero__board--desk">
     <div class="cu-hero__stage cu-hero__stage--desk">
       {% include "partials/hero_board.html" %}
+      {% include "partials/hero_shop.html" %}
       <div class="cu-hero__copy">
         <h1 class="cu-hero__title">
           <span class="cu-hero__title-line">CURATED FOR</span>
@@ -28,6 +29,7 @@
   <div class="cu-hero__board cu-hero__board--mob">
     <div class="cu-hero__stage cu-hero__stage--mob">
       {% include "partials/hero_board_mobile.html" %}
+      {% include "partials/hero_shop.html" %}
       <div class="cu-hero__copy">
         <h1 class="cu-hero__title">
           <span class="cu-hero__title-line">CURATED FOR</span>
@@ -40,75 +42,42 @@
   </div>
 </section>
 
+<section class="cu-bridge">
+  <p class="cu-bridge__kicker reveal">{% trans "A quieter wardrobe" %}</p>
+  <h2 class="cu-bridge__line reveal">
+    {% trans "Pieces chosen slowly — fabric, form, and the space between." %}
+  </h2>
+</section>
+
 {% if categories %}
-<section class="cu-cats">
+<section class="cu-depts">
   <div class="cu-section-head">
-    <h2>{% trans "Categories" %}</h2>
+    <h2>{% trans "Departments" %}</h2>
     <a class="cu-link" href="{% url 'catalog' %}">{% trans "View Catalog" %}</a>
   </div>
-  <div class="cu-cats-grid">
+  <ul class="cu-depts-list">
     {% for category in categories %}
-    <a class="cu-cat reveal" href="{% url 'catalog' %}{% if category.slug %}?category={{ category.slug }}{% endif %}">
-      <div class="cu-cat-img">
-        {% if category|display_image %}
-          <img src="{{ category|display_image }}" alt="{{ category.name }}" loading="lazy">
-        {% elif forloop.counter0|divisibleby:4 %}
-          <img src="{{ look1 }}" alt="{{ category.name }}" loading="lazy">
-        {% elif forloop.counter0|add:1|divisibleby:4 %}
-          <img src="{{ look2 }}" alt="{{ category.name }}" loading="lazy">
-        {% elif forloop.counter0|add:2|divisibleby:4 %}
-          <img src="{{ look3 }}" alt="{{ category.name }}" loading="lazy">
-        {% else %}
-          <img src="{{ look4 }}" alt="{{ category.name }}" loading="lazy">
-        {% endif %}
-      </div>
-      <div class="cu-cat-meta">
-        <span>{{ forloop.counter|stringformat:"02d" }}</span>
-        <h3>{{ category.name }}</h3>
-      </div>
-    </a>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
-
-{% if products %}
-<section class="cu-shop" id="products">
-  <div class="cu-section-head">
-    <h2>{% trans "Popular Products" %}</h2>
-    <p class="cu-section-note">{% trans "Shop" %}</p>
-  </div>
-  <div class="cu-products">
-    {% for product in products %}
-    <article class="product-card reveal">
-      <div class="product-media">
-        <a class="product-image" href="{% if product.slug %}{% url 'product' product.slug %}{% else %}{% url 'catalog' %}{% endif %}">
-          {% if product|display_image %}
-            <img src="{{ product|display_image }}" alt="{{ product.name }}" loading="lazy">
+    <li class="reveal">
+      <a class="cu-dept" href="{% url 'catalog' %}{% if category.slug %}?category={{ category.slug }}{% endif %}">
+        <span class="cu-dept__num">{{ forloop.counter|stringformat:"02d" }}</span>
+        <span class="cu-dept__thumb" aria-hidden="true">
+          {% if category|display_image %}
+            <img src="{{ category|display_image }}" alt="" loading="lazy">
+          {% elif forloop.counter0|divisibleby:4 %}
+            <img src="{{ look1 }}" alt="" loading="lazy">
+          {% elif forloop.counter0|add:1|divisibleby:4 %}
+            <img src="{{ look2 }}" alt="" loading="lazy">
+          {% elif forloop.counter0|add:2|divisibleby:4 %}
+            <img src="{{ look3 }}" alt="" loading="lazy">
           {% else %}
-            <div class="product-image-placeholder" aria-hidden="true"></div>
+            <img src="{{ look4 }}" alt="" loading="lazy">
           {% endif %}
-        </a>
-        {% if product.id %}
-        <button class="btn btn-add-cart product-quick-add" type="button" data-product-id="{{ product.id }}" data-product-name="{{ product.name|escapejs }}">{% trans "Add to Cart" %}</button>
-        {% endif %}
-      </div>
-      <div class="product-info">
-        <div class="product-info-top">
-          <h3 class="product-name">
-            <a href="{% if product.slug %}{% url 'product' product.slug %}{% else %}{% url 'catalog' %}{% endif %}">{{ product.name }}</a>
-          </h3>
-          <p class="product-price">
-            {{ product.price|format_price }} {{ currency }}
-            {% if product.old_price and product.old_price > product.price %}
-              <span class="old-price">{{ product.old_price|format_price }} {{ currency }}</span>
-            {% endif %}
-          </p>
-        </div>
-      </div>
-    </article>
+        </span>
+        <span class="cu-dept__name">{{ category.name }}</span>
+      </a>
+    </li>
     {% endfor %}
-  </div>
+  </ul>
 </section>
 {% endif %}
 {% endblock %}
