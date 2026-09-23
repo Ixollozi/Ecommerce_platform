@@ -1,376 +1,325 @@
 ﻿{% extends "base.html" %}
 {% load i18n %}
-{% load static %}
-{% load humanize %}
 {% load translation_tags %}
 {% load product_media %}
 
 {% block title %}{% if product %}{{ product.name }}{% else %}{% trans "Product" %}{% endif %} - {{ store_name }}{% endblock %}
 
 {% block content %}
-    <!-- Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <h1>{% if product %}{{ product.name }}{% else %}{% trans "Product" %}{% endif %}</h1>
-            <nav class="breadcrumbs">
-                <a href="{% url 'index' %}">{% trans "Home" %}</a> / 
-                <a href="{% url 'catalog' %}">{% trans "Catalog" %}</a> / 
-                {% if product.category %}<a href="{% url 'catalog' %}">{{ product.category.name }}</a> / {% endif %}
-                <span>{% if product %}{{ product.name }}{% else %}{% trans "Product" %}{% endif %}</span>
-            </nav>
-        </div>
-    </section>
+{% trans "Product" as str_product %}
+{% trans "Description coming soon." as str_no_description %}
+<section class="cu-product-page">
+  <div class="container">
+    {% if product %}
+    <div class="product-crumbs" aria-label="{% trans 'Breadcrumbs' %}">
+      <a href="{% url 'index' %}">{% trans "Home" %}</a>
+      <span aria-hidden="true">/</span>
+      <a href="{% url 'catalog' %}">{% trans "Catalog" %}</a>
+      <span aria-hidden="true">/</span>
+      <span>{{ product.name|default:str_product }}</span>
+    </div>
 
-    <!-- Product Details -->
-    <section class="product-details">
-        <div class="container">
-            {% if product %}
-            <div class="product-detail-layout">
-                <!-- Product Images -->
-                {% include "partials/product_gallery.html" %}
-
-                <!-- Product Info -->
-                <div class="product-info-detail">
-                    <h1>{{ product.name }}</h1>
-                    <div class="product-rating">
-                        <div class="stars">
-                            {% with rating=product.rating|floatformat:0 %}
-                                {% for i in "12345" %}
-                                    {% if forloop.counter <= rating|add:"0" %}
-                                        <i class="fas fa-star"></i>
-                                    {% else %}
-                                        <i class="far fa-star"></i>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endwith %}
-                        </div>
-                        <span class="rating-text">({{ product.rating }}) {{ product.reviews_count }} {% trans "reviews" %}</span>
-                    </div>
-                    
-                    <div class="product-price-large">
-                        <span class="current-price">{{ product.price|format_price }} {{ currency }}</span>
-                        {% if product.old_price %}
-                            <span class="old-price">{{ product.old_price|format_price }} {{ currency }}</span>
-                            {% if discount %}
-                                <span class="discount">-{{ discount }}%</span>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-
-                    <div class="product-description">
-                        <p>{{ product.description|linebreaks }}</p>
-                    </div>
-
-                    <!-- Color Selection -->
-                    {% if colors %}
-                    <div class="product-options">
-                        <h3>{% trans "Color" %}: <span class="selected-color-name" id="selectedColorName">{{ colors.0.name }}</span></h3>
-                        <div class="color-selector">
-                            {% for color in colors %}
-                                <span class="color-option-large {% if forloop.first %}active{% endif %}" 
-                                      style="background: {{ color.code }}; {% if color.is_light %}border: 2px solid #ddd;{% endif %}" 
-                                      data-color="{{ color.name|lower }}"
-                                      data-color-name="{{ color.name|escapejs }}"
-                                      title="{{ color.name }}"
-                                      tabindex="0" role="button" aria-label="{{ color.name|escapejs }}"></span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    <!-- Quantity -->
-                    <div class="product-options">
-                        <h3>{% trans "Quantity" %}</h3>
-                        <div class="quantity-selector">
-                            <button class="qty-btn" id="decreaseQty">-</button>
-                            <input type="number" value="1" min="1" max="{% if product.stock %}{{ product.stock }}{% else %}10{% endif %}" id="quantity" class="qty-input">
-                            <button class="qty-btn" id="increaseQty">+</button>
-                        </div>
-                        {% if product.stock %}
-                            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
-                                {% trans "In stock" %}: {{ product.stock }} {% trans "pcs" %}.
-                            </p>
-                        {% endif %}
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="product-actions">
-                        {% if product.id %}
-                        <button class="btn btn-primary btn-large" data-product-id="{{ product.id }}" data-product-name="{{ product.name|escapejs }}" data-use-product-form="true">{% trans "Add to Cart" %}</button>
-                        {% else %}
-                        <button class="btn btn-primary btn-large" disabled>{% trans "Add to Cart" %}</button>
-                        {% endif %}
-                    </div>
-
-                    <!-- Product Features -->
-                    {% if product_features %}
-                    <div class="product-features">
-                        {% for feature in product_features %}
-                        <div class="feature-item-small">
-                            <i class="{{ feature.icon }}"></i>
-                            <span>{{ feature.text }}</span>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- Product Tabs -->
-            <div class="product-tabs">
-                <div class="tab-buttons">
-                    <button class="tab-btn active" data-tab="description">{% trans "Description" %}</button>
-                    <button class="tab-btn" data-tab="specifications">{% trans "Specifications" %}</button>
-                    <button class="tab-btn" data-tab="reviews">{% trans "Reviews" %} ({{ product.reviews_count }})</button>
-                </div>
-
-                <div class="tab-content active" id="description">
-                    <h3>{% trans "Product Description" %}</h3>
-                    <p>{{ product.description|linebreaks }}</p>
-                </div>
-
-                <div class="tab-content" id="specifications">
-                    <h3>{% trans "Specifications" %}</h3>
-                    <table class="specs-table">
-                        {% if product.category %}
-                        <tr>
-                            <td>{% trans "Category" %}</td>
-                            <td>{{ product.category.name }}</td>
-                        </tr>
-                        {% endif %}
-                        {% if product.available_colors %}
-                        <tr>
-                            <td>{% trans "Available Colors" %}</td>
-                            <td>{{ product.available_colors }}</td>
-                        </tr>
-                        {% endif %}
-                        {% if product.stock %}
-                        <tr>
-                            <td>{% trans "Stock" %}</td>
-                            <td>{{ product.stock }} {% trans "pcs" %}.</td>
-                        </tr>
-                        {% endif %}
-                    </table>
-                </div>
-
-                <div class="tab-content" id="reviews">
-                    <h3>{% trans "Customer Reviews" %}</h3>
-                    {% if product.reviews_count > 0 %}
-                        <p>{% trans "Average rating" %}: {{ product.rating }} / 5.0 ({{ product.reviews_count }} {% trans "reviews" %})</p>
-                        <!-- Здесь можно добавить реальные отзывы, когда будет модель Review -->
-                    {% else %}
-                        <p>{% trans "No reviews yet. Be the first to review this product!" %}</p>
-                    {% endif %}
-                </div>
-            </div>
+    <div class="product-layout">
+      <div class="product-main">
+        <div class="product-gallery">
+          <div class="product-media-large" aria-hidden="true">
+            {% if gallery_images %}
+              <img class="product-img" id="mainImage" src="{{ gallery_images.0 }}" alt="{{ product.name|default:str_product }}" loading="lazy" />
             {% else %}
-                <div class="container" style="text-align: center; padding: 3rem 0;">
-                    <h2>{% trans "Product not found" %}</h2>
-                    <p>{% trans "The product you are looking for does not exist or has been removed." %}</p>
-                    <a href="{% url 'catalog' %}" class="btn btn-primary">{% trans "Back to Catalog" %}</a>
-                </div>
+              <div class="product-bg product-bg-fallback"></div>
             {% endif %}
-        </div>
-    </section>
+          </div>
 
-    <!-- Related Products -->
-    {% if related_products %}
-    <section class="related-products">
-        <div class="container">
-            <h2 class="section-title">{% trans "Similar Products" %}</h2>
-            <div class="products-grid">
-                {% for related_product in related_products %}
-                <div class="product-card">
-                    <div class="product-image">
-                        <a href="{% url 'product' related_product.slug %}">
-                            {% if related_product|display_image %}
-<img src="{{ related_product|display_image }}" alt="{{ related_product.name }}">
-{% else %}
-                                <div class="product-image-placeholder" aria-hidden="true"></div>
-                            {% endif %}
-                        </a>
-                        <div class="product-overlay">
-                            <a href="{% url 'product' related_product.slug %}" class="btn btn-small">{% trans "Quick View" %}</a>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <a href="{% url 'product' related_product.slug %}" style="text-decoration: none; color: inherit;">
-                            <h3 class="product-name">{{ related_product.name }}</h3>
-                        </a>
-                        <p class="product-price">
-                            {{ related_product.price|format_price }} {{ currency }}
-                            {% if related_product.old_price %}
-                                <span style="text-decoration: line-through; color: #999; font-size: 0.9em; margin-left: 0.5rem;">{{ related_product.old_price|format_price }} {{ currency }}</span>
-                            {% endif %}
-                        </p>
-                        {% if related_product.id %}
-                        <button class="btn btn-add-cart" data-product-id="{{ related_product.id }}" data-product-name="{{ related_product.name|escapejs }}">{% trans "Add to Cart" %}</button>
-                        {% else %}
-                        <button class="btn btn-add-cart" disabled>{% trans "Add to Cart" %}</button>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
+          {% if gallery_images|length > 1 %}
+            <div class="product-thumbs" aria-label="{% trans 'Thumbnails' %}">
+              {% for url in gallery_images %}
+                <button type="button" class="thumb{% if forloop.first %} is-active{% endif %}" data-gallery-src="{{ url }}" aria-label="{% blocktrans with n=forloop.counter %}Photo {{ n }}{% endblocktrans %}">
+                  <img class="product-img" src="{{ url }}" alt="" loading="lazy" />
+                </button>
+              {% endfor %}
             </div>
+          {% endif %}
         </div>
-    </section>
+
+        <div class="product-info">
+          <h1 class="product-page-title">{{ product.name|default:str_product }}</h1>
+          <div class="product-page-sub">
+            <div class="product-rating">
+              <div class="stars" aria-label="{% blocktrans with r=product.rating|default:0 %}Rating {{ r }} of 5{% endblocktrans %}">
+                <span class="stars-fill" style="--fill: {% widthratio product.rating|default:0 5 100 %}%"></span>
+              </div>
+              <span class="rating-text">{{ product.rating|default:"—" }}</span>
+            </div>
+            <span class="product-page-sold">{% trans "Reviews:" %} {{ product.reviews_count|default:0 }}</span>
+          </div>
+
+          <div class="product-badges">
+            {% if product.category %}<span class="badge">{{ product.category.name }}</span>{% endif %}
+            {% if product.old_price %}<span class="badge badge-accent">{% trans "Sale" %}</span>{% endif %}
+            <span class="badge">{% trans "Curated selection" %}</span>
+          </div>
+
+          <div class="product-tabs" aria-label="{% trans 'Description and details' %}">
+            <details class="tab" open>
+              <summary class="tab-summary">{% trans "Description" %}</summary>
+              <div class="tab-body">
+                {{ product.description|default:str_no_description|linebreaksbr }}
+              </div>
+            </details>
+
+            <details class="tab">
+              <summary class="tab-summary">{% trans "Specifications" %}</summary>
+              <div class="tab-body">
+                {% if product_features %}
+                  {% for f in product_features %}
+                    <div><strong>{{ f.title }}</strong>{% if f.text %}: {{ f.text }}{% endif %}</div>
+                  {% endfor %}
+                {% else %}
+                  {% if product.category %}<div><strong>{% trans "Category" %}</strong>: {{ product.category.name }}</div>{% endif %}
+                  {% if product.available_colors %}<div><strong>{% trans "Available Colors" %}</strong>: {{ product.available_colors }}</div>{% endif %}
+                  {% if product.stock %}<div><strong>{% trans "Stock" %}</strong>: {{ product.stock }} {% trans "pcs" %}.</div>{% endif %}
+                  {% if not product.category and not product.available_colors and not product.stock %}
+                    {% trans "Specifications coming soon." %}
+                  {% endif %}
+                {% endif %}
+              </div>
+            </details>
+
+            <details class="tab">
+              <summary class="tab-summary">{% trans "Care" %}</summary>
+              <div class="tab-body">
+                {% trans "Follow the care label. Prefer gentle wash; avoid high heat when drying or ironing." %}
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <aside class="product-buy" aria-label="{% trans 'Purchase' %}">
+        <div class="buy-card">
+          <div class="buy-price">
+            <span class="price">{{ product.price|default:"—"|format_price }}</span>
+            <span class="currency">{{ currency }}</span>
+            {% if product.old_price %}
+              <span class="old-price">{{ product.old_price|format_price }} {{ currency }}</span>
+              {% if discount %}<span class="discount">-{{ discount }}%</span>{% endif %}
+            {% endif %}
+          </div>
+
+          {% if colors %}
+          <div class="buy-row">
+            <div class="buy-label">{% trans "Color" %}: <span id="selectedColorName">{{ colors.0.name }}</span></div>
+            <div class="color-selector">
+              {% for color in colors %}
+                <span class="color-option-large {% if forloop.first %}active{% endif %}"
+                      style="background: {{ color.code }};{% if color.is_light %} border: 2px solid #ddd;{% endif %}"
+                      data-color="{{ color.name|lower }}"
+                      data-color-name="{{ color.name|escapejs }}"
+                      title="{{ color.name }}"
+                      tabindex="0" role="button" aria-label="{{ color.name|escapejs }}"></span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="buy-row">
+            <div class="buy-label">{% trans "Quantity" %}</div>
+            <div class="qty" aria-label="{% trans 'Quantity' %}">
+              <button class="qty-btn" type="button" aria-label="{% trans 'Decrease' %}">−</button>
+              <input class="qty-input" id="qty" type="number" value="1" min="1" max="{% if product.stock %}{{ product.stock }}{% else %}99{% endif %}" aria-label="{% trans 'Quantity' %}" />
+              <button class="qty-btn" type="button" aria-label="{% trans 'Increase' %}">+</button>
+            </div>
+            {% if product.stock %}
+            <p class="buy-stock">{% trans "In stock" %}: {{ product.stock }} {% trans "pcs" %}.</p>
+            {% endif %}
+          </div>
+
+          {% if product.id %}
+            <button
+              type="button"
+              class="btn btn-primary btn-full btn-large"
+              data-product-id="{{ product.id }}"
+              data-product-name="{{ product.name|escapejs }}"
+              data-use-product-form="true"
+            >{% trans "Add to Cart" %}</button>
+          {% else %}
+            <a class="btn btn-ghost btn-full" href="{% url 'catalog' %}">{% trans "Back to Catalog" %}</a>
+          {% endif %}
+
+          <div class="buy-note">
+            {% trans "Need help choosing a size or look? Write to us — we are happy to advise." %}
+          </div>
+        </div>
+
+        <div class="buy-service" aria-label="{% trans 'Service' %}">
+          <div class="service-item">
+            <div class="service-icon" aria-hidden="true">✓</div>
+            <div>
+              <div class="service-title">{% trans "Quality" %}</div>
+              <div class="service-sub">{% trans "Thoughtful materials and finish" %}</div>
+            </div>
+          </div>
+          <div class="service-item">
+            <div class="service-icon" aria-hidden="true">↻</div>
+            <div>
+              <div class="service-title">{% trans "Easy order" %}</div>
+              <div class="service-sub">{% trans "Clear catalog and simple checkout" %}</div>
+            </div>
+          </div>
+          <div class="service-item">
+            <div class="service-icon" aria-hidden="true">→</div>
+            <div>
+              <div class="service-title">{% trans "Delivery" %}</div>
+              <div class="service-sub">{% trans "We ship across the region" %}</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    {% if related_products %}
+    <div class="product-related" aria-label="{% trans 'Similar products' %}">
+      <div class="related-head">
+        <div class="section-title">{% trans "Similar Products" %}</div>
+        <div class="section-sub">{% trans "More pieces in a similar mood" %}</div>
+      </div>
+
+      <div class="products-grid">
+        {% for related_product in related_products %}
+        <div class="product-card">
+          <div class="product-image">
+            <a href="{% url 'product' related_product.slug %}">
+              {% if related_product|display_image %}
+                <img src="{{ related_product|display_image }}" alt="{{ related_product.name }}" loading="lazy">
+              {% else %}
+                <div class="product-image-placeholder" aria-hidden="true"></div>
+              {% endif %}
+            </a>
+          </div>
+          <div class="product-info">
+            <a href="{% url 'product' related_product.slug %}">
+              <h3 class="product-name">{{ related_product.name }}</h3>
+            </a>
+            <p class="product-price">{{ related_product.price|format_price }} {{ currency }}</p>
+            {% if related_product.id %}
+            <button class="btn btn-add-cart" data-product-id="{{ related_product.id }}" data-product-name="{{ related_product.name|escapejs }}">{% trans "Add to Cart" %}</button>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
     {% endif %}
+
+    {% else %}
+    <div class="empty-cart">
+      <h2>{% trans "Product not found" %}</h2>
+      <p>{% trans "The product you are looking for does not exist or has been removed." %}</p>
+      <a href="{% url 'catalog' %}" class="btn btn-primary">{% trans "Back to Catalog" %}</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
 {% endblock %}
 
 {% block extra_js %}
-{% include "partials/product_gallery_js.html" %}
 <script>
-    // Quantity selector
-    const decreaseBtn = document.getElementById('decreaseQty');
-    const increaseBtn = document.getElementById('increaseQty');
-    const quantityInput = document.getElementById('quantity');
-
-    if (decreaseBtn && increaseBtn && quantityInput) {
-        decreaseBtn.addEventListener('click', () => {
-            if (quantityInput.value > 1) {
-                quantityInput.value = parseInt(quantityInput.value) - 1;
-            }
-        });
-
-        increaseBtn.addEventListener('click', () => {
-            const max = parseInt(quantityInput.getAttribute('max'));
-            if (quantityInput.value < max) {
-                quantityInput.value = parseInt(quantityInput.value) + 1;
-            }
-        });
-    }
-
-    // Color selector
-    const colorOptions = document.querySelectorAll('.color-option-large');
-    const selectedColorNameEl = document.getElementById('selectedColorName');
-    colorOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            colorOptions.forEach(o => o.classList.remove('active'));
-            this.classList.add('active');
-            const name = this.getAttribute('data-color-name') || this.getAttribute('aria-label');
-            if (selectedColorNameEl && name) {
-                selectedColorNameEl.textContent = name;
-            }
-        });
-        option.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                this.click();
-            }
-        });
+document.addEventListener('DOMContentLoaded', function () {
+  const mainImage = document.getElementById('mainImage');
+  const thumbs = document.querySelectorAll('.product-thumbs .thumb[data-gallery-src]');
+  if (mainImage && thumbs.length) {
+    thumbs.forEach(function (thumb) {
+      thumb.addEventListener('click', function (e) {
+        e.preventDefault();
+        const src = thumb.getAttribute('data-gallery-src');
+        if (!src) return;
+        mainImage.src = src;
+        thumbs.forEach(function (t) { t.classList.remove('is-active'); });
+        thumb.classList.add('is-active');
+      });
     });
+  }
 
-    // Tabs
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const tabId = this.getAttribute('data-tab');
-            
-            tabButtons.forEach(b => b.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-            
-            this.classList.add('active');
-            const targetTab = document.getElementById(tabId);
-            if (targetTab) {
-                targetTab.classList.add('active');
-            }
-        });
+  document.querySelectorAll('.qty').forEach(function (root) {
+    const input = root.querySelector('.qty-input');
+    const btns = root.querySelectorAll('.qty-btn');
+    const minus = btns[0];
+    const plus = btns[1];
+    if (!input || !minus || !plus) return;
+    const max = Number(input.getAttribute('max') || 99);
+    minus.addEventListener('click', function () {
+      input.value = String(Math.max(1, Number(input.value || 1) - 1));
     });
+    plus.addEventListener('click', function () {
+      input.value = String(Math.min(max, Math.max(1, Number(input.value || 1) + 1)));
+    });
+  });
 
-    // Add to Cart functionality
-    window.addToCartFromProduct = async function(event, productId, productName) {
-        console.log('addToCartFromProduct called with:', { productId, productName, event });
-        
-        if (!productId || productId === 'None' || productId === '') {
-            console.error('Product ID is missing or invalid:', productId);
-            alert('{% trans "Error: Product ID is not specified. This product cannot be added to cart." %}');
-            return;
-        }
-        
-        if (!event || !event.target) {
-            console.error('Event is missing or invalid');
-            alert('{% trans "Error: event not found" %}');
-            return;
-        }
-        
-        const button = event.target;
-        const originalText = button.textContent;
-        button.disabled = true;
-        button.textContent = '{% trans "Adding..." %}';
+  const colorOptions = document.querySelectorAll('.color-option-large');
+  const selectedColorNameEl = document.getElementById('selectedColorName');
+  colorOptions.forEach(function (option) {
+    option.addEventListener('click', function () {
+      colorOptions.forEach(function (o) { o.classList.remove('active'); });
+      this.classList.add('active');
+      const name = this.getAttribute('data-color-name') || this.getAttribute('aria-label');
+      if (selectedColorNameEl && name) selectedColorNameEl.textContent = name;
+    });
+    option.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.click();
+      }
+    });
+  });
+});
 
-        const selectedColor = document.querySelector('.color-option-large.active')?.getAttribute('data-color') || '';
-        const quantity = parseInt(document.getElementById('quantity')?.value || 1);
+window.addToCartFromProduct = async function (event, productId, productName) {
+  if (!productId || productId === 'None' || productId === '') {
+    showNotification?.('{% trans "Error: Product ID is not specified. This product cannot be added to cart." %}', 'error');
+    return;
+  }
+  const button = event?.target?.closest('button') || event?.target;
+  if (!button) return;
+  const originalText = button.textContent;
+  button.disabled = true;
+  button.textContent = '{% trans "Adding..." %}';
 
-        try {
-            const csrftoken = getCsrfToken();
-            console.log('CSRF Token:', csrftoken ? 'Found' : 'Not found');
-            
-            if (!csrftoken) {
-                throw new Error('{% trans "CSRF token not found. Please refresh the page." %}');
-            }
+  const selectedColor = document.querySelector('.color-option-large.active')?.getAttribute('data-color') || '';
+  const quantity = Math.max(1, parseInt(document.getElementById('qty')?.value || '1', 10));
 
-            const requestData = {
-                product_id: parseInt(productId),
-                quantity: quantity,
-                size: '',
-                color: selectedColor
-            };
-            
-            console.log('Sending request to /api/cart/add_item/', requestData);
-
-            const response = await fetch('/api/cart/add_item/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify(requestData)
-            });
-
-            console.log('Response status:', response.status, response.statusText);
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Item added successfully:', data);
-                button.textContent = '{% trans "Added!" %}';
-                button.style.backgroundColor = '#2ecc71';
-                
-                // Обновляем иконку корзины
-                updateCartIcon();
-                
-                // Возвращаем исходный текст через 2 секунды
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.style.backgroundColor = '';
-                    button.disabled = false;
-                }, 2000);
-            } else {
-                const errorData = await response.json().catch(() => ({}));
-                console.error('Failed to add to cart:', response.status, errorData);
-                let errorMessage = '{% trans "Error" %} ' + response.status + ': ';
-                if (errorData.detail) {
-                    errorMessage += errorData.detail;
-                } else if (errorData.error) {
-                    errorMessage += errorData.error;
-                } else {
-                    errorMessage += '{% trans "Failed to add product to cart" %}';
-                }
-                throw new Error(errorMessage);
-            }
-        } catch (error) {
-            console.error('Error adding to cart:', error);
-            button.textContent = '{% trans "Error" %}';
-            button.style.backgroundColor = '#e74c3c';
-            alert(error.message || '{% trans "Failed to add product to cart. Please refresh the page and try again." %}');
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.style.backgroundColor = '';
-                button.disabled = false;
-            }, 2000);
-        }
+  try {
+    const csrftoken = getCsrfToken();
+    if (!csrftoken) throw new Error('{% trans "CSRF token not found. Please refresh the page." %}');
+    const response = await fetch('/api/cart/add_item/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken },
+      credentials: 'same-origin',
+      body: JSON.stringify({
+        product_id: parseInt(productId, 10),
+        quantity: quantity,
+        size: '',
+        color: selectedColor
+      })
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.detail || errorData.error || '{% trans "Failed to add product to cart" %}');
     }
+    button.textContent = '{% trans "Added!" %}';
+    updateCartIcon();
+    showNotification?.(productName || '{% trans "Added to cart" %}', 'success');
+    setTimeout(function () {
+      button.textContent = originalText;
+      button.disabled = false;
+    }, 1800);
+  } catch (error) {
+    button.textContent = '{% trans "Error" %}';
+    showNotification?.(error.message || '{% trans "Failed to add product to cart. Please refresh the page and try again." %}', 'error');
+    setTimeout(function () {
+      button.textContent = originalText;
+      button.disabled = false;
+    }, 2000);
+  }
+};
 </script>
 {% endblock %}
