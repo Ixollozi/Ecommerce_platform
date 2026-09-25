@@ -36,15 +36,15 @@ class TelegramNotifier:
         
         # Всегда пересоздаем бота для актуальной конфигурации
         try:
-            logger.debug(f"Инициализация Telegram бота (token: {config.bot_token[:10]}...)")
+            logger.debug('Initializing Telegram bot (token configured)')
             self._bot = telebot.TeleBot(config.bot_token)
             self._config = config
             # Проверяем, что бот работает
             bot_info = self._bot.get_me()
-            logger.info(f"Telegram бот инициализирован: @{bot_info.username}")
+            logger.info('Telegram bot initialized: @%s', bot_info.username)
             return self._bot
         except Exception as e:
-            logger.error(f"Ошибка инициализации Telegram бота: {e}", exc_info=True)
+            logger.error('Telegram bot init failed: %s', e, exc_info=True)
             self._bot = None
             self._config = None
             return None

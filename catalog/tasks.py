@@ -46,11 +46,13 @@ def _build_message(row: NotificationOutbox) -> tuple[str, bool]:
 
 
 def _process_notification_outbox(outbox_id: int) -> None:
+    site_slug = None
     try:
         with transaction.atomic():
             row = NotificationOutbox.objects.select_for_update().get(pk=outbox_id)
             if row.status != NotificationOutbox.Status.PENDING:
                 return
+            site_slug = (row.payload or {}).get('site_slug')
             row.status = NotificationOutbox.Status.PROCESSING
             row.save(update_fields=['status', 'updated_at'])
     except NotificationOutbox.DoesNotExist:
@@ -61,6 +63,7 @@ def _process_notification_outbox(outbox_id: int) -> None:
     token = cfg.resolved_bot_token() if cfg else ''
 
     def _fail_or_retry(msg: str) -> None:
+        nonlocal site_slug
         with transaction.atomic():
             row = NotificationOutbox.objects.select_for_update().get(pk=outbox_id)
             row.attempts += 1
@@ -76,7 +79,12 @@ def _process_notification_outbox(outbox_id: int) -> None:
         if not is_failed:
             _reschedule(outbox_id, attempts, site_slug)
         else:
-            logger.error('Outbox id=%s failed permanently: %s', outbox_id, msg)
+            logger.error(
+                'Outbox id=%s site=%s failed permanently: %s',
+                outbox_id,
+                site_slug or '-',
+                msg,
+            )
 
     def _mark_sent(note: str = '') -> None:
         NotificationOutbox.objects.filter(pk=outbox_id).update(
@@ -100,7 +108,7 @@ def _process_notification_outbox(outbox_id: int) -> None:
     try:
         text, allowed = _build_message(row)
     except Exception as exc:
-        logger.exception('Outbox id=%s build message error', outbox_id)
+        logger.exception('Outbox id=%s site=%s build message error', outbox_id, site_slug or '-')
         _fail_or_retry(f'build: {exc}')
         return
 
@@ -113,16 +121,26 @@ def _process_notification_outbox(outbox_id: int) -> None:
         for sub in subscribers:
             bot.send_message(chat_id=sub.telegram_chat_id, text=text, parse_mode='HTML')
     except telebot.apihelper.ApiTelegramException as exc:
-        logger.warning('Telegram API error outbox=%s: %s', outbox_id, exc)
+        logger.warning(
+            'Telegram API error outbox=%s site=%s: %s',
+            outbox_id,
+            site_slug or '-',
+            exc,
+        )
         _fail_or_retry(f'telegram: {exc}')
         return
     except Exception as exc:
-        logger.exception('Unexpected send error outbox=%s', outbox_id)
+        logger.exception('Unexpected send error outbox=%s site=%s', outbox_id, site_slug or '-')
         _fail_or_retry(f'send: {exc}')
         return
 
     _mark_sent('')
-    logger.info('Outbox id=%s delivered to %s chats', outbox_id, len(subscribers))
+    logger.info(
+        'Outbox id=%s site=%s delivered to %s chats',
+        outbox_id,
+        site_slug or '-',
+        len(subscribers),
+    )
 
 
 @shared_task

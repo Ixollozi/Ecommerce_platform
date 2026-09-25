@@ -38,7 +38,7 @@ def enqueue_order_placed(order_id: int) -> NotificationOutbox | None:
         status=NotificationOutbox.Status.PENDING,
     )
     _schedule_outbox(row.id, site_slug)
-    logger.debug('Enqueued order_placed outbox_id=%s order_id=%s site=%s', row.id, order_id, site_slug)
+    logger.info('Enqueued order_placed outbox_id=%s order_id=%s site=%s', row.id, order_id, site_slug)
     return row
 
 
@@ -54,6 +54,12 @@ def enqueue_order_status_changed(order_id: int, old_status: str) -> Notification
         status=NotificationOutbox.Status.PENDING,
     )
     _schedule_outbox(row.id, site_slug)
+    logger.info(
+        'Enqueued order_status_changed outbox_id=%s order_id=%s site=%s',
+        row.id,
+        order_id,
+        site_slug,
+    )
     return row
 
 
@@ -69,4 +75,10 @@ def enqueue_contact_message(contact_message_id: int) -> NotificationOutbox | Non
         status=NotificationOutbox.Status.PENDING,
     )
     _schedule_outbox(row.id, site_slug)
+    logger.info(
+        'Enqueued contact_message outbox_id=%s contact_id=%s site=%s',
+        row.id,
+        contact_message_id,
+        site_slug,
+    )
     return row

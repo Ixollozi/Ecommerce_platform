@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Category(models.Model):
@@ -280,7 +283,7 @@ class Config(models.Model):
             from .config_loader import reload_config
             reload_config()
         except Exception as e:
-            print(f"Ошибка синхронизации конфигурации с файлом: {e}")
+            logger.warning('Failed to sync config to file: %s', e, exc_info=True)
 
     @classmethod
     def get_active_config(cls):

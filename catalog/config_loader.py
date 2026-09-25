@@ -2,11 +2,13 @@
 Утилита для загрузки конфигурации из моделей или config.json
 """
 import json
+import logging
 import os
 from pathlib import Path
 
 # Используем BASE_DIR напрямую, чтобы избежать циклических импортов
 BASE_DIR = Path(__file__).resolve().parent.parent
+logger = logging.getLogger(__name__)
 
 
 def get_active_base_dir() -> Path:
@@ -227,7 +229,7 @@ def load_config_from_file():
             config = json.load(f)
         return config
     except (json.JSONDecodeError, IOError) as e:
-        print(f"Error loading config.json: {e}")
+        logger.warning('Error loading config.json: %s', e)
         return None
 
 

@@ -288,6 +288,73 @@ if email_config.get('password'):
 EMAIL_FROM = email_config.get('from_email', 'noreply@ecommerce_platform.ru')
 
 
+# Logging — console only (systemd journal on VPS). Site/host from platform context.
+_LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO').upper()
+_DJANGO_LOG_LEVEL = os.environ.get('DJANGO_LOG_LEVEL', 'INFO').upper()
+_LOG_SQL = os.environ.get('LOG_SQL', '').strip().lower() in ('1', 'true', 'yes')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'site_context': {
+            '()': 'catalog.platform.logging_filters.SiteContextFilter',
+        },
+    },
+    'formatters': {
+        'platform': {
+            'format': (
+                '%(asctime)s %(levelname)s [%(name)s] '
+                'site=%(site)s host=%(host)s %(message)s'
+            ),
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'filters': ['site_context'],
+            'formatter': 'platform',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': _LOG_LEVEL,
+    },
+    'loggers': {
+        'catalog': {
+            'handlers': ['console'],
+            'level': _LOG_LEVEL,
+            'propagate': False,
+        },
+        'catalog.platform': {
+            'handlers': ['console'],
+            'level': _LOG_LEVEL,
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['console'],
+            'level': _DJANGO_LOG_LEVEL,
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG' if _LOG_SQL else 'WARNING',
+            'propagate': False,
+        },
+        'celery': {
+            'handlers': ['console'],
+            'level': _LOG_LEVEL,
+            'propagate': False,
+        },
+    },
+}
+
 if PLATFORM_MODE:
     from catalog.platform.bootstrap import apply_platform_settings
 

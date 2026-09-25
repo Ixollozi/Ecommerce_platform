@@ -7,11 +7,14 @@ from django.db.models import Q
 from django.utils import timezone
 from django.core.cache import cache
 from datetime import timedelta
+import logging
 from .models import Category, Product, Cart, CartItem, Order, ContactMessage
 from .serializers import (
     CategorySerializer, ProductSerializer, CartSerializer,
     CartItemSerializer, OrderSerializer, CreateOrderSerializer
 )
+
+logger = logging.getLogger(__name__)
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -106,12 +109,10 @@ class CartViewSet(viewsets.ModelViewSet):
             deleted_count = old_carts.count()
             if deleted_count > 0:
                 old_carts.delete()
-                # Логируем в консоль (в продакшене можно использовать logger)
-                print(f"Очищено {deleted_count} старых корзин (старше 30 дней)")
-        except Exception as e:
-            # В случае ошибки сбрасываем флаг, чтобы попробовать снова
+                logger.info('Cleaned %s carts older than 30 days', deleted_count)
+        except Exception:
             cache.delete(cache_key)
-            print(f"Ошибка при очистке старых корзин: {e}")
+            logger.exception('Failed to clean old carts')
 
     def get_or_create_cart(self):
         # Автоматически очищаем старые корзины при каждом запросе (с ограничением частоты)
@@ -282,10 +283,11 @@ def submit_contact_message(request):
             from .notification_enqueue import enqueue_contact_message
 
             enqueue_contact_message(contact_message.id)
-        except Exception as e:
-            import logging
-            logger = logging.getLogger(__name__)
-            logger.error(f'Ошибка постановки уведомления о сообщении из контактов в очередь: {e}')
+        except Exception:
+            logger.exception(
+                'Failed to enqueue contact message notification contact_id=%s',
+                contact_message.id,
+            )
 
         return Response(
             {'success': True, 'message': 'Сообщение успешно отправлено'},

@@ -36,5 +36,9 @@ def notify_order_status_change(sender, instance, created, **kwargs):
             from .notification_enqueue import enqueue_order_status_changed
 
             enqueue_order_status_changed(instance.pk, old_status)
-        except Exception as e:
-            logger.error(f'Ошибка постановки уведомления об изменении статуса в очередь: {e}')
+        except Exception:
+            logger.exception(
+                'Failed to enqueue order status notification order_id=%s old_status=%s',
+                instance.pk,
+                old_status,
+            )

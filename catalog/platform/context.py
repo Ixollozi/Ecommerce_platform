@@ -6,10 +6,15 @@ from contextvars import ContextVar
 from .registry import SiteConfig
 
 _current_site: ContextVar[SiteConfig | None] = ContextVar('current_site', default=None)
+_current_host: ContextVar[str | None] = ContextVar('current_host', default=None)
 
 
 def get_current_site() -> SiteConfig | None:
     return _current_site.get()
+
+
+def get_current_host() -> str | None:
+    return _current_host.get()
 
 
 def get_current_db_alias() -> str | None:
@@ -19,6 +24,10 @@ def get_current_db_alias() -> str | None:
 
 def set_current_site(site: SiteConfig | None) -> None:
     _current_site.set(site)
+
+
+def set_current_host(host: str | None) -> None:
+    _current_host.set(host)
 
 
 @contextmanager

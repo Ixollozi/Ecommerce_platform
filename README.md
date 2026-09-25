@@ -88,6 +88,8 @@ python manage.py migrate
 - Nginx: весь трафик домена (включая `/static` и `/media`) → `:9000`
 - Обновление: `bash /root/update_all_sites.sh --full` или `bash /root/deploy_clothing_platform.sh`
 - Новый сайт: `bash /root/deploy_new_site.sh`
+- Логи app: `journalctl -u platform -n 100 --no-pager` / `-f` (формат с `site=` / `host=`; уровень `LOG_LEVEL` в `.env`)
+- Логи nginx: `/var/log/nginx/<domain>_access.log`, `_error.log`
 
 SSH (пример): `ssh -i <key> root@138.249.7.168`
 

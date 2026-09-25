@@ -1,5 +1,8 @@
 from rest_framework import serializers
+import logging
 from .models import Category, Product, ProductImage, Cart, CartItem, Order, OrderItem, ContactMessage
+
+logger = logging.getLogger(__name__)
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -184,14 +187,10 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             from .notification_enqueue import enqueue_order_placed
 
             enqueue_order_placed(order.id)
-        except Exception as e:
-            import logging
-
-            logging.getLogger(__name__).error(
-                'Ошибка постановки уведомления о заказе #%s в очередь: %s',
+        except Exception:
+            logger.exception(
+                'Failed to enqueue order_placed notification order_id=%s',
                 order.id,
-                e,
-                exc_info=True,
             )
 
         return order

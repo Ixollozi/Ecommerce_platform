@@ -34,9 +34,14 @@ def apply_platform_settings(settings_dict: dict) -> None:
     settings_dict['DATABASE_ROUTERS'] = ['catalog.platform.db_router.SiteDatabaseRouter']
 
     middleware = list(settings_dict['MIDDLEWARE'])
-    if 'catalog.platform.middleware.SiteHostMiddleware' not in middleware:
+    site_mw = 'catalog.platform.middleware.SiteHostMiddleware'
+    request_mw = 'catalog.platform.request_logging.RequestLogMiddleware'
+    if site_mw not in middleware:
         security_index = middleware.index('django.middleware.security.SecurityMiddleware')
-        middleware.insert(security_index + 1, 'catalog.platform.middleware.SiteHostMiddleware')
+        middleware.insert(security_index + 1, site_mw)
+    if request_mw not in middleware:
+        site_index = middleware.index(site_mw)
+        middleware.insert(site_index + 1, request_mw)
     settings_dict['MIDDLEWARE'] = middleware
 
     allowed_hosts = set(settings_dict.get('ALLOWED_HOSTS', []))
