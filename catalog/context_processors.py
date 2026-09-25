@@ -28,12 +28,13 @@ def store_config(request):
     except Exception:
         cart_items_count = 0
 
+    store = config.get('store') or config.get('catalog') or {}
     return {
         'store_config': config,
-        'store_name': config.get('catalog', {}).get('name', 'Fashion Store'),
-        'store_title': config.get('catalog', {}).get('title', 'Fashion Store'),
-        'store_description': config.get('catalog', {}).get('description', ''),
-        'currency': config.get('catalog', {}).get('currency', 'сум') or 'сум',
+        'store_name': store.get('name') or 'Fashion Store',
+        'store_title': store.get('title') or store.get('name') or 'Fashion Store',
+        'store_description': store.get('description', ''),
+        'currency': store.get('currency', 'сум') or 'сум',
         'contact_info': config.get('contact', {}),
         'social_links': config.get('social', {}),
         'partners': partners,  # Теперь из БД
