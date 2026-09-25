@@ -127,7 +127,7 @@ msgstr "Customer support"
 
 #: .\templates\admin\base_site.html:4
 msgid "Django site admin"
-msgstr ""
+msgstr "Django site admin"
 
 #: .\templates\base.html:30 .\templates\catalog.html:6
 #: .\templates\catalog.html:14 .\templates\product.html:16
@@ -444,16 +444,16 @@ msgstr "Delivery and Payment"
 
 #: .\templates\delivery.html:28
 msgid "Courier delivery in Tashkent"
-msgstr ""
+msgstr "Courier delivery in Tashkent"
 
 #: .\templates\delivery.html:29 .\templates\delivery.html:42
 #: .\templates\delivery.html:55
 msgid "Cost"
-msgstr ""
+msgstr "Cost"
 
 #: .\templates\delivery.html:29 .\templates\delivery.html:42
 msgid "free for orders over"
-msgstr ""
+msgstr "free for orders over"
 
 #: .\templates\delivery.html:30 .\templates\delivery.html:43
 #, fuzzy
@@ -463,15 +463,15 @@ msgstr "Delivery and Payment"
 
 #: .\templates\delivery.html:30 .\templates\delivery.html:56
 msgid "1-2 business days"
-msgstr ""
+msgstr "1-2 business days"
 
 #: .\templates\delivery.html:31
 msgid "Delivery hours"
-msgstr ""
+msgstr "Delivery hours"
 
 #: .\templates\delivery.html:31
 msgid "from 10:00 to 22:00"
-msgstr ""
+msgstr "from 10:00 to 22:00"
 
 #: .\templates\delivery.html:32
 msgid ""
@@ -487,19 +487,19 @@ msgstr "Delivery throughout Uzbekistan in 2-5 days"
 
 #: .\templates\delivery.html:42
 msgid "from"
-msgstr ""
+msgstr "from"
 
 #: .\templates\delivery.html:43
 msgid "3-7 business days"
-msgstr ""
+msgstr "3-7 business days"
 
 #: .\templates\delivery.html:44
 msgid "Delivery services"
-msgstr ""
+msgstr "Delivery services"
 
 #: .\templates\delivery.html:44
 msgid "CDEK, Uzbekistan Post, Boxberry"
-msgstr ""
+msgstr "CDEK, Uzbekistan Post, Boxberry"
 
 #: .\templates\delivery.html:45
 msgid ""
@@ -509,11 +509,11 @@ msgstr ""
 
 #: .\templates\delivery.html:54
 msgid "Pickup"
-msgstr ""
+msgstr "Pickup"
 
 #: .\templates\delivery.html:56
 msgid "Ready time"
-msgstr ""
+msgstr "Ready time"
 
 #: .\templates\delivery.html:58
 msgid ""
@@ -523,11 +523,11 @@ msgstr ""
 
 #: .\templates\delivery.html:62
 msgid "Payment Methods"
-msgstr ""
+msgstr "Payment Methods"
 
 #: .\templates\delivery.html:69
 msgid "Online bank card"
-msgstr ""
+msgstr "Online bank card"
 
 #: .\templates\delivery.html:70
 msgid ""
@@ -551,7 +551,7 @@ msgstr ""
 
 #: .\templates\delivery.html:85
 msgid "Electronic wallets"
-msgstr ""
+msgstr "Electronic wallets"
 
 #: .\templates\delivery.html:86
 msgid ""
@@ -561,7 +561,7 @@ msgstr ""
 
 #: .\templates\delivery.html:93
 msgid "Bank transfer"
-msgstr ""
+msgstr "Bank transfer"
 
 #: .\templates\delivery.html:94
 msgid ""
@@ -571,7 +571,7 @@ msgstr ""
 
 #: .\templates\delivery.html:98
 msgid "Delivery Terms"
-msgstr ""
+msgstr "Delivery Terms"
 
 #: .\templates\delivery.html:102
 msgid "Minimum order amount — 50 000 сум"
@@ -587,24 +587,25 @@ msgstr ""
 
 #: .\templates\delivery.html:110
 msgid "Possibility of trying on before payment (with courier delivery)"
-msgstr ""
+msgstr "Possibility of trying on before payment (with courier delivery)"
 
 #: .\templates\delivery.html:114
 msgid "Order status tracking in personal account"
-msgstr ""
+msgstr "Order status tracking in personal account"
 
 #: .\templates\delivery.html:118
 msgid "Order status notifications via SMS and email"
-msgstr ""
+msgstr "Order status notifications via SMS and email"
 
 #: .\templates\delivery.html:124
 msgid ""
 "You can return the product within 14 days from the date of receipt, if:"
 msgstr ""
+"You can return the product within 14 days from the date of receipt, if:"
 
 #: .\templates\delivery.html:126
 msgid "The product has not been used"
-msgstr ""
+msgstr "The product has not been used"
 
 #: .\templates\delivery.html:127
 msgid ""
@@ -614,7 +615,7 @@ msgstr ""
 
 #: .\templates\delivery.html:128
 msgid "There are documents confirming the purchase"
-msgstr ""
+msgstr "There are documents confirming the purchase"
 
 #: .\templates\delivery.html:130
 msgid ""
@@ -807,19 +808,19 @@ msgid "#000000 или Черный"
 msgstr "#000000 or Black"
 
 msgid "0"
-msgstr ""
+msgstr "0"
 
 msgid "0 sum — 250 000 sum"
-msgstr ""
+msgstr "0 sum — 250 000 sum"
 
 msgid "1 000 000 sum — 2 000 000 sum"
-msgstr ""
+msgstr "1 000 000 sum — 2 000 000 sum"
 
 msgid "250 000 sum — 500 000 sum"
-msgstr ""
+msgstr "250 000 sum — 500 000 sum"
 
 msgid "500 000 sum — 1 000 000 sum"
-msgstr ""
+msgstr "500 000 sum — 1 000 000 sum"
 
 msgid ""
 "A calm storefront for home, apparel, and accessories — fewer things, better "
@@ -827,104 +828,104 @@ msgid ""
 msgstr ""
 
 msgid "Add to cart"
-msgstr ""
+msgstr "Add to cart"
 
 msgid "Added"
-msgstr ""
+msgstr "Added"
 
 msgid "Added to cart"
-msgstr ""
+msgstr "Added to cart"
 
 msgid "Address will appear here when set in store settings."
-msgstr ""
+msgstr "Address will appear here when set in store settings."
 
 msgid "An error occurred while placing the order. Please try again."
-msgstr ""
+msgstr "An error occurred while placing the order. Please try again."
 
 msgid "An error occurred while sending the message. Please try again later."
-msgstr ""
+msgstr "An error occurred while sending the message. Please try again later."
 
 msgid "Apparel"
-msgstr ""
+msgstr "Apparel"
 
 msgid "Bag"
-msgstr ""
+msgstr "Bag"
 
 msgid "Best Sellers"
-msgstr ""
+msgstr "Best Sellers"
 
 msgid "Browse the catalog"
-msgstr ""
+msgstr "Browse the catalog"
 
 msgid "Cancel"
-msgstr ""
+msgstr "Cancel"
 
 msgid "Care — real help with orders and advice"
-msgstr ""
+msgstr "Care — real help with orders and advice"
 
 msgid "Cart"
-msgstr ""
+msgstr "Cart"
 
 msgid "City"
-msgstr ""
+msgstr "City"
 
 msgid "Clear search"
-msgstr ""
+msgstr "Clear search"
 
 msgid "Close"
-msgstr ""
+msgstr "Close"
 
 msgid "Close filters"
-msgstr ""
+msgstr "Close filters"
 
 msgid "Collection"
-msgstr ""
+msgstr "Collection"
 
 msgid "Company"
-msgstr ""
+msgstr "Company"
 
 msgid "Curated finds for modern living."
-msgstr ""
+msgstr "Curated finds for modern living."
 
 msgid "Curation — a tight edit, not endless noise"
-msgstr ""
+msgstr "Curation — a tight edit, not endless noise"
 
 msgid "Delivery Address"
-msgstr ""
+msgstr "Delivery Address"
 
 msgid "Elevated"
-msgstr ""
+msgstr "Elevated"
 
 msgid "Elevated Everyday"
-msgstr ""
+msgstr "Elevated Everyday"
 
 msgid "Elevated everyday — curated goods for modern living."
-msgstr ""
+msgstr "Elevated everyday — curated goods for modern living."
 
 msgid "Email (необязательно)"
 msgstr "Email (optional)"
 
 msgid "Email *"
-msgstr ""
+msgstr "Email *"
 
 msgid "Error: cart function not loaded. Please refresh the page."
-msgstr ""
+msgstr "Error: cart function not loaded. Please refresh the page."
 
 msgid "Everyday."
-msgstr ""
+msgstr "Everyday."
 
 msgid "Explore Curated Goods"
-msgstr ""
+msgstr "Explore Curated Goods"
 
 msgid "Explore catalog"
-msgstr ""
+msgstr "Explore catalog"
 
 msgid "FAQ: ответы на частые вопросы о товарах и доставке."
 msgstr ""
 "FAQ: answers to frequently asked questions about products and delivery."
 
 msgid "Failed to place order"
-msgstr ""
+msgstr "Failed to place order"
 
 msgid ""
 "Fashion Store is a modern online clothing store that offers a wide range of "
@@ -932,161 +933,162 @@ msgid ""
 msgstr ""
 
 msgid "Featured piece"
-msgstr ""
+msgstr "Featured piece"
 
 msgid "First Name"
-msgstr ""
+msgstr "First Name"
 
 msgid "Free shipping from 500 000 sum"
-msgstr ""
+msgstr "Free shipping from 500 000 sum"
 
 msgid "Gallery"
-msgstr ""
+msgstr "Gallery"
 
 msgid "Get in touch"
-msgstr ""
+msgstr "Get in touch"
 
 msgid "Home Goods"
-msgstr ""
+msgstr "Home Goods"
 
 msgid "Honesty — clear pricing and conditions"
-msgstr ""
+msgstr "Honesty — clear pricing and conditions"
 
 msgid "Information"
-msgstr ""
+msgstr "Information"
 
 msgid "Item removed from cart"
-msgstr ""
+msgstr "Item removed from cart"
 
 msgid "Last Name"
-msgstr ""
+msgstr "Last Name"
 
 msgid "Main navigation"
-msgstr ""
+msgstr "Main navigation"
 
 msgid "Map"
-msgstr ""
+msgstr "Map"
 
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 msgid "Message Sent!"
-msgstr ""
+msgstr "Message Sent!"
 
 msgid "Mobile navigation"
-msgstr ""
+msgstr "Mobile navigation"
 
 msgid "NEW · M24 ·"
-msgstr ""
+msgstr "NEW · M24 ·"
 
 msgid "New arrivals weekly"
-msgstr ""
+msgstr "New arrivals weekly"
 
 msgid "Next"
-msgstr ""
+msgstr "Next"
 
 msgid "No categories yet"
-msgstr ""
+msgstr "No categories yet"
 
 msgid "No questions yet. Check back soon!"
-msgstr ""
+msgstr "No questions yet. Check back soon!"
 
 msgid "Notes"
-msgstr ""
+msgstr "Notes"
 
 msgid "Nothing found"
-msgstr ""
+msgstr "Nothing found"
 
 msgid "Order Error"
-msgstr ""
+msgstr "Order Error"
 
 msgid "Order Placed!"
-msgstr ""
+msgstr "Order Placed!"
 
 msgid "Please fill in all required fields"
-msgstr ""
+msgstr "Please fill in all required fields"
 
 msgid "Please fill in all required fields."
-msgstr ""
+msgstr "Please fill in all required fields."
 
 msgid ""
 "Possibility of checking the product before payment (with courier delivery)"
 msgstr ""
+"Possibility of checking the product before payment (with courier delivery)"
 
 msgid "Processing..."
-msgstr ""
+msgstr "Processing..."
 
 msgid "Product added to cart"
-msgstr ""
+msgstr "Product added to cart"
 
 msgid "Product photos"
-msgstr ""
+msgstr "Product photos"
 
 msgid "Quality — pieces that earn their place"
-msgstr ""
+msgstr "Quality — pieces that earn their place"
 
 msgid "Quantity updated"
-msgstr ""
+msgstr "Quantity updated"
 
 msgid "Removed"
-msgstr ""
+msgstr "Removed"
 
 msgid "SCROLL"
-msgstr ""
+msgstr "SCROLL"
 
 msgid "Search"
-msgstr ""
+msgstr "Search"
 
 msgid "Search products"
-msgstr ""
+msgstr "Search products"
 
 msgid "Search products..."
-msgstr ""
+msgstr "Search products..."
 
 msgid "Search products…"
-msgstr ""
+msgstr "Search products…"
 
 msgid "Sending..."
-msgstr ""
+msgstr "Sending..."
 
 msgid "Shop"
-msgstr ""
+msgstr "Shop"
 
 msgid "Shop the edit"
-msgstr ""
+msgstr "Shop the edit"
 
 msgid "Skip to content"
-msgstr ""
+msgstr "Skip to content"
 
 msgid "Stats"
-msgstr ""
+msgstr "Stats"
 
 msgid "Success"
-msgstr ""
+msgstr "Success"
 
 msgid "Sustainable sourcing"
-msgstr ""
+msgstr "Sustainable sourcing"
 
 msgid "Terms & FAQ"
-msgstr ""
+msgstr "Terms & FAQ"
 
 msgid "View all"
-msgstr ""
+msgstr "View all"
 
 msgid "View all products"
-msgstr ""
+msgstr "View all products"
 
 msgid "View product"
-msgstr ""
+msgstr "View product"
 
 msgid "Warning"
-msgstr ""
+msgstr "Warning"
 
 msgid "We are happy to help with orders, delivery, and product advice."
-msgstr ""
+msgstr "We are happy to help with orders, delivery, and product advice."
 
 msgid "We believe in the beauty of obvious things done well."
-msgstr ""
+msgstr "We believe in the beauty of obvious things done well."
 
 msgid ""
 "We curate lasting objects — materials, makers, and finishes chosen for years"
@@ -1094,13 +1096,13 @@ msgid ""
 msgstr ""
 
 msgid "Why shop with us"
-msgstr ""
+msgstr "Why shop with us"
 
 msgid "Your cart has been cleared."
-msgstr ""
+msgstr "Your cart has been cleared."
 
 msgid "Your order has been placed successfully! Order number:"
-msgstr ""
+msgstr "Your order has been placed successfully! Order number:"
 
 msgid ""
 "Абсолютно все. Мы принципиально не используем промышленное тиражирование. \""
@@ -1500,13 +1502,13 @@ msgid ""
 msgstr ""
 
 msgid "Каждое изделие создаётся вручную опытными мастерами."
-msgstr ""
+msgstr "Каждое изделие создаётся вручную опытными мастерами."
 
 msgid "Каждое изделие уникально."
 msgstr "Each product is unique."
 
 msgid "Как мы работаем каждый день."
-msgstr ""
+msgstr "Как мы работаем каждый день."
 
 msgid "Как мы развиваемся"
 msgstr "How we develop"
@@ -1717,7 +1719,7 @@ msgid "Написать нам"
 msgstr "Write to us"
 
 msgid "Напишите адрес и состав заказа — подскажем варианты и стоимость."
-msgstr ""
+msgstr "Напишите адрес и состав заказа — подскажем варианты и стоимость."
 
 msgid "Напишите нам"
 msgstr "Write to us"
@@ -1830,6 +1832,7 @@ msgstr "Looks for the occasion and season"
 msgid ""
 "Общие условия. Точные сроки и стоимость уточняйте при оформлении заказа."
 msgstr ""
+"Общие условия. Точные сроки и стоимость уточняйте при оформлении заказа."
 
 msgid "Онлайн оплата картой"
 msgstr "Online payment by card"
@@ -1987,6 +1990,7 @@ msgstr ""
 msgid ""
 "Подбираем ткани и фурнитуру так, чтобы вещам было комфортно каждый день."
 msgstr ""
+"Подбираем ткани и фурнитуру так, чтобы вещам было комфортно каждый день."
 
 msgid "Подбираем ткани, приятные к телу."
 msgstr "We select fabrics that are pleasant to the body."
@@ -2001,7 +2005,7 @@ msgid "Поддержка"
 msgstr "Support"
 
 msgid "Подобрали то, что чаще всего покупают для работы и обучения."
-msgstr ""
+msgstr "Подобрали то, что чаще всего покупают для работы и обучения."
 
 msgid "Подробнее"
 msgstr "More details"
@@ -2052,7 +2056,7 @@ msgid "Помощь с подбором"
 msgstr "Help with selection"
 
 msgid "Понятный каталог и удобный заказ"
-msgstr ""
+msgstr "Понятный каталог и удобный заказ"
 
 msgid "Понятный сервис"
 msgstr "Clear service"
@@ -2118,7 +2122,7 @@ msgid "Проверенные материалы"
 msgstr "Proven materials"
 
 msgid "Проверьте состав и количество. Изменения сохраняются автоматически."
-msgstr ""
+msgstr "Проверьте состав и количество. Изменения сохраняются автоматически."
 
 msgid "Продолжить покупки"
 msgstr "Continue shopping"
@@ -2156,7 +2160,7 @@ msgid "Ручная работа"
 msgstr "Handmade"
 
 msgid "Ручной труд без преувеличений."
-msgstr ""
+msgstr "Ручной труд без преувеличений."
 
 msgid "С этим покупают"
 msgstr "They buy with this"
@@ -2222,7 +2226,7 @@ msgid "Сначала новые"
 msgstr "New ones first"
 
 msgid "Создаём современную национальную одежду с уважением к традициям."
-msgstr ""
+msgstr "Создаём современную национальную одежду с уважением к традициям."
 
 msgid "Сообщение"
 msgstr "Message"
@@ -2266,7 +2270,7 @@ msgid ""
 msgstr ""
 
 msgid "Стамески"
-msgstr ""
+msgstr "Стамески"
 
 msgid "Страница не найдена"
 msgstr "Page not found"
@@ -2284,103 +2288,103 @@ msgid "Такой страницы не существует"
 msgstr "This page does not exist"
 
 msgid "Ташкент"
-msgstr ""
+msgstr "Ташкент"
 
 msgid "Телефон"
 msgstr "Phone"
 
 msgid "Телефон (необязательно)"
-msgstr ""
+msgstr "Телефон (необязательно)"
 
 msgid "Телефон *"
-msgstr ""
+msgstr "Телефон *"
 
 msgid "Телефон, почта и форма обратной связи."
-msgstr ""
+msgstr "Телефон, почта и форма обратной связи."
 
 msgid "Тема"
-msgstr ""
+msgstr "Тема"
 
 msgid "Тема *"
-msgstr ""
+msgstr "Тема *"
 
 msgid "Тема сообщения"
-msgstr ""
+msgstr "Тема сообщения"
 
 msgid "Теплый сезон"
-msgstr ""
+msgstr "Теплый сезон"
 
 msgid "Товар"
 msgstr "Product"
 
 msgid "Товар дня"
-msgstr ""
+msgstr "Товар дня"
 
 msgid "Товар добавлен в корзину."
-msgstr ""
+msgstr "Товар добавлен в корзину."
 
 msgid "Товар не найден"
-msgstr ""
+msgstr "Товар не найден"
 
 msgid "Товар скоро появится."
-msgstr ""
+msgstr "Товар скоро появится."
 
 msgid "Товары"
 msgstr "Products"
 
 msgid "Товары (%(count)s шт.)"
-msgstr ""
+msgstr "Товары (%(count)s шт.)"
 
 msgid "Товары в корзине"
-msgstr ""
+msgstr "Товары в корзине"
 
 msgid "Товары и качество"
-msgstr ""
+msgstr "Товары и качество"
 
 msgid "Товары не найдены"
-msgstr ""
+msgstr "Товары не найдены"
 
 msgid "Товары скоро появятся в каталоге."
-msgstr ""
+msgstr "Товары скоро появятся в каталоге."
 
 msgid "Товары скоро появятся."
-msgstr ""
+msgstr "Товары скоро появятся."
 
 msgid "Только опытные мастера."
-msgstr ""
+msgstr "Только опытные мастера."
 
 msgid "Только появились"
-msgstr ""
+msgstr "Только появились"
 
 msgid "Только природная глина и проверенные глазури."
-msgstr ""
+msgstr "Только природная глина и проверенные глазури."
 
 msgid "Увеличить"
-msgstr ""
+msgstr "Увеличить"
 
 msgid "Удалить"
 msgstr "Remove"
 
 msgid "Удалить товар"
-msgstr ""
+msgstr "Удалить товар"
 
 msgid "Удобная покупка"
-msgstr ""
+msgstr "Удобная покупка"
 
 msgid "Удобно"
-msgstr ""
+msgstr "Удобно"
 
 msgid "Узнать больше"
-msgstr ""
+msgstr "Узнать больше"
 
 msgid "Уменьшить"
-msgstr ""
+msgstr "Уменьшить"
 
 msgid "Уникальность"
-msgstr ""
+msgstr "Уникальность"
 
 msgid "Упаковка"
-msgstr ""
+msgstr "Упаковка"
 
 msgid ""
 "Упор на ткань, аккуратный крой и понятный сервис, чтобы выбрать модель было "
@@ -2388,7 +2392,7 @@ msgid ""
 msgstr ""
 
 msgid "Условия доставки"
-msgstr ""
+msgstr "Условия доставки"
 
 msgid ""
 "Условия доставки и оплаты — на странице «Доставка». Обычно отправка в "
@@ -2396,109 +2400,109 @@ msgid ""
 msgstr ""
 
 msgid "Уход"
-msgstr ""
+msgstr "Уход"
 
 msgid "Фамилия *"
-msgstr ""
+msgstr "Фамилия *"
 
 msgid "Фильтры"
 msgstr "Filters"
 
 msgid "Фильтры (визуальные)"
-msgstr ""
+msgstr "Фильтры (визуальные)"
 
 msgid "Фильтры и сортировка — данные из каталога магазина."
-msgstr ""
+msgstr "Фильтры и сортировка — данные из каталога магазина."
 
 msgid "Фильтры каталога"
-msgstr ""
+msgstr "Фильтры каталога"
 
 msgid "Форма контактов"
-msgstr ""
+msgstr "Форма контактов"
 
 msgid "Форма на круге или вручную."
-msgstr ""
+msgstr "Форма на круге или вручную."
 
 msgid "Форма обратной связи"
-msgstr ""
+msgstr "Форма обратной связи"
 
 msgid "Форма оформления заказа"
-msgstr ""
+msgstr "Форма оформления заказа"
 
 msgid "Формование"
-msgstr ""
+msgstr "Формование"
 
 msgid "Характеристики"
 msgstr "Specifications"
 
 msgid "Характеристики скоро появятся."
-msgstr ""
+msgstr "Характеристики скоро появятся."
 
 msgid "Хит"
 msgstr "Hit"
 
 msgid "Хиты коллекции"
-msgstr ""
+msgstr "Хиты коллекции"
 
 msgid "Хлебные крошки"
 msgstr "Breadcrumbs"
 
 msgid "Хлопок"
-msgstr ""
+msgstr "Хлопок"
 
 msgid "Хлопок и шелк"
-msgstr ""
+msgstr "Хлопок и шелк"
 
 msgid "Хотите подбор под ваш проект?"
-msgstr ""
+msgstr "Хотите подбор под ваш проект?"
 
 msgid "Хотите что-то"
-msgstr ""
+msgstr "Хотите что-то"
 
 msgid "Цвет"
-msgstr ""
+msgstr "Цвет"
 
 msgid "Цвет (код или название)"
-msgstr ""
+msgstr "Цвет (код или название)"
 
 msgid "Цвет можно выбрать при добавлении в корзину."
-msgstr ""
+msgstr "Цвет можно выбрать при добавлении в корзину."
 
 msgid "Цвет:"
-msgstr ""
+msgstr "Цвет:"
 
 msgid "Цена"
 msgstr "Price"
 
 msgid "Цена: дешевле"
-msgstr ""
+msgstr "Цена: дешевле"
 
 msgid "Цена: дороже"
-msgstr ""
+msgstr "Цена: дороже"
 
 msgid "Ценности"
-msgstr ""
+msgstr "Ценности"
 
 msgid "Ценности скоро появятся."
-msgstr ""
+msgstr "Ценности скоро появятся."
 
 msgid "Часто задаваемые"
-msgstr ""
+msgstr "Часто задаваемые"
 
 msgid "Частые вопросы"
 msgstr "FAQ"
 
 msgid "Часть философии"
-msgstr ""
+msgstr "Часть философии"
 
 msgid "Честность"
-msgstr ""
+msgstr "Честность"
 
 msgid "Что делать, если изделие повредилось при доставке?"
-msgstr ""
+msgstr "Что делать, если изделие повредилось при доставке?"
 
 msgid "Что нас определяет"
-msgstr ""
+msgstr "Что нас определяет"
 
 msgid ""
 "Ширина и радиус режущей кромки влияют на чистоту линии — начните с "
@@ -2508,105 +2512,106 @@ msgstr ""
 msgid ""
 "Шлифовка и масло/лак дают красивый рисунок волокон и защиту поверхности."
 msgstr ""
+"Шлифовка и масло/лак дают красивый рисунок волокон и защиту поверхности."
 
 msgid "Экология"
-msgstr ""
+msgstr "Экология"
 
 msgid "Электронный кошелёк"
-msgstr ""
+msgstr "Электронный кошелёк"
 
 msgid "Язык"
 msgstr "Language"
 
 msgid "Язык сайта"
-msgstr ""
+msgstr "Язык сайта"
 
 msgid "внимание к деталям"
-msgstr ""
+msgstr "внимание к деталям"
 
 msgid "вопросы"
-msgstr ""
+msgstr "вопросы"
 
 msgid "готовых идей"
-msgstr ""
+msgstr "готовых идей"
 
 msgid "до"
-msgstr ""
+msgstr "до"
 
 msgid "доставка по городу"
-msgstr ""
+msgstr "доставка по городу"
 
 msgid "изделие"
-msgstr ""
+msgstr "изделие"
 
 msgid "изделий"
-msgstr ""
+msgstr "изделий"
 
 msgid "изделия"
-msgstr ""
+msgstr "изделия"
 
 msgid "интернет-магазин"
-msgstr ""
+msgstr "интернет-магазин"
 
 msgid "качество сервиса"
-msgstr ""
+msgstr "качество сервиса"
 
 msgid "онлайн-каталог"
-msgstr ""
+msgstr "онлайн-каталог"
 
 msgid "от"
-msgstr ""
+msgstr "от"
 
 msgid "оценка покупателей"
-msgstr ""
+msgstr "оценка покупателей"
 
 msgid "по городу"
-msgstr ""
+msgstr "по городу"
 
 msgid "по-настоящему уникальное?"
-msgstr ""
+msgstr "по-настоящему уникальное?"
 
 msgid "ручной работы"
-msgstr ""
+msgstr "ручной работы"
 
 msgid "сўм"
 msgstr "sum"
 
 msgid "товаров"
-msgstr ""
+msgstr "товаров"
 
 msgid "шт."
-msgstr ""
+msgstr "шт."
 
 msgid "About us"
 msgstr "About us"
 
 msgid "Curated Finds"
-msgstr ""
+msgstr "Curated Finds"
 
 msgid "Objects with<br>quiet intent."
-msgstr ""
+msgstr "Objects with<br>quiet intent."
 
 msgid "A calm edit of electronics, home, and everyday pieces."
-msgstr ""
+msgstr "A calm edit of electronics, home, and everyday pieces."
 
 msgid "Unknown error"
-msgstr ""
+msgstr "Unknown error"
 
 msgid "Failed to get cart"
-msgstr ""
+msgstr "Failed to get cart"
 
 msgid "Empty cart data received"
-msgstr ""
+msgstr "Empty cart data received"
 
 msgid "Invalid cart item data"
-msgstr ""
+msgstr "Invalid cart item data"
 
 msgid "Invalid order response from server"
-msgstr ""
+msgstr "Invalid order response from server"
 
 msgid "Failed to send message"
-msgstr ""
+msgstr "Failed to send message"
 
 msgid ""
 "Cash payment to the courier upon delivery or at the pickup point. Available "
@@ -2614,7 +2619,7 @@ msgid ""
 msgstr ""
 
 msgid "Minimum order amount — 50 000 %(currency)s"
-msgstr ""
+msgstr "Minimum order amount — 50 000 %(currency)s"
 
 msgid ""
 "Free delivery for orders over 300 000 %(currency)s (in Tashkent) and over "
@@ -2622,25 +2627,64 @@ msgid ""
 msgstr ""
 
 msgid "Instagram"
-msgstr ""
+msgstr "Instagram"
 
 msgid "Facebook"
-msgstr ""
+msgstr "Facebook"
 
 msgid "X"
-msgstr ""
+msgstr "X"
 
 msgid "VK"
-msgstr ""
+msgstr "VK"
 
 msgid "Tashkent"
-msgstr ""
+msgstr "Tashkent"
 
 msgid "Ташкент, Узбекистан"
 msgstr "Tashkent, Uzbekistan"
 
 msgid "Цена, %(currency)s"
 msgstr "Price, %(currency)s"
+
+msgid "Explore the collection"
+msgstr "Explore the collection"
+
+msgid "Shop Now"
+msgstr "Shop Now"
+
+msgid "New Arrivals"
+msgstr "New Arrivals"
+
+msgid "Look"
+msgstr "Look"
+
+msgid ""
+"Thoughtful pieces for everyday wear — quality materials and a calm "
+"silhouette."
+msgstr ""
+"Thoughtful pieces for everyday wear — quality materials and a calm "
+"silhouette."
+
+msgid "About and new arrivals"
+msgstr "About and new arrivals"
+
+msgid "Welcome to %(name)s"
+msgstr "Welcome to %(name)s"
+
+msgid ""
+"%(name)s is a modern online clothing store that offers a wide range of "
+"quality and stylish clothing for the whole family."
+msgstr ""
+"%(name)s is a modern online clothing store that offers a wide range of "
+"quality and stylish clothing for the whole family."
+
+msgid ""
+"%(name)s was founded with a simple idea — to make quality clothing "
+"accessible to everyone."
+msgstr ""
+"%(name)s was founded with a simple idea — to make quality clothing "
+"accessible to everyone."
 
 #, fuzzy
 #~ msgid "Return within 14 days"

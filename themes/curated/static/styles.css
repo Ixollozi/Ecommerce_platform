@@ -527,18 +527,30 @@ body.is-home .cu-hero {
 
 
 .cu-hero__title {
-  margin: 0 0 1.35rem;
+  margin: 0 0 0.85rem;
+  max-width: min(92vw, 42rem);
   font-family: "Cormorant Garamond", "Times New Roman", serif;
   font-weight: 500;
-  font-size: clamp(2.1rem, 4.8vw, 3.85rem);
-  line-height: 1.05;
-  letter-spacing: 0.12em;
+  font-size: clamp(1.55rem, 3.8vw, 3.35rem);
+  line-height: 1.08;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #1e1f1e;
+  white-space: nowrap;
 }
 .cu-hero__title-line {
   display: block;
   white-space: nowrap;
+}
+.cu-hero__mission {
+  margin: 0 0 1.35rem;
+  max-width: min(34rem, 88vw);
+  font-family: "Outfit", system-ui, sans-serif;
+  font-size: clamp(0.82rem, 1.35vw, 1.05rem);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  color: #3a3b3a;
 }
 
 .cu-hero__cta {
@@ -1622,7 +1634,8 @@ body.is-home .cu-hero {
   }
 
   .cu-hero__board--desk .cu-hero__title {
-    font-size: clamp(1.75rem, 3.8vw, 2.85rem);
+    font-size: clamp(1.45rem, 3.2vw, 2.75rem);
+    white-space: nowrap;
   }
 }
 
@@ -1740,10 +1753,18 @@ body.is-home .cu-hero {
     box-sizing: border-box;
   }
   .cu-hero__board--mob .cu-hero__title {
-    margin: 0 0 0.9rem;
-    font-size: 1.55rem;
-    letter-spacing: 0.1em;
+    margin: 0 0 0.55rem;
+    max-width: 92vw;
+    font-size: clamp(1.15rem, 5.2vw, 1.55rem);
+    letter-spacing: 0.06em;
     line-height: 1.08;
+    white-space: nowrap;
+  }
+  .cu-hero__board--mob .cu-hero__mission {
+    margin: 0 0 1rem;
+    max-width: 28ch;
+    font-size: 0.78rem;
+    line-height: 1.4;
   }
   .cu-hero__board--mob .cu-hero__cta {
     pointer-events: auto;

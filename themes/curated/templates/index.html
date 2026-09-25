@@ -2,7 +2,7 @@
 {% load product_media %}
 {% load i18n static humanize translation_tags %}
 
-{% block title %}{{ store_name }} — {% trans "Curated for the discerning" %}{% endblock %}
+{% block title %}{{ store_name }}{% endblock %}
 {% block body_class %}is-home{% endblock %}
 
 {% block content %}
@@ -12,11 +12,13 @@
       {% include "partials/hero_board.html" %}
       {% include "partials/hero_shop.html" %}
       <div class="cu-hero__copy">
-        <h1 class="cu-hero__title">
-          <span class="cu-hero__title-line">CURATED FOR</span>
-          <span class="cu-hero__title-line">THE DISCERNING</span>
-        </h1>
-        <a class="cu-hero__cta" href="{% url 'catalog' %}">EXPLORE THE COLLECTION</a>
+        <h1 class="cu-hero__title">{{ store_name }}</h1>
+        {% if about_info.mission %}
+        <p class="cu-hero__mission">{{ about_info.mission }}</p>
+        {% elif about_info.description %}
+        <p class="cu-hero__mission">{{ about_info.description|truncatewords:28 }}</p>
+        {% endif %}
+        <a class="cu-hero__cta" href="{% url 'catalog' %}">{% trans "Explore the collection" %}</a>
       </div>
       {% include "partials/hero_nav.html" %}
     </div>
@@ -26,11 +28,13 @@
       {% include "partials/hero_board_mobile.html" %}
       {% include "partials/hero_shop.html" %}
       <div class="cu-hero__copy">
-        <h1 class="cu-hero__title">
-          <span class="cu-hero__title-line">CURATED FOR</span>
-          <span class="cu-hero__title-line">THE DISCERNING</span>
-        </h1>
-        <a class="cu-hero__cta" href="{% url 'catalog' %}">EXPLORE THE COLLECTION</a>
+        <h1 class="cu-hero__title">{{ store_name }}</h1>
+        {% if about_info.mission %}
+        <p class="cu-hero__mission">{{ about_info.mission }}</p>
+        {% elif about_info.description %}
+        <p class="cu-hero__mission">{{ about_info.description|truncatewords:28 }}</p>
+        {% endif %}
+        <a class="cu-hero__cta" href="{% url 'catalog' %}">{% trans "Explore the collection" %}</a>
       </div>
       {% include "partials/hero_nav.html" %}
     </div>

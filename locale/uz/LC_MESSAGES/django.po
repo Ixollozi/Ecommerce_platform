@@ -2779,3 +2779,30 @@ msgstr "Narx, %(currency)s"
 
 #~ msgid "Classic Pants"
 #~ msgstr "Klassik shim"
+
+msgid "Explore the collection"
+msgstr "Kolleksiyani ko'rish"
+
+msgid "Shop Now"
+msgstr "Do'konga"
+
+msgid "New Arrivals"
+msgstr "Yangiliklar"
+
+msgid "Look"
+msgstr "Ko'rinish"
+
+msgid "Thoughtful pieces for everyday wear — quality materials and a calm silhouette."
+msgstr "Har kun uchun o'ylangan buyumlar — sifatli materiallar va sokin siluet."
+
+msgid "About and new arrivals"
+msgstr "Biz haqimizda va yangiliklar"
+
+msgid "Welcome to %(name)s"
+msgstr "%(name)s ga xush kelibsiz"
+
+msgid "%(name)s is a modern online clothing store that offers a wide range of quality and stylish clothing for the whole family."
+msgstr "%(name)s — butun oila uchun sifatli va zamonaviy kiyimlarning keng tanloviga ega onlayn do'kon."
+
+msgid "%(name)s was founded with a simple idea — to make quality clothing accessible to everyone."
+msgstr "%(name)s oddiy g'oya bilan yaratilgan — sifatli kiyimni hamma uchun ochiq qilish."

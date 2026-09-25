@@ -2709,3 +2709,30 @@ msgstr ""
 
 #~ msgid "Classic Pants"
 #~ msgstr "Брюки классические"
+
+msgid "Explore the collection"
+msgstr "Смотреть коллекцию"
+
+msgid "Shop Now"
+msgstr "В магазин"
+
+msgid "New Arrivals"
+msgstr "Новинки"
+
+msgid "Look"
+msgstr "Образ"
+
+msgid "Thoughtful pieces for everyday wear — quality materials and a calm silhouette."
+msgstr "Продуманные вещи на каждый день — качественные материалы и спокойный силуэт."
+
+msgid "About and new arrivals"
+msgstr "О нас и новинки"
+
+msgid "Welcome to %(name)s"
+msgstr "Добро пожаловать в %(name)s"
+
+msgid "%(name)s is a modern online clothing store that offers a wide range of quality and stylish clothing for the whole family."
+msgstr "%(name)s — современный интернет-магазин одежды с широким выбором качественных и стильных вещей для всей семьи."
+
+msgid "%(name)s was founded with a simple idea — to make quality clothing accessible to everyone."
+msgstr "%(name)s создан с простой идеей — сделать качественную одежду доступной каждому."

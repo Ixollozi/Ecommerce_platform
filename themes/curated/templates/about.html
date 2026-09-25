@@ -21,8 +21,8 @@
             <div class="about-content">
                 <div class="about-intro">
 
-                    <h2>{% if about_config.title %}{{ about_config.title }}{% else %}{% trans "Welcome to Fashion Store" %}{% endif %}</h2>
-                    <p>{% if about_config.description %}{{ about_config.description }}{% else %}{% trans "Fashion Store is a modern online clothing store that offers a wide range of quality and stylish clothing for the whole family. We have been in the market for over 10 years and during this time we have gained the trust of thousands of customers throughout Uzbekistan." %}{% endif %}</p>
+                    <h2>{% if about_config.title %}{{ about_config.title }}{% else %}{% blocktrans with name=store_name %}Welcome to {{ name }}{% endblocktrans %}{% endif %}</h2>
+                    <p>{% if about_config.description %}{{ about_config.description }}{% else %}{% blocktrans with name=store_name %}{{ name }} is a modern online clothing store that offers a wide range of quality and stylish clothing for the whole family.{% endblocktrans %}{% endif %}</p>
 
                 </div>
 
@@ -41,7 +41,7 @@
 
 
                     <h3>{% trans "Our Vision" %}</h3>
-                    <p>{% if about_config.vision %}{{ about_config.vision }}{% else %}{% trans "Fashion Store was founded in 2014 with a simple idea - to make quality clothing accessible to everyone. Starting with a small store, we have grown into a large online store serving customers throughout the country." %}{% endif %}</p>
+                    <p>{% if about_config.vision %}{{ about_config.vision }}{% else %}{% blocktrans with name=store_name %}{{ name }} was founded with a simple idea — to make quality clothing accessible to everyone.{% endblocktrans %}{% endif %}</p>
 
                     <h3>{% trans "Our Values" %}</h3>
                     {% if about_config.values %}
